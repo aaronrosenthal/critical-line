@@ -73,7 +73,7 @@
 <section class="slide" data-scene="wobble" data-title="How far it strays">
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
-    <p>How far does the staircase stray from the line? Zoom in on the difference, <span class="m">ψ(x) − x</span>, and it wobbles back and forth.</p>
+    <p>How far does the staircase stray from the line? Subtract the line and plot only what's left over, <span class="m">ψ(x) − x</span>. It wobbles back and forth.</p>
     <p>The <b>Riemann Hypothesis</b> says the wobbles stay about the size of <b>√x</b>, forever.</p>
     <div class="tags"><span class="tag real">real data, primes up to 200,000</span></div>
   </div>
@@ -97,11 +97,39 @@
   </div>
 </section>
 
+<section class="slide" data-scene="plane" data-title="Numbers on a plane">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>To go further, Riemann needed numbers that live on a flat plane instead of along a line.</p>
+    <p>Each of these <b>complex numbers</b> is an arrow from the centre. Its <b>real part</b> says how far right it reaches, and its <b>height</b> (the imaginary part, marked with an <span class="m">i</span>) says how far up. To add two of them, lay the arrows head to tail.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="spin" data-tone="purple" data-title="Every term is a spinning arrow">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Now feed ζ one of these numbers, <span class="m">s = σ + i·t</span>. Each term <span class="m">1/nˢ</span> becomes an arrow: σ sets its length, <span class="m">1/n<sup>σ</sup></span>, and the height t turns it by an angle <span class="m">t · ln n</span>.</p>
+    <p>So ζ(s) is a chain of arrows laid head to tail, and its value is <b>where the chain ends</b>. Watch the chain curl as t rises.</p>
+    <div class="tags"><span class="tag real">computed live</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="home" data-tone="purple" data-title="A zero: the arrows come home">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Now set the real part to exactly ½ and raise the height. At <span class="m">t = 14.1347…</span> the chain ends exactly where it started. The arrows cancel perfectly, so ζ(s) = 0.</p>
+    <p>That point is a <b>zero</b> of ζ.</p>
+    <p class="sub">One honest wrinkle: at real part ½ the plain sum never settles, so this picture uses its cousin with alternating signs, 1 − 1/2ˢ + 1/3ˢ − ⋯. It does settle, and it has exactly the same zeros here.</p>
+    <div class="tags"><span class="tag real">computed live, 600 arrows</span></div>
+  </div>
+</section>
+
 <section class="slide" data-scene="landscape" data-tone="purple" data-title="A landscape with holes">
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
-    <p>Riemann let s be a complex number. Then |ζ(s)| becomes a landscape over the plane.</p>
-    <p>Most of it is gentle hills. But here and there the ground drops all the way to zero. Those points are the <b>zeros</b> of ζ, and they are the heart of the story.</p>
+    <p>Do this at every point s of the plane, and record how far from the start each chain ends: <span class="m">|ζ(s)|</span>. That gives a landscape: light where the chain ends far away, dark where it ends close to home.</p>
+    <p>The ground drops all the way to zero only at the <b>zeros</b>. The lowest is the 14.13 you just watched. They are the heart of the story.</p>
+    <p class="sub">Left of real part 0 no sum settles at all; there ζ is extended smoothly from the rest of the map. No zeros in this picture lie out there.</p>
     <div class="tags"><span class="tag real">computed live</span></div>
   </div>
 </section>

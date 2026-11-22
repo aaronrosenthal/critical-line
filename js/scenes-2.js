@@ -1,4 +1,4 @@
-/* scenes-2.js: illustrations for pages 23–45 (Step D, one theta lift, the chain, running it forward, verification). */
+/* scenes-2.js: illustrations for pages 26–48 (Step D, one theta lift, the chain, running it forward, verification). */
 (function () {
   "use strict";
   const S = DECK.scene, ZEROS = (window.RH_DATA && RH_DATA.zeros) || [];

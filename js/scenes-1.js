@@ -1,4 +1,4 @@
-/* scenes-1.js: illustrations for pages 1–22 (opening, primes, zeta, the map, Step A, Step B).
+/* scenes-1.js: illustrations for pages 1–25 (opening, primes, zeta, the map, Step A, Step B).
    Every scene draws on a 1000 × 640 board. draw(K, t) gets seconds since the page opened; return false when finished. */
 (function () {
   "use strict";
@@ -175,7 +175,7 @@
   S("euler", () => ({
     draw(K, t) {
       const { col } = K, NMAX = 30, target = Math.PI * Math.PI / 6;
-      const A = K.axes([120, 150, 800, 380], [1, NMAX], [1, 1.72]);
+      const A = K.axes([120, 150, 800, 320], [1, NMAX], [1, 1.72]);
       A.frame({ xticks: [[1, "1"], [10, "10"], [20, "20"], [30, "30"]], yticks: [[1, "1.0"], [1.2, "1.2"], [1.4, "1.4"], [1.6, "1.6"]], xlabel: "terms used, up to N" });
       K.seg(A.X(1), A.Y(target), A.X(NMAX), A.Y(target), { color: col.green, width: 2, dash: [8, 6], sketch: false });
       K.text("π²/6 = 1.6449…", A.X(NMAX) - 4, A.Y(target) - 18, { size: 20, align: "right", color: col.green, bold: true });
@@ -188,13 +188,104 @@
       }
       K.line(sp, { color: col.blue, width: 3 }); K.line(pp, { color: col.red, width: 3 });
       sp.forEach(([x, y]) => K.dot(x, y, 3.5, col.blue));
-      K.text("sum: 1 + 1/4 + 1/9 + 1/16 + ⋯", 130, 560, { size: 22, color: col.blue, bold: true });
-      K.text("product over primes: 1/(1 − 2^{−2}) · 1/(1 − 3^{−2}) · 1/(1 − 5^{−2}) ⋯", 130, 600, { size: 22, color: col.red, bold: true });
+      K.text("sum: 1 + 1/4 + 1/9 + 1/16 + ⋯", 130, 568, { size: 22, color: col.blue, bold: true });
+      K.text("product over primes: 1/(1 − 2^{−2}) · 1/(1 − 3^{−2}) · 1/(1 − 5^{−2}) ⋯", 130, 606, { size: 22, color: col.red, bold: true });
       K.serif("for every s:", 500, 26, { size: 22, color: col.muted, align: "center" });
       K.math("1 + 1/2ˢ + 1/3ˢ + ⋯  =  ∏ₚ 1/(1 − p⁻ˢ)", 500, 70, { size: 34 });
       K.serif("here, s = 2", 930, 120, { size: 22, color: col.muted, align: "right" });
       K.text("the product only moves at primes", A.X(NMAX), A.Y(1.12), { size: 19, align: "right", color: col.muted });
       return t < 6.3;
+    },
+  }));
+
+  // ------------------------------------------------------------------ complex plane: arrows add head to tail
+  S("plane", () => ({
+    draw(K, t) {
+      const { col } = K, ox = 330, oy = 430, u = 110;
+      const P = (x, y) => [ox + x * u, oy - y * u];
+      K.seg(90, oy, 900, oy, { color: col.axis, width: 1.6, sketch: false });
+      K.seg(ox, 610, ox, 40, { color: col.axis, width: 1.6, sketch: false });
+      [-2, -1, 1, 2, 3, 4, 5].forEach((v) => { K.seg(P(v, 0)[0], oy - 5, P(v, 0)[0], oy + 5, { color: col.axis, width: 1.4, sketch: false }); K.text(String(v).replace("-", "−"), P(v, 0)[0], oy + 24, { size: 17, align: "center", color: col.muted }); });
+      [1, 2, 3].forEach((v) => { K.seg(ox - 5, P(0, v)[1], ox + 5, P(0, v)[1], { color: col.axis, width: 1.4, sketch: false }); K.text(v + "i", ox - 12, P(0, v)[1], { size: 17, align: "right", color: col.muted }); });
+      K.text("real part →", 900, oy + 54, { size: 19, align: "right", color: col.muted });
+      K.text("↑ height (imaginary part)", ox + 12, 46, { size: 19, color: col.muted });
+      const grow = (a, b, f, c, w) => { if (f <= 0) return; const e = K.ease(f); K.arrow(a[0], a[1], a[0] + (b[0] - a[0]) * e, a[1] + (b[1] - a[1]) * e, { color: c, width: w || 3.2, seed: 5 }); };
+      const A1 = P(3, 1), A2 = P(2, 2.5), O = [ox, oy];
+      const f1 = K.ph(t, 0.3, 1.4), f2 = K.ph(t, 1.8, 2.9), f3 = K.ph(t, 3.3, 4.4);
+      if (f1 > 0) { K.seg(A1[0], A1[1], A1[0], oy, { color: col.blue, width: 1.2, dash: [3, 5], alpha: 0.6 * f1, sketch: false }); }
+      grow(O, A1, f1, col.blue);
+      if (f1 >= 1) K.text("3 + 1i", A1[0] + 14, A1[1] + 22, { size: 21, bold: true, color: col.blue });
+      grow(A1, A2, f2, col.red);
+      if (f2 >= 1) K.text("+ (−1 + 1.5i)", A1[0] + 4, A1[1] - 92, { size: 21, bold: true, color: col.red });
+      grow(O, A2, f3, col.gold, 4);
+      if (f3 >= 1) { K.text("= 2 + 2.5i", A2[0] - 14, A2[1] - 20, { size: 22, bold: true, color: col.gold, align: "right" }); K.serif("head to tail", 640, 150, { size: 24, color: col.muted }); }
+      K.dot(ox, oy, 5, col.ink);
+      return t < 4.6;
+    },
+  }));
+
+  // ------------------------------------------------------------------ chains of spinning arrows
+  function chainPts(sig, tt, N, alt) {
+    const pts = [[0, 0]]; let x = 0, y = 0;
+    for (let n = 1; n <= N; n++) {
+      const r = Math.pow(n, -sig) * (alt && n % 2 === 0 ? -1 : 1) * (alt && n === N ? 0.5 : 1), a = -tt * Math.log(n);
+      x += r * Math.cos(a); y += r * Math.sin(a); pts.push([x, y]);
+    }
+    return pts;
+  }
+  function drawChain(K, pts, ox, oy, u, nArrows) {
+    const { col, g } = K, pal = [col.blue, col.red, col.gold, col.green, col.purple];
+    const S2 = ([x, y]) => [ox + x * u, oy - y * u];
+    g.save(); g.strokeStyle = col.muted; g.globalAlpha = 0.7; g.lineWidth = 1.2; g.beginPath();
+    pts.slice(nArrows).forEach((p, i) => { const [a, b] = S2(p); i ? g.lineTo(a, b) : g.moveTo(a, b); }); g.stroke(); g.restore();
+    for (let i = 0; i < nArrows && i + 1 < pts.length; i++) {
+      const [a, b] = S2(pts[i]), [c, d] = S2(pts[i + 1]), len = Math.hypot(c - a, d - b);
+      if (len < 2) continue;
+      K.arrow(a, b, c, d, { color: pal[i % 5], width: i < 3 ? 3 : 2, head: Math.min(13, len * 0.45), sketch: false });
+    }
+    return S2(pts[pts.length - 1]);
+  }
+  S("spin", () => ({
+    draw(K, t) {
+      const { col } = K, sig = 1.5, T = 2.2, ox = 130, oy = 210, u = 185;
+      const tt = T * K.ease(K.ph(t, 0.6, 6.5));
+      K.seg(50, oy, 640, oy, { color: col.axis, width: 1.2, sketch: false }); K.seg(ox, 40, ox, 520, { color: col.axis, width: 1.2, sketch: false });
+      const g = K.g; g.save(); g.strokeStyle = col.gold; g.lineWidth = 3; g.globalAlpha = 0.85; g.beginPath();
+      for (let k = 0; k <= 200; k++) { const v = RH.zeta(sig, tt * k / 200), x = ox + v[0] * u, y = oy - v[1] * u; k ? g.lineTo(x, y) : g.moveTo(x, y); } g.stroke(); g.restore();
+      const end = drawChain(K, chainPts(sig, tt, 400, false), ox, oy, u, 30);
+      const z = RH.zeta(sig, tt), Z = [ox + z[0] * u, oy - z[1] * u];
+      K.seg(end[0], end[1], Z[0], Z[1], { color: col.muted, width: 1.2, dash: [3, 4], sketch: false });
+      K.dot(Z[0], Z[1], 7, col.gold); K.dot(ox, oy, 5, col.ink); K.text("start", ox - 10, oy + 22, { size: 17, align: "right", color: col.muted });
+      K.serif("s = 1.5 + i·t", 670, 70, { size: 26 });
+      K.math(`t = ${tt.toFixed(2)}`, 670, 130, { size: 40, color: col.purple, align: "left" });
+      K.text("arrow n: length 1/n^{1.5},", 670, 420, { size: 19, color: col.muted });
+      K.text("turned by t · ln n", 670, 448, { size: 19, color: col.muted });
+      K.text("gold dot = ζ(s):", 670, 500, { size: 19, color: col.gold, bold: true });
+      K.text("where the chain ends", 670, 526, { size: 19, color: col.gold, bold: true });
+      K.text("gold trail: its path", 670, 570, { size: 19, color: col.gold });
+      return t < 6.7;
+    },
+  }));
+  S("home", () => ({
+    draw(K, t) {
+      const { col } = K, ZT = 14.134725, ox = 240, oy = 330, u = 130;
+      const f = K.ph(t, 0.5, 7.5), tt = ZT * (1 - Math.pow(1 - f, 2.2));
+      K.seg(90, oy, 630, oy, { color: col.axis, width: 1.2, sketch: false }); K.seg(ox, 40, ox, 600, { color: col.axis, width: 1.2, sketch: false });
+      const g = K.g; g.save(); g.strokeStyle = col.gold; g.lineWidth = 2.4; g.globalAlpha = 0.6; g.beginPath();
+      const steps = Math.max(1, Math.round(tt / 0.04));
+      for (let k = 0; k <= steps; k++) { const p = chainPts(0.5, tt * k / steps, 600, true).pop(), x = ox + p[0] * u, y = oy - p[1] * u; k ? g.lineTo(x, y) : g.moveTo(x, y); } g.stroke(); g.restore();
+      const end = drawChain(K, chainPts(0.5, tt, 600, true), ox, oy, u, 30);
+      K.dot(end[0], end[1], 7, col.gold);
+      K.dot(ox, oy, 5, col.ink); K.seg(ox - 6, oy + 8, ox - 60, oy + 150, { color: col.muted, width: 1.2, dash: [3, 4], sketch: false }); K.text("start", ox - 66, oy + 166, { size: 18, align: "right", color: col.muted });
+      K.serif("s = ½ + i·t", 670, 70, { size: 26 });
+      K.math(`t = ${tt.toFixed(2)}`, 670, 130, { size: 40, color: col.purple, align: "left" });
+      K.text("gold trail: where", 670, 470, { size: 19, color: col.gold }); K.text("the chain has ended", 670, 496, { size: 19, color: col.gold });
+      if (f >= 1) {
+        const pulse = 1 + 0.12 * Math.sin(t * 3);
+        K.ring(ox, oy, 22 * pulse, { color: col.gold, width: 3 });
+        K.text("back home:", 670, 220, { size: 24, bold: true, color: col.gold }); K.text("ζ(s) = 0", 670, 252, { size: 24, bold: true, color: col.gold });
+      }
+      return true; // keep the ring pulsing
     },
   }));
 
@@ -234,7 +325,8 @@
         if (i < 3) K.text(`zero at height ${z.toFixed(2)}`, X(0.5) + 260, Y(z), { size: 19, color: col.gold, bold: true, alpha: f });
         if (i < 3) K.seg(X(0.5) + 18, Y(z), X(0.5) + 250, Y(z), { color: col.gold, width: 1.2, alpha: f, dash: [3, 5], sketch: false });
       });
-      K.text("pole at s = 1", X(1) + 30, Y(2.2), { size: 18, color: col.muted });
+      K.seg(X(1), Y(1.2), x0 + w + 14, Y(1.2), { color: col.muted, width: 1.2, dash: [3, 5], sketch: false });
+      K.text("near s = 1, ζ shoots up to ∞", x0 + w + 20, Y(1.2), { size: 18, color: col.muted });
       K.serif("dark = low ground", 160, 120, { size: 24, color: col.purple, align: "center" });
       K.serif("light = high", 160, 160, { size: 24, color: col.muted, align: "center" });
       return t < 6;
