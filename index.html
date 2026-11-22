@@ -578,12 +578,30 @@
   </div>
 </section>
 
-<section class="slide" data-scene="positivity" data-tone="blue" data-title="Is there a hidden positivity?">
+<section class="slide" data-scene="positivity" data-tone="blue" data-title="The positivity was in plain sight">
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
-    <p>So the square root has two classic explanations: a balance, and a positivity. The new proof visibly uses the balance.</p>
-    <p>Weil showed in 1952 that RH for the whole numbers is equivalent to a certain quantity never being negative. This proof only ever uses one-sided bounds: a ceiling for Landau's trap, an upper bound on lattice sizes. Perhaps its two-way count is a positivity in disguise. Whoever can name it may have found the "why".</p>
-    <div class="tags"><span class="tag reading">speculation</span></div>
+    <p>So the square root has two classic explanations, a balance and a positivity. In this proof they turn out to be one. Stepanov's balance rests on "a nonzero polynomial has no more roots than its degree". Its whole-number twin is simpler still: <b>a nonzero integer is at least 1 in size</b>.</p>
+    <p>In lattice form that is the <b>slope inequality</b>. It sits in the Lean code on the path to the main theorem, exactly where the lifts are measured, and Rubinstein's draft draws the same parallel.</p>
+    <div class="tags"><span class="tag real">traced in the dependency data</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="route" data-tone="blue" data-title="The author's route: weak positivity, amplified">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>In 1952 Weil showed that RH is equivalent to a quantity W never being negative. The author's notes from early October read: "W(1<sub>S</sub>) ≥ 0 via a determinant, interpret as Stepanov with multiplicity one again; bootstrap!!"</p>
+    <p>A nonzero determinant gave a weak positivity, and only a thin zero-free strip. Then, on 15 November: "Iterated theta lifts … wins multiplicity m. Time to take m like √X." In the finished proof the determinant became the slope inequality, but the shape stayed: weak positivity, amplified m times.</p>
+    <div class="tags"><span class="tag real">quotes from the author's Remark</span><span class="tag reading">the thin strip: Rubinstein's reading and ours</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="nosurface" data-tone="purple" data-title="Why this route could work">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Why could this route succeed where others stalled? Weil's proof for clock arithmetic lives on a surface, the curve times itself. For the whole numbers the matching surface doesn't exist; building it is the dream of a "field with one element".</p>
+    <p>Stepanov's route never needs the surface, only the curve and "zeros ≤ degree". The author writes that he weighed "how hard fighting for some sort of F<sub>1</sub> … would be". The proof took the other road.</p>
+    <div class="tags"><span class="tag reading">our reading; no expert has said this yet</span></div>
   </div>
 </section>
 
@@ -610,7 +628,7 @@
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
     <p>The author calls each lift "one more order of multiplicity". Three experiments could turn that phrase into an explanation.</p>
-    <p>Run the argument on clock arithmetic and see whether it becomes Stepanov's proof. Turn the dial down and see whether a short chain still works. Look for a positivity hiding in the two-way count. Until then, we have a checked proof and a promising slogan.</p>
+    <p>Run the argument on clock arithmetic and see whether it becomes Stepanov's proof. Turn the dial down and see whether a short chain still works; the author's own first steps suggest it might. The positivity has turned up in plain sight, so what remains is to explain why multiplicity amplifies it so well. Until then, we have a checked proof and a promising slogan.</p>
     <div class="tags"><span class="tag reading">our reading</span></div>
   </div>
 </section>

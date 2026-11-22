@@ -210,36 +210,110 @@
     };
   });
 
-  // ------------------------------------------------------------------ is there a hidden positivity?
+  // ------------------------------------------------------------------ the positivity was in plain sight
   S("positivity", () => ({
     draw(K, t) {
-      const { col } = K;
-      const panel = (x, y, w, h, c, title, sub, seed) => { K.box(x, y, w, h, { color: c, width: 2.4, fill: c, fillAlpha: 0.08, r: 16, seed }); K.text(title, x + w / 2, y + 34, { size: 24, align: "center", bold: true, color: c }); K.text(sub, x + w / 2, y + 64, { size: 17, align: "center", color: col.muted }); };
-      panel(50, 40, 360, 300, col.purple, "a balance", "Stepanov, 1969", 3);
-      panel(590, 40, 360, 300, col.blue, "a positivity", "Hasse 1933, Weil 1948", 5);
-      // mini balance curve p/m + m
-      const bx = 90, by = 110, bw = 280, bh = 190, pts = [];
-      for (let i = 0; i <= 80; i++) { const m = 1 + (i / 80) * 29; pts.push([bx + (i / 80) * bw, by + bh - ((100 / m + m) / 105) * bh]); }
-      K.seg(bx, by + bh, bx + bw, by + bh, { color: col.axis, width: 1.5 });
+      const { col } = K, g = K.g;
+      const panel = (x, y, w, h, c, title, sub, seed) => { K.box(x, y, w, h, { color: c, width: 2.4, fill: c, fillAlpha: 0.08, r: 16, seed }); K.text(title, x + w / 2, y + 32, { size: 23, align: "center", bold: true, color: c }); K.text(sub, x + w / 2, y + 60, { size: 17, align: "center", color: col.muted }); };
+      panel(40, 30, 440, 270, col.purple, "clock arithmetic", "zeros, counted with multiplicity, ≤ degree", 3);
+      panel(520, 30, 440, 270, col.blue, "whole numbers", "a nonzero integer has size at least 1", 5);
+      // left: a polynomial touching zero with multiplicity
+      const bx = 70, bw = 380, by0 = 230, pts = [];
+      for (let i = 0; i <= 120; i++) { const u = -0.78 + (1.73 * i) / 120, v = Math.pow(u + 0.55, 2) * Math.pow(u - 0.35, 3) * (u - 0.9); pts.push([bx + (i / 120) * bw, by0 - v * 160]); }
+      K.seg(bx, by0, bx + bw, by0, { color: col.axis, width: 1.5, sketch: false });
       K.line(pts, { color: col.purple, width: 3, sketch: false });
-      K.dot(bx + (9 / 29) * bw, by + bh - (20 / 105) * bh, 8, col.red);
-      K.text("√", bx + (9 / 29) * bw, by + bh - (20 / 105) * bh + 30, { size: 20, align: "center", bold: true, color: col.red });
-      // mini parabola above the axis
-      const qx = 630, qy = 110, qw = 280, qh = 190, qp = [];
-      for (let i = 0; i <= 80; i++) { const r = -1 + (2 * i) / 80; qp.push([qx + (i / 80) * qw, qy + qh - 14 - (r * r + 0.15) * 150]); }
-      K.seg(qx, qy + qh - 14, qx + qw, qy + qh - 14, { color: col.axis, width: 1.5 });
-      K.line(qp, { color: col.blue, width: 3, sketch: false });
-      K.text("≥ 0", qx + qw / 2, qy + qh - 52, { size: 22, align: "center", bold: true, color: col.blue });
-      // the new proof
-      const f1 = K.ease(K.ph(t, 0.4, 1.6)), f2 = K.ease(K.ph(t, 1.6, 2.8));
-      K.box(330, 450, 340, 100, { color: col.green, width: 2.8, fill: col.green, fillAlpha: 0.12, r: 16, seed: 8 });
-      K.text("this proof", 500, 492, { size: 26, align: "center", bold: true, color: col.green });
-      K.text("only ever uses ceilings", 500, 526, { size: 18, align: "center", color: col.muted });
-      if (f1 > 0) K.arrow(230, 345, 230 + 150 * f1, 345 + 100 * f1, { color: col.purple, width: 3, head: 14 });
-      if (f1 >= 1) K.text("visible in the code", 160, 432, { size: 18, color: col.purple, bold: true });
-      if (f2 > 0) K.arrow(770, 345, 770 - 150 * f2, 345 + 100 * f2, { color: col.blue, width: 3, head: 14, dash: [8, 7] });
-      if (f2 >= 1) { K.text("?", 790, 425, { size: 44, align: "center", bold: true, color: col.blue }); K.text("hidden in it?", 790, 470, { size: 18, align: "center", color: col.blue, bold: true }); }
-      return t < 3;
+      [[-0.55, "×2"], [0.35, "×3"], [0.9, "×1"]].forEach(([r, l]) => { const x = bx + ((r + 0.78) / 1.73) * bw; K.dot(x, by0, 6, col.red); K.text(l, x, by0 + 24, { size: 16, align: "center", bold: true, color: col.red }); });
+      K.text("2 + 3 + 1 = 6 = the degree", 260, 284, { size: 17, align: "center", color: col.muted });
+      // right: the integers, with an empty gap around 0
+      const nx = 560, nw = 360, ny = 200, X = (v) => nx + ((v + 3.5) / 7) * nw;
+      g.save(); g.fillStyle = col.red; g.globalAlpha = 0.14; g.fillRect(X(-1), ny - 40, X(1) - X(-1), 80); g.restore();
+      K.seg(nx, ny, nx + nw, ny, { color: col.axis, width: 1.5, sketch: false });
+      for (let v = -3; v <= 3; v++) { K.dot(X(v), ny, v === 0 ? 5 : 7, v === 0 ? col.muted : col.blue); K.text(String(v).replace("-", "−"), X(v), ny + 24, { size: 16, align: "center", color: col.muted }); }
+      K.text("nothing nonzero in here", X(0), ny - 54, { size: 16, align: "center", bold: true, color: col.red });
+      K.text("so (product of its prime factors) ≤ |n|", 740, 284, { size: 17, align: "center", color: col.muted });
+      // the code box
+      const f = K.ease(K.ph(t, 0.5, 1.4));
+      if (f > 0) {
+        K.g.globalAlpha = f;
+        K.box(110, 400, 780, 120, { color: null, fill: "#1a202c", fillAlpha: 1, r: 12 });
+        g.save(); g.font = `${21 * (K.fs || 1)}px "SF Mono", Menlo, Consolas, monospace`; g.textBaseline = "middle";
+        g.fillStyle = "#a0aec0"; g.fillText("-- the lattice version, in the Lean proof", 140, 428);
+        g.fillStyle = "#f6ad55"; g.fillText("SlopeInequality", 140, 462); g.fillStyle = "#e2e8f0"; g.fillText("  slope L ≤ μmax M + log C", 140, 496);
+        g.restore();
+        K.arrow(260, 304, 330, 396, { color: col.purple, width: 2.6, head: 12 }); K.arrow(740, 304, 670, 396, { color: col.blue, width: 2.6, head: 12 });
+        K.text("on the path to the main theorem, where the lifts are measured", 500, 560, { size: 18, align: "center", bold: true, color: col.green });
+        K.g.globalAlpha = 1;
+      }
+      return t < 1.6;
+    },
+  }));
+
+  // ------------------------------------------------------------------ the author's route: weak positivity, amplified
+  S("route", ({ reduced }) => ({
+    draw(K, t) {
+      const { col } = K, g = K.g;
+      const cards = [["6 Oct", "\u201cStepanov determinant\u201d", col.purple], ["early Oct", "W ≥ 0 via a determinant:", col.blue], ["15 Nov", "iterated theta lifts:", col.green]];
+      const subs = ["", "multiplicity one, a thin region", "multiplicity m, with m ≈ √x"];
+      const T = reduced ? 99 : t, stage = T < 1.2 ? 0 : T < 2.6 ? 1 : 2;
+      cards.forEach(([d, s, c], i) => {
+        const f = K.ease(K.ph(T, 0.2 + i * 1.3, 0.8 + i * 1.3)); if (f <= 0) return;
+        const x = 40 + i * 320; K.g.globalAlpha = f;
+        K.box(x, 30, 290, 120, { color: c, width: 2.4, fill: c, fillAlpha: 0.1, r: 14, seed: 6 + i });
+        K.text(d, x + 18, 60, { size: 18, bold: true, color: c });
+        K.text(s, x + 18, 96, { size: 19 });
+        if (subs[i]) K.text(subs[i], x + 18, 124, { size: 17, color: col.muted });
+        K.g.globalAlpha = 1;
+      });
+      // the zero-free region growing as the positivity is amplified
+      const top = 220, bot = 470, RX = (re) => 120 + re * 760;
+      const target = [1, 0.93, 0.5][stage], from = [1, 1, 0.93][stage], st = [0, 1.3, 2.9][stage];
+      const th = from + (target - from) * K.ease(K.ph(T, st + 0.3, st + 1.5));
+      g.save(); g.fillStyle = col.green; g.globalAlpha = 0.16; g.fillRect(RX(th), top, 940 - RX(th), bot - top); g.restore();
+      K.seg(RX(0), bot, 940, bot, { color: col.axis, width: 2, sketch: false });
+      K.seg(RX(0.5), top, RX(0.5), bot, { color: col.gold, width: 2.2, dash: [7, 6], sketch: false });
+      ZEROS.slice(0, 30).forEach((z) => { const y = bot - z * 2.1; if (y > top + 6) K.dot(RX(0.5), y, 4, col.gold); });
+      if (th < 0.999) K.seg(RX(th), top, RX(th), bot, { color: col.green, width: 3, sketch: false });
+      [[0, "0"], [0.5, "½"], [1, "1"]].forEach(([v, s]) => K.text(s, RX(v), bot + 24, { size: 19, align: "center", color: col.muted }));
+      K.text("real part of s", 940, bot + 48, { size: 17, align: "right", color: col.muted });
+      if (th < 0.97) K.text("no zeros here", (RX(th) + 940) / 2, top + 26, { size: 19, align: "center", bold: true, color: col.green, halo: true });
+      K.text(stage === 2 && th < 0.52 ? "the same positivity, amplified m ≈ √x times, reaches ½" : "weak positivity: only a thin zero-free strip", 500, 560, { size: 20, align: "center", bold: true, color: stage === 2 && th < 0.52 ? col.gold : col.blue });
+      return !reduced && t < 4.6;
+    },
+  }));
+
+  // ------------------------------------------------------------------ why this route could work: no surface needed
+  S("nosurface", () => ({
+    draw(K, t) {
+      const { col } = K, g = K.g;
+      // Weil's surface C × C
+      const sx = 70, sy = 60, S0 = 280;
+      g.save(); g.strokeStyle = col.grid; g.lineWidth = 1;
+      for (let i = 1; i < 10; i++) { g.beginPath(); g.moveTo(sx + (i * S0) / 10, sy); g.lineTo(sx + (i * S0) / 10, sy + S0); g.moveTo(sx, sy + (i * S0) / 10); g.lineTo(sx + S0, sy + (i * S0) / 10); g.stroke(); }
+      g.restore();
+      K.box(sx, sy, S0, S0, { color: col.blue, width: 2.4, sketch: false });
+      K.seg(sx, sy + S0, sx + S0, sy, { color: col.gold, width: 2.6, sketch: false });
+      const fp = []; for (let i = 0; i <= 60; i++) { const u = i / 60; fp.push([sx + u * S0, sy + S0 - Math.pow(u, 0.33) * S0]); }
+      K.line(fp, { color: col.red, width: 2.6, sketch: false });
+      K.text("diagonal", sx + S0 - 6, sy + 30, { size: 16, align: "right", color: col.gold, bold: true, halo: true });
+      K.text("Frobenius", sx + 12, sy + 60, { size: 16, color: col.red, bold: true, halo: true });
+      K.text("Weil: positivity on the surface C × C", sx + S0 / 2, sy + S0 + 32, { size: 18, align: "center", bold: true, color: col.blue });
+      // the missing surface
+      const mx = 640;
+      K.box(mx, sy, S0, S0, { color: col.axis, width: 2, dash: [8, 8], sketch: false });
+      K.serif("?", mx + S0 / 2, sy + S0 / 2, { size: 120, align: "center", color: col.muted, alpha: 0.6 });
+      K.text("Spec ℤ × Spec ℤ: nobody can build it", mx + S0 / 2, sy + S0 + 32, { size: 18, align: "center", bold: true, color: col.muted });
+      K.text("(the \u201cfield with one element\u201d dream)", mx + S0 / 2, sy + S0 + 58, { size: 16, align: "center", color: col.muted });
+      // Stepanov's route: just the line
+      const f = K.ease(K.ph(t, 0.6, 1.6));
+      if (f > 0) {
+        K.g.globalAlpha = f;
+        const ly = 520; K.seg(150, ly, 850, ly, { color: col.green, width: 3, sketch: false });
+        [2, 3, 5, 7, 11, 13, 17, 19, 23].forEach((p, i) => { K.dot(170 + i * 82, ly, 6, col.green); K.text(String(p), 170 + i * 82, ly - 22, { size: 15, align: "center", color: col.muted }); });
+        K.text("one copy only: the curve, or for whole numbers the primes", 500, 470, { size: 17, align: "center", color: col.muted });
+        K.text("Stepanov, and this proof: only the line itself, plus \u201ca nonzero integer is at least 1\u201d", 500, 572, { size: 18, align: "center", bold: true, color: col.green });
+        K.g.globalAlpha = 1;
+      }
+      return t < 1.8;
     },
   }));
 
@@ -308,8 +382,8 @@
       const { col } = K;
       const items = [
         ["the balance", "run it on clock arithmetic: does it", "turn into Stepanov's proof?", col.purple],
-        ["the dial", "turn the chain down: does a short", "chain give a weaker half-plane?", col.green],
-        ["the positivity", "is the two-way count an inequality", "that can't go negative, in disguise?", col.blue],
+        ["the dial", "turn the chain down: does a short chain", "still work? (the author began there)", col.green],
+        ["the positivity", "found: a nonzero integer is at least 1.", "open: is skipping the surface the why?", col.blue],
       ];
       K.serif("?", 170, 320, { size: 150, align: "center", color: col.gold, alpha: 0.85 });
       items.forEach(([h, a, b, c], i) => {
