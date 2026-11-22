@@ -536,15 +536,15 @@
   // ------------------------------------------------------------------ Taylor coefficients as a storm warning
   S("taylor", ({ reduced }) => ({
     draw(K, t) {
-      const { col } = K, zx = 170, zy = 330, u = 170, g = K.g;
+      const { col } = K, zx = 270, zy = 365, u = 118, g = K.g;
       const r = reduced ? 0.85 : 1.25 + 0.42 * Math.cos(t * 0.6);
       const px = zx + r * u;
-      K.seg(50, zy, 540, zy, { color: col.axis, width: 1.4, sketch: false });
+      K.seg(50, zy, 560, zy, { color: col.axis, width: 1.4, sketch: false });
       K.ring(zx, zy, r * u, { color: col.green, width: 2.4, dash: [7, 6], fill: col.green, fillAlpha: 0.05 });
       K.dot(zx, zy, 7, col.ink); K.text("z", zx - 10, zy - 18, { size: 22, bold: true, align: "right" });
       // the pole: a red spike marker
       K.ring(px, zy, 12, { color: col.red, width: 3 }); K.dot(px, zy, 5, col.red);
-      K.text("pole: f blows up here", px + 8, zy + 40, { size: 19, bold: true, color: col.red, align: "center", halo: true });
+      K.text("the pole", px, zy + 40, { size: 19, bold: true, color: col.red, align: "center", halo: true });
       K.seg(zx, zy - 6, px, zy - 6, { color: col.muted, width: 1.4, sketch: false });
       K.text(`r = ${r.toFixed(2)}`, (zx + px) / 2, zy - 22, { size: 19, align: "center", color: col.muted, halo: true });
       K.text("the coefficients at z rebuild f", 60, 70, { size: 19, color: col.green, bold: true });
