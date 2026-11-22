@@ -144,9 +144,10 @@
 <section class="slide" data-scene="w-gz" data-part="IV. Step A: Landau's trap" data-title="The chorus, measured carefully">
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
-    <p>To hear the chorus clearly, the colony learned to listen to a smoothed version of it, called <b>G</b>.</p>
+    <p>To hear the chorus clearly, Grey taught Kito a listener's trick. The raw chorus is a clatter. Each twig claps once, sharply, the moment it arrives, and every clap jolts the chorus.</p>
+    <p>“So listen for the hum,” said Grey. Now each twig starts humming the moment it arrives, at nothing, and swells steadily night after night. Nothing jumps any more. It is the same twigs and the same birds behind them, only easier to hear. The colony calls this smoothed chorus <b>G</b>.</p>
     <p>If every bird sits on the middle wire, G stays inside a thin band, about √x wide, forever. Kito listened all the way out to 200,000. It stayed inside.</p>
-    <p class="inmath"><b class="lbl">In the math</b>G(x) is a smoothed prime count, Σ Λ(n)(x/n − 1), minus its expected trend. The plot shows G(x)/√x.</p>
+    <p class="inmath"><b class="lbl">In the math</b>Raw chorus: ψ(x) − x, which jumps by ln p at each prime power p<sup>k</sup>. Smoothed: G(x) = Σ Λ(n)(x/n − 1) minus its expected trend; twig n's term is 0 at x = n and grows in a straight line. Smoothing softens the volume, not the birds: the same zeros decide G. The plot shows G(x)/√x.</p>
     <div class="tags"><span class="tag real">real data</span></div>
   </div>
 </section>
@@ -154,7 +155,7 @@
 <section class="slide" data-scene="w-ceiling" data-tone="red" data-title="A volume limit is enough">
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
-    <p>“First, a trap,” said Grey, “for birds you can't see. We can't search an endless wire bird by bird. But a high bird is loud, so we can listen instead.</p>
+    <p>“First, a trap,” said Grey, “for birds you can't see. We can't search an endless wire bird by bird. But a bird perched above the middle wire sings too loud, so we can listen instead.</p>
     <p>“If the chorus never rises above about √x, even on one side only, no bird can hide above the middle wire, and so its mirror twin can't hide below.”</p>
     <p>“But how can listening catch anything?” asked Kito. “I'll show you,” said Grey.</p>
     <p class="inmath"><b class="lbl">In the math</b>One-sided bounds are enough: Edmund Landau, 1905.</p>
@@ -164,9 +165,10 @@
 <section class="slide" data-scene="w-echo" data-tone="red" data-title="Echoes tell how near">
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
-    <p>Grey led Kito to the first landmark, the echo cave. “Call into the dark,” said Grey, “and listen.” A distant bird's echo comes back faint. A near one's comes back stronger with every call, and the nearer the bird, the faster it grows.</p>
-    <p>A bird above the middle wire would be close enough to make the echoes grow without end.</p>
-    <p class="inmath"><b class="lbl">In the math</b>The echoes are the <b>Taylor coefficients</b> of a function built from the chorus. A pole at distance r makes them grow like <span class="m">(1/r)<sup>k</sup></span>.</p>
+    <p>Grey led Kito to the first landmark, a deep shaft with the wires strung straight across it. “Stand at the top,” said Grey, “and call down.”</p>
+    <p>Whoever is in the shaft sends an echo back. The nearer the bird, the faster its echoes grow, call after call.</p>
+    <p>So in the shaft, nearness is height. A bird perched above the middle wire is nearer to Kito than any bird on it, and its echoes outgrow the middle wire's pace.</p>
+    <p class="inmath"><b class="lbl">In the math</b>The echoes are the <b>Taylor coefficients</b> of a function built from the chorus, taken at a point right of the wires. A singularity at distance d makes them grow like <span class="m">(1/d)<sup>k</sup></span>. The picture draws that distance as height; in the proof, positivity (Landau's theorem) does that job.</p>
     <div class="tags"><span class="tag schem">schematic</span></div>
   </div>
 </section>
@@ -174,8 +176,9 @@
 <section class="slide" data-scene="w-trap" data-tone="red" data-title="The trap snaps shut">
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
-    <p>Then Grey sprang the trap. Echoes that grow without end need a chorus that grows without end. But the chorus has a volume limit. Both can't be true, so no bird sits up there.</p>
-    <p>“That's all?” said Kito. “That's all,” said Grey, “as long as we can prove the limit.”</p>
+    <p>Then Grey sprang the trap. “Remember the ceiling,” said Grey. “A chorus that never gets louder than about √x can only send back echoes at the middle wire's pace. That is its volume limit.”</p>
+    <p>A bird perched above the middle wire would be too near. Its echoes would grow too fast and crack the limit. Both can't be true, so no bird sits up there.</p>
+    <p>“That's all?” said Kito. “That's all,” said Grey, “as long as we can prove the ceiling.”</p>
     <p class="inmath"><b class="lbl">In the math</b>Landau's argument: a zero with Re s &gt; ½ forces a growth that the one-sided bound forbids.</p>
     <p class="try">Drag the bird down to the middle wire.</p>
     <div class="tags"><span class="tag schem">schematic</span></div>
@@ -186,7 +189,7 @@
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
     <p>There was a catch. The weavers can't listen every night. Their method works only on certain stretches of nights, each much longer than the one before, with another always further on. Kito's heart sank.</p>
-    <p>“We don't need every night,” said Grey gently. “A high bird is loud everywhere. One dawn far enough out will catch it.” So the task was set: on those dawns, keep the chorus no louder than about √x.</p>
+    <p>“We don't need every night,” said Grey gently. “A bird perched above the middle wire is too loud everywhere. One dawn far enough out will catch it.” So the task was set: on those dawns, keep the chorus no louder than about √x.</p>
     <p>That night Kito knotted the first strands of a practice nest to a branch. Everything else would hang from the trap.</p>
     <p class="inmath"><b class="lbl">In the math</b>Windows from Y to <span class="m">Y<sup>3/2</sup></span>, reaching to infinity, suffice. The bound needed is <span class="m">x<sup>½+ε</sup></span>. To get it, the proof ties a bundle, weighs it two ways, and weaves a lattice to settle the difference.</p>
   </div>

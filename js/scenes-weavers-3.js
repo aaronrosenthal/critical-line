@@ -1027,7 +1027,7 @@
       },
     }));
 
-    // ---------------------------------------------------------------- 15: a ceiling on one side only; a high bird's voice would crack it
+    // ---------------------------------------------------------------- 15: a ceiling on one side only; a bird above the middle wire would crack it
     S("w-ceiling", ({ reduced }) => ({
       draw(K, t) {
         const { col } = K, g = K.g, W = psiA(), A = K.axes([200, 100, 740, 400], [0, 100000], [-600, 900]), top = 60;
@@ -1136,12 +1136,12 @@
           caveRock(K, 0, 228, 140, gy, 30, 200, 300);
           K.seg(0, gy, 228, gy, { color: col.axis, width: 2, sketch: false });
           bird(K, 90, gy, 1.25, { color: GREY }); bird(K, 160, gy, 1.0);
-          // a high bird far out, caught at dawn 3
+          // a bird above the middle wire, far out, caught at dawn 3
           const hb = reduced ? 1 : K.ease(K.ph(t, 3.6, 4.6));
           if (hb > 0) { bird(K, 850, gy, 1.0, { color: "#e98b5d", sing: reduced ? 0.4 : t * 0.5, alpha: hb }); }
           K.text("each listening stretch runs from Y to Y^{1.5}", 230, 510, { size: 16, color: col.ink });
           K.text("time, on a log scale →", sx1, 510, { size: 14, align: "right", color: col.muted });
-          if (hb >= 1) K.text("a high bird is loud at every scale: some dawn catches it", 590, 580, { size: 20, bold: true, align: "center", color: col.red });
+          if (hb >= 1) K.text("a bird above the middle wire is loud everywhere: some dawn catches it", 590, 580, { size: 20, bold: true, align: "center", color: col.red });
           return !reduced && t < 4.8;
         },
       };
@@ -1955,6 +1955,278 @@
     },
   }));
 
+  // ================================================================== 2026-11-22 redraws: pages 11–15 (map, hum, ceiling, shaft, trap)
+  {
+    const ROCK = "#8f7a52", DARK = "#2b2620", PALE = "#e8dcc0", ECHO = "#ff8a7a";
+    let sdR = 5; const rr = () => (sdR = (sdR * 16807) % 2147483647) / 2147483647;
+    // a crack in rock, starting at (px, py) and running up toward topY; size 0..1
+    function crack(K, px, py, topY, size, seed, burstOnly) {
+      const g = K.g; let s = seed * 7919 + 13; const r = () => (s = (s * 16807) % 2147483647) / 2147483647;
+      const len = Math.min(Math.max(14, py - topY), 22 + 34 * size), pts = [[px, py]];
+      for (let i = 1; i <= 5; i++) pts.push([px + (r() - 0.5) * 12, py - (len * i) / 5]);
+      const br = [];
+      for (let b = 0; b < 2; b++) { const j = 1 + Math.floor(r() * 3), [bx, by] = pts[j], d = b ? 1 : -1, bl = 8 + 12 * size;
+        br.push([[bx, by], [bx + d * bl * 0.6, by - bl * 0.4], [bx + d * bl, by - bl * 0.9]]); }
+      if (!burstOnly) { g.save(); g.lineJoin = "round"; g.lineCap = "round";
+      const path = (p) => { g.beginPath(); p.forEach(([x, y], i) => (i ? g.lineTo(x, y) : g.moveTo(x, y))); g.stroke(); };
+      g.strokeStyle = DARK; g.globalAlpha = 0.9; g.lineWidth = 3 + 3 * size; path(pts); g.lineWidth = 2 + 1.5 * size; br.forEach(path);
+      g.strokeStyle = "#e6d3a8"; g.globalAlpha = 0.5; g.lineWidth = 1; path(pts.map(([x, y]) => [x + 1.5, y]));
+      g.restore(); }
+      // a little burst where it hit, and chips falling away
+      g.save(); g.strokeStyle = K.col.red; g.lineWidth = 2; g.globalAlpha = 0.9;
+      for (let k = 0; k < 6; k++) { const a = Math.PI + (k / 5) * Math.PI; g.beginPath(); g.moveTo(px + Math.cos(a) * 6, py + Math.sin(a) * 6); g.lineTo(px + Math.cos(a) * (12 + 6 * size), py + Math.sin(a) * (12 + 6 * size)); g.stroke(); }
+      g.restore();
+      if (burstOnly) return;
+      g.save(); g.fillStyle = ROCK; g.strokeStyle = DARK; g.lineWidth = 1;
+      for (let k = 0; k < 2; k++) { const cx = px + (r() - 0.5) * 26, cy = py + 10 + r() * 22, q = 3 + r() * 3;
+        g.beginPath(); g.moveTo(cx, cy - q); g.lineTo(cx + q, cy + q * 0.6); g.lineTo(cx - q, cy + q * 0.8); g.closePath(); g.fill(); g.stroke(); }
+      g.restore();
+    }
+    window.WEAVE.crack = crack;
+
+    // ---------------------------------------------------------------- 11: the map; E and F far off, hazy, up a faint side trail
+    S("w-map", () => {
+      const wp = [[120, 478], [200, 405], [290, 382], [385, 452], [480, 492], [580, 468], [680, 388], [748, 330], [830, 262]], ST = 14, P = smooth(wp, ST), stops = [0, 2, 4, 6, 8].map((i) => i * ST);
+      const side = smooth([[772, 256], [735, 196], [640, 168], [540, 160], [430, 150], [330, 146]], 10);
+      return {
+        draw(K, t) {
+          const { col } = K, g = K.g, n = Math.round(K.ease(K.ph(t, 0.5, 5.5)) * (P.length - 1));
+          K.wash(250, 360, 230, 150, GRASS[0], 0.12, 5); K.wash(700, 400, 240, 150, GRASS[1], 0.12, 9); K.wash(840, 170, 150, 110, col.gold, 0.1, 2);
+          // far off: low hills on the horizon, with E and F small among them
+          g.save(); { const hg = g.createLinearGradient(0, 120, 0, 182); hg.addColorStop(0, "rgba(140,130,110,0.22)"); hg.addColorStop(1, "rgba(140,130,110,0)"); g.fillStyle = hg; } g.beginPath(); g.moveTo(150, 182);
+          for (let x = 150; x <= 700; x += 10) g.lineTo(x, 182 - Math.sin((Math.PI * (x - 150)) / 550) * (32 + 26 * Math.sin((x - 150) / 70) ** 2 + 12 * Math.sin((x - 150) / 31) ** 2));
+          g.lineTo(700, 182); g.closePath(); g.fill(); g.restore();
+          g.save(); g.translate(330, 146); g.scale(0.55, 0.55); weather(K, 0, 0); g.restore();
+          g.save(); g.translate(500, 152); g.scale(0.55, 0.55); gate(K, 0, 0, t); g.restore();
+          // haze over the far country
+          { const m = /^#([0-9a-f]{6})$/i.exec(K.surface || ""), v = m ? parseInt(m[1], 16) : 0xf6efe0, rgb = `${v >> 16},${(v >> 8) & 255},${v & 255}`;
+            g.save(); g.translate(420, 140); g.scale(1, 0.3); const hz = g.createRadialGradient(0, 0, 0, 0, 0, 300);
+            hz.addColorStop(0, `rgba(${rgb},0.5)`); hz.addColorStop(0.7, `rgba(${rgb},0.42)`); hz.addColorStop(1, `rgba(${rgb},0)`);
+            g.fillStyle = hz; g.fillRect(-300, -300, 600, 600); g.restore(); }
+          K.text("F · the weather", 330, 168, { size: 15, bold: true, align: "center", color: col.muted });
+          K.text("E · the Far Ones' gate", 500, 172, { size: 15, bold: true, align: "center", color: col.muted });
+          K.text("far off the road, visited later", 420, 200, { size: 15, align: "center", color: col.muted });
+          // the faint side trail toward them
+          g.save(); g.globalAlpha = 0.45; K.line(side, { color: col.muted, width: 2, dash: [2, 8], sketch: false }); g.restore();
+          // landmarks
+          wire(K, 40, 200, 470, { color: col.gold, width: 4, up: 26, down: 12 });
+          [70, 118, 164].forEach((bx, i) => bird(K, bx, 470, 0.7, { flip: i === 1 }));
+          K.text("the goal:\nthe middle wire", 120, 520, { size: 19, bold: true, align: "center", color: col.gold });
+          cave(K, 290, 382); K.text("A · the echo shaft", 290, 250, { size: 19, bold: true, align: "center" }); K.text("(the trap)", 290, 274, { size: 17, align: "center", color: col.muted });
+          [440, 476, 512, 548].forEach((px, i) => pile(K, px, 490, 34, 8, 4 + i)); K.text("B · four twig piles", 495, 542, { size: 19, bold: true, align: "center" });
+          miniScale(K, 680, 292); K.text("D · the balance", 680, 244, { size: 19, bold: true, align: "center" });
+          loom(K, 830, 262); K.text("C · the loom, many passes", 830, 100, { size: 19, bold: true, align: "center" });
+          const walked = P.slice(0, n + 1);
+          if (walked.length > 1) K.line(walked, { color: col.ink, width: 3, dash: [3, 9], sketch: false });
+          stops.forEach((s, i) => { if (i === 0) return; if (n >= s) { const [x, y] = P[s]; K.dot(x, y, 14, col.green); K.text(String(i), x, y + 1, { size: 17, bold: true, align: "center", color: K.surface }); } });
+          const h = P[n], h2 = P[Math.max(0, n - 4)];
+          bird(K, h[0], h[1] - 16, 0.7, { flip: h[0] < h2[0] });
+          K.serif("walk it backwards: 1 → 2 → 3 → 4", 640, 600, { size: 24, color: col.green, align: "center" });
+          return t < 6.2;
+        },
+      };
+    });
+
+    // ---------------------------------------------------------------- 12: claps versus hums; then the hum, far out, inside its band
+    const LAM = (() => { const N = 40, a = new Array(N + 1).fill(0), pr = new Array(N + 1).fill(0);
+      for (let p = 2; p <= N; p++) { let ok = true; for (let d = 2; d * d <= p; d++) if (p % d === 0) ok = false; if (ok) for (let q = p; q <= N; q *= p) { a[q] = Math.log(p); pr[q] = p; } } return { a, pr }; })();
+    S("w-gz", ({ reduced }) => ({
+      draw(K, t) {
+        const { col } = K, g = K.g, XM = 30, pal = { 2: col.blue, 3: col.red, 5: col.green, 7: col.purple, 11: BIRD.twig, 13: col.gold };
+        const pc = (p) => pal[p] || [col.muted, BIRD.twig, col.gold][p % 3];
+        const f1 = reduced ? 1 : K.ease(K.ph(t, 0.3, 3.3)), xr = 1 + (XM - 1) * f1;
+        const panel = (x0, x1, y0, y1, ymax, val, title, sub) => {
+          const X = (x) => x0 + ((x - 1) / (XM - 1)) * (x1 - x0), Y = (v) => y1 - (v / ymax) * (y1 - y0);
+          K.seg(x0, y1, x1, y1, { color: col.axis, width: 1.5, sketch: false });
+          // stack each twig's part, oldest at the bottom
+          let below = (x) => 0;
+          for (let nn = 2; nn <= XM; nn++) { if (!LAM.a[nn] || nn > xr) continue; const prev = below, me = nn;
+            const top = (x) => prev(x) + (x >= me ? val(me, x) : 0), xs = []; for (let i = 0; i <= 120; i++) xs.push(1 + ((xr - 1) * i) / 120);
+            g.save(); g.fillStyle = pc(LAM.pr[nn]); g.globalAlpha = 0.75; g.beginPath();
+            xs.forEach((x, i) => (i ? g.lineTo(X(x), Y(top(x))) : g.moveTo(X(x), Y(top(x))))); for (let i = xs.length - 1; i >= 0; i--) g.lineTo(X(xs[i]), Y(prev(xs[i]))); g.closePath(); g.fill(); g.restore();
+            below = top; }
+          const xs = []; for (let i = 0; i <= 300; i++) xs.push(1 + ((xr - 1) * i) / 300);
+          K.line(xs.map((x) => [X(x), Y(below(x))]), { color: col.ink, width: 2, sketch: false });
+          K.text(title, (x0 + x1) / 2, y0 - 30, { size: 19, bold: true, align: "center" });
+          K.text(sub, (x0 + x1) / 2, y0 - 8, { size: 15, align: "center", color: col.muted });
+          K.text("nights →", x1, y1 + 16, { size: 13, align: "right", color: col.muted });
+          return { X, Y };
+        };
+        // left: claps. each twig adds its whole size the moment it arrives
+        const L = panel(70, 440, 92, 250, 32, (n) => LAM.a[n], "the raw chorus: claps", "each twig claps once, the moment it arrives");
+        // right: hums. each twig starts at nothing and swells steadily
+        panel(560, 930, 92, 250, 70, (n, x) => LAM.a[n] * (x / n - 1), "the smoothed chorus G: hums", "each twig starts at nothing and swells");
+        if (f1 > 0.5) { K.text("it jolts", 250, 278, { size: 17, bold: true, align: "center", color: col.red });
+          K.text("nothing jumps", 745, 278, { size: 17, bold: true, align: "center", color: col.green }); }
+        // clap marks at each arrival on the left
+        g.save(); g.strokeStyle = col.red; g.lineWidth = 1.5; g.globalAlpha = 0.8;
+        let acc = 0; for (let nn = 2; nn <= XM && nn <= xr; nn++) { if (!LAM.a[nn]) continue; acc += LAM.a[nn]; const px = L.X(nn), py = L.Y(acc);
+          [-0.9, -0.5, -0.1].forEach((a) => { g.beginPath(); g.moveTo(px + Math.cos(a * Math.PI) * 4, py + Math.sin(a * Math.PI) * 4 - 4); g.lineTo(px + Math.cos(a * Math.PI) * 9, py + Math.sin(a * Math.PI) * 9 - 4); g.stroke(); }); }
+        g.restore();
+        // below: the hum, far out
+        const D = gzData(), BAND = 0.0462, A = K.axes([230, 340, 710, 180], [50, 200000], [-0.1, 0.1], { xlog: true }), xa = A.X(50), xb = A.X(200000);
+        g.save(); g.fillStyle = col.green; g.globalAlpha = 0.13; g.fillRect(xa, A.Y(BAND), xb - xa, A.Y(-BAND) - A.Y(BAND)); g.restore();
+        [BAND, -BAND].forEach((v) => wire(K, xa, xb, A.Y(v), { color: col.gold, width: 3, up: 12, down: 12 }));
+        const f = reduced ? 1 : K.ease(K.ph(t, 3.6, 9.2)), n = Math.max(2, Math.floor(D.xs.length * f));
+        if (f > 0) K.line(D.xs.slice(0, n).map((x, i) => [A.X(x), A.Y(D.ys[i])]), { color: col.blue, width: 2.2 });
+        perch(K, 120, 470); bird(K, 120, 468, 1.15, { color: GREY });
+        const hx = clamp(A.X(D.xs[n - 1]), xa + 20, xb - 6);
+        bird(K, hx, A.Y(BAND) - 1, 0.85, { sing: f > 0 && f < 1 ? t * 0.6 : 0 });
+        K.text("Kito listens to the hum, far out (G, shrunk by √x)", xa, 318, { size: 17, bold: true, color: col.blue });
+        K.text("the thin band: ±0.0462", xb, 318, { size: 15, bold: true, align: "right", color: col.green });
+        [100, 1000, 10000, 100000].forEach((v) => K.text(v.toLocaleString("en-US"), A.X(v), 542, { size: 14, align: "center", color: col.muted }));
+        K.text("how far out: x (log scale)", xb, 564, { size: 14, align: "right", color: col.muted });
+        if (f >= 1) K.text("out to 200,000, and still inside the band", 585, 604, { size: 20, bold: true, align: "center", color: col.green });
+        return !reduced && t < 9.4;
+      },
+    }));
+
+    // ---------------------------------------------------------------- 13: a ceiling on one side only; a bird above the middle wire would crack it
+    let PSIA = null;
+    const psiA = () => {
+      if (PSIA) return PSIA;
+      const N = 100000, lam = new Float64Array(N + 1), comp = new Uint8Array(N + 1);
+      for (let p = 2; p <= N; p++) if (!comp[p]) { for (let q = p * p; q <= N; q += p) comp[q] = 1; for (let pk = p; pk <= N; pk *= p) lam[pk] = Math.log(p); }
+      const xs = [], lo = [], hi = []; let psi = 0;
+      for (let n = 1; n <= N; n++) { psi += lam[n]; const e = psi - n; if (n % 100 === 1) { xs.push(n); lo.push(e); hi.push(e); } else { lo[lo.length - 1] = Math.min(lo[lo.length - 1], e); hi[hi.length - 1] = Math.max(hi[hi.length - 1], e); } }
+      return (PSIA = { xs, lo, hi });
+    };
+    S("w-ceiling", ({ reduced }) => ({
+      draw(K, t) {
+        const { col } = K, g = K.g, W = psiA(), A = K.axes([200, 100, 740, 430], [0, 100000], [-700, 900]), top = 60;
+        const ceil = (x) => 1.4 * Math.sqrt(x), c = reduced ? 1 : K.ease(K.ph(t, 0.4, 2.2)), xr = 100000 * c + 1;
+        g.save(); g.fillStyle = ROCK; g.globalAlpha = 0.55; g.beginPath(); g.moveTo(A.X(0), top);
+        for (let k = 0; k <= 120; k++) { const x = (k / 120) * xr; g.lineTo(A.X(x), A.Y(ceil(x))); }
+        for (let k = 40; k >= 0; k--) { const px = A.X(0) + ((A.X(xr) - A.X(0)) * k) / 40; g.lineTo(px, top + 6 * Math.sin(k * 1.7) + 4 * Math.sin(k * 0.6)); } g.closePath(); g.fill(); g.restore();
+        g.save(); g.fillStyle = ROCK; g.globalAlpha = 0.55; g.beginPath(); g.moveTo(150, top); g.lineTo(A.X(0), top); g.lineTo(A.X(0), A.Y(0)); g.lineTo(150, A.Y(0) + 30); g.closePath(); g.fill(); g.restore();
+        // a few old seams in the rock, for texture
+        g.save(); g.strokeStyle = DARK; g.globalAlpha = 0.18; g.lineWidth = 1.2; sdR = 5;
+        for (let k = 0; k < 14; k++) { const x = rr() * 100000 * c, y0 = A.Y(ceil(x)) - 8 - rr() * 30; if (y0 < top + 14) continue; const px = A.X(x);
+          g.beginPath(); g.moveTo(px - 10, y0); g.lineTo(px + 6, y0 - 3); g.lineTo(px + 16, y0 + 1); g.stroke(); }
+        g.restore();
+        K.seg(A.X(0), A.Y(0), A.X(100000), A.Y(0), { color: col.axis, width: 1, dash: [3, 6], sketch: false });
+        g.save(); g.strokeStyle = col.blue; g.lineWidth = 2;
+        for (let i = 0; i < W.xs.length; i++) { g.beginPath(); g.moveTo(A.X(W.xs[i]), A.Y(W.lo[i])); g.lineTo(A.X(W.xs[i]), A.Y(W.hi[i])); g.stroke(); }
+        g.restore();
+        A.curve(ceil, 1, xr, 200, { color: col.gold, width: 3.5, sketch: false });
+        if (c >= 1) K.text("a rock ceiling, about √x high, on one side only", A.X(0) + 14, top + 30, { size: 16, bold: true, color: col.ink });
+        // a bird above the middle wire: its voice swings past the ceiling and cracks the rock
+        const r = reduced ? 1 : K.ease(K.ph(t, 2.6, 5.6)), red = (x) => 0.75 * Math.pow(x, 0.58) * Math.cos(14.13 * Math.log(x)), xe = 1 + 99999 * r;
+        if (r > 0) {
+          const peaks = []; for (let i = 1; i < 2000; i++) { const x0 = 1 + 50 * (i - 1), x1 = 1 + 50 * i, x2 = 1 + 50 * (i + 1); if (x1 > xe) break;
+            const y1 = red(x1); if (y1 > ceil(x1) && y1 >= red(x0) && y1 >= red(x2)) peaks.push([x1, y1]); }
+          let lastX = -99; peaks.forEach(([x, y], j) => { if (x < 8000 || A.X(x) - lastX < 30) return; lastX = A.X(x); crack(K, A.X(x), A.Y(y), top + 6, clamp((y - ceil(x)) / ceil(x), 0, 1), j + 3); });
+          A.clip(() => A.curve(red, 1, xe, 1400, { color: col.red, width: 2.4, sketch: false, alpha: 0.9 }));
+        }
+        K.seg(20, 500, 190, 500, { color: col.axis, width: 2, sketch: false });
+        bird(K, 70, 500, 1.25, { color: GREY }); bird(K, 140, 500, 1.0);
+        K.text("?", 152, 440, { size: 26, bold: true, align: "center", color: col.gold });
+        [[0, "0"], [50000, "50k"], [100000, "100k"]].forEach(([v, l]) => K.text(l, A.X(v), A.Y(-700) + 20, { size: 14, align: "center", color: col.muted }));
+        K.text("x →", A.X(100000) + 8, A.Y(0), { size: 14, color: col.muted });
+        K.text("blue: the real chorus   red: with a bird above the middle wire", A.X(50000), A.Y(-700) + 46, { size: 15, align: "center", bold: true, color: col.muted });
+        if (r >= 1) K.text("a bird above the middle wire would crack the ceiling", 570, 600, { size: 20, bold: true, align: "center", color: col.red });
+        return !reduced && t < 5.8;
+      },
+    }));
+
+    // ---------------------------------------------------------------- 14–15: the echo shaft. Kito calls down from the top; the wires cross it.
+    const S0 = 1.25, SY = (s) => 100 + (S0 - s) * 384, SX0 = 150, SX1 = 390, BX = 305;
+    function shaft(K, beta, t, still) {
+      const { col } = K, g = K.g;
+      // rock on both sides, the dark shaft between
+      g.save(); g.fillStyle = ROCK; g.globalAlpha = 0.55; g.fillRect(30, 100, SX0 - 30, 520); g.fillRect(SX1, 100, 80, 520); g.restore();
+      const dk = g.createLinearGradient(0, 100, 0, 620); dk.addColorStop(0, "rgba(43,38,32,0.82)"); dk.addColorStop(1, "rgba(43,38,32,0.98)");
+      g.save(); g.fillStyle = dk; g.fillRect(SX0, 100, SX1 - SX0, 520); g.restore();
+      g.save(); g.strokeStyle = col.ink; g.globalAlpha = 0.5; g.lineWidth = 2; g.beginPath(); g.moveTo(SX0, 100); g.lineTo(SX0, 620); g.moveTo(SX1, 100); g.lineTo(SX1, 620); g.stroke(); g.restore();
+      K.seg(20, 100, SX0, 100, { color: GRASS[2], width: 4, sketch: false }); K.seg(SX1, 100, 480, 100, { color: GRASS[2], width: 4, sketch: false });
+      // the wires, straight across
+      [[1, "1"], [0.5, "½"], [0, "0"]].forEach(([s, l]) => { const y = SY(s), mid = s === 0.5;
+        K.seg(SX0 - 8, y, SX1 + 8, y, { color: mid ? col.gold : "#b7ab95", width: mid ? 3.5 : 2, sketch: false });
+        K.text(l, SX0 - 16, y, { size: 18, bold: true, align: "right", color: mid ? col.gold : PALE, halo: true }); });
+      K.text("middle wire", SX0 - 16, SY(0.5) + 22, { size: 13, bold: true, align: "right", color: col.gold, halo: true });
+      // Kito on a twig across the top, calling down; Grey on the rim
+      K.seg(SX0 - 10, 100, SX1 + 10, 98, { color: BIRD.twig, width: 6 });
+      bird(K, 64, 100, 1.1, { color: GREY });
+      bird(K, 235, 98, 1.15, { sing: still ? 0.5 : t });
+      // the bird in the shaft
+      const by = SY(beta);
+      if (Math.abs(beta - 0.5) > 0.01 && Math.abs(beta - 1) > 0.01) perch(K, BX, by);
+      bird(K, BX, by, 0.95, { flip: true, color: beta > 0.51 ? "#e98b5d" : undefined });
+      // calls going down (gold), echoes coming up (red)
+      g.save(); g.lineWidth = 2;
+      for (let k = 0; k < 3; k++) { const p = still ? (k + 1) / 4 : ((t * 0.7 + k / 3) % 1), dy = by - 100;
+        g.strokeStyle = col.gold; g.globalAlpha = 0.7 * (1 - p); g.beginPath(); g.arc(250, 110, 14 + p * (dy - 30), Math.PI * 0.3, Math.PI * 0.7); g.stroke();
+        g.strokeStyle = ECHO; g.globalAlpha = 0.8 * (1 - p); g.beginPath(); g.arc(BX, by - 26, 10 + p * (dy - 40), -Math.PI * 0.72, -Math.PI * 0.4); g.stroke(); }
+      g.restore();
+      // how near: Kito to the bird
+      const ax = 180; K.seg(ax, 122, ax, by - 6, { color: ECHO, width: 2, sketch: false });
+      K.line([[ax - 6, by - 14], [ax, by - 4], [ax + 6, by - 14]], { color: ECHO, width: 2, sketch: false });
+      K.text(`how near: ${(S0 - beta).toFixed(2)}`, ax + 8, Math.max(140, (122 + by) / 2), { size: 15, bold: true, color: ECHO, halo: false });
+    }
+    const echoes = (beta, kmax) => { const out = []; for (let k = 1; k <= kmax; k++) out.push(7 * Math.pow(1 / (S0 - beta), k)); return out; };
+    const pace = (k) => 7 * Math.pow(1 / (S0 - 0.5), k);
+    const EX = (k) => 520 + k * 36, FLOOR = 540, CAP = 390;
+    const shaftDrag = (st) => ({
+      hit: (x, y) => Math.abs(x - BX) < 60 && y > SY(1.02) && y < SY(0.4),
+      press(x, y) { if (Math.abs(x - BX) >= 60 || y <= SY(1.02) || y >= SY(0.4)) return false; st.touched = true; st.beta = clamp(S0 - (y - 100) / 384, 0.5, 0.97); if (st.beta < 0.53) st.beta = 0.5; return true; },
+      drag(x, y) { st.beta = clamp(S0 - (y - 100) / 384, 0.5, 0.97); if (st.beta < 0.53) st.beta = 0.5; },
+    });
+
+    S("w-echo", ({ reduced }) => {
+      const st = { beta: 0.7, touched: false };
+      return {
+        ...shaftDrag(st),
+        draw(K, t) {
+          const { col } = K, g = K.g;
+          if (!st.touched && !reduced) { const c = (t % 10) / 10, u = c < 0.3 ? 0 : c < 0.45 ? K.ease((c - 0.3) / 0.15) : c < 0.8 ? 1 : 1 - K.ease((c - 0.8) / 0.15); st.beta = 0.5 + 0.2 * clamp(u, 0, 1); }
+          const beta = st.beta;
+          shaft(K, beta, t, reduced);
+          K.text("the echo shaft", 270, 40, { size: 20, bold: true, align: "center" });
+          // echo after echo
+          K.seg(EX(0) + 10, FLOOR, EX(11) + 20, FLOOR, { color: col.axis, width: 2, sketch: false });
+          echoes(beta, 11).forEach((v, i) => { const k = i + 1, h = Math.min(v, CAP); K.box(EX(k) - 12, FLOOR - h, 24, h, { color: null, fill: beta > 0.51 ? ECHO : col.blue, fillAlpha: 0.85, r: 3 });
+            if (v > CAP) K.text("↑", EX(k), FLOOR - CAP - 14, { size: 16, bold: true, align: "center", color: col.red }); });
+          K.line(Array.from({ length: 11 }, (_, i) => [EX(i + 1), FLOOR - pace(i + 1)]), { color: col.gold, width: 2.5, dash: [6, 5], sketch: false });
+          K.text("gold: the pace of a bird on the middle wire", 740, 112, { size: 15, bold: true, align: "center", color: col.gold });
+          K.text("echo after echo →", EX(11) + 20, FLOOR + 22, { size: 15, align: "right", color: col.muted });
+          const up = beta > 0.51;
+          K.text(up ? "above the middle wire = nearer to Kito" : "on the middle wire", 740, 584, { size: 19, bold: true, align: "center", color: up ? col.red : col.ink });
+          K.text(up ? "so its echoes outgrow the middle wire's pace" : "its echoes keep the middle wire's pace", 740, 610, { size: 17, align: "center", color: up ? col.red : col.muted });
+          return !reduced;
+        },
+      };
+    });
+
+    S("w-trap", ({ reduced }) => {
+      const st = { beta: 0.75, touched: false };
+      return {
+        ...shaftDrag(st),
+        draw(K, t) {
+          const { col } = K, g = K.g, T = st.touched || reduced ? 99 : t, beta = st.beta;
+          shaft(K, beta, t, reduced);
+          // the volume limit, as a rock ceiling over the echoes, a little above the middle wire's pace
+          const lim = (k) => 2 * pace(k), LY = (k) => FLOOR - Math.min(lim(k), CAP + 30);
+          g.save(); g.fillStyle = ROCK; g.globalAlpha = 0.55; g.beginPath(); g.moveTo(EX(0.4), 110);
+          for (let i = 0; i <= 60; i++) { const k = 0.4 + (i / 60) * 11.2; g.lineTo(EX(k), LY(k)); } g.lineTo(EX(11.6), 110); g.closePath(); g.fill(); g.restore();
+          A_line(K, (k) => [EX(k), LY(k)], col.green);
+          K.text("the volume limit", EX(1), 128, { size: 16, bold: true, color: col.green, halo: true });
+          K.seg(EX(0) + 10, FLOOR, EX(11.6), FLOOR, { color: col.axis, width: 2, sketch: false });
+          const kmax = Math.floor(clamp(T / 0.45, 1, 11)), ev = echoes(beta, kmax); let broke = false, nCr = 0;
+          ev.forEach((v, i) => { const k = i + 1, over = v > lim(k), h = Math.min(v, CAP); broke = broke || over;
+            K.box(EX(k) - 12, FLOOR - h, 24, h, { color: null, fill: over ? col.red : col.blue, fillAlpha: 0.88, r: 3 });
+            if (over) { crack(K, EX(k), LY(k), 112, clamp((v - lim(k)) / lim(k), 0, 1), k, nCr > 0 && nCr % 3 !== 0); nCr++; }
+            if (v > CAP) K.text("↑", EX(k), FLOOR - CAP - 14, { size: 16, bold: true, align: "center", color: col.red }); });
+          K.text("echo after echo →", EX(11.6), FLOOR + 22, { size: 15, align: "right", color: col.muted });
+          K.text("drag the bird", BX, SY(0.5) + 44, { size: 14, align: "center", color: PALE });
+          if (kmax >= 11 || st.touched || reduced) {
+            K.text(broke ? "the echoes crack the limit: impossible," : "the echoes stay under the limit:", 740, 584, { size: 19, bold: true, align: "center", color: broke ? col.red : col.green });
+            K.text(broke ? "so no bird sits up there" : "no contradiction", 740, 610, { size: 19, bold: true, align: "center", color: broke ? col.red : col.green }); }
+          return !reduced;
+        },
+      };
+    });
+    function A_line(K, fn, color) { const pts = []; for (let i = 0; i <= 60; i++) pts.push(fn(0.4 + (i / 60) * 11.2)); K.line(pts, { color, width: 4, sketch: false }); }
+  }
   // ================================================================== "w-threads": Kito pulls the "fewer passes" thread; a fence caps the passes
   {
     const NICE = [[1 / 4, "1/4"], [1 / 3, "1/3"], [1 / 2, "1/2"], [2 / 3, "2/3"], [3 / 4, "3/4"], [1, "1"]];
