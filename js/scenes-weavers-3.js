@@ -2031,4 +2031,120 @@
       };
     });
   }
+  // ================================================================== the nest thread: the strange finished nest, and Kito's practice nest built stage by stage
+  {
+    const { nest } = window.WEAVE;
+    const NG = ["#9aa64e", "#b9c26c", "#7d8a3a", "#cfd58e", "#6a7630", "#a9a35a"];
+    const V = 0.64, HW = (w, v) => v < V ? (w / 2) * Math.pow(1 - Math.pow((V - v) / V, 1.35), 0.75) : (w / 2) * Math.sqrt(Math.max(0, 1 - Math.pow((v - V) / (1 - V), 2)));
+    const rng = (seed) => { let s = seed % 2147483646 + 1; return () => (s = (s * 16807) % 2147483647) / 2147483647; };
+    function blade(g, x0, y0, x1, y1, c, w, a) { g.strokeStyle = c; g.lineWidth = w; g.globalAlpha = a; g.beginPath(); g.moveTo(x0, y0); g.quadraticCurveTo((x0 + x1) / 2 + (y1 - y0) * 0.15, (y0 + y1) / 2, x1, y1); g.stroke(); }
+    // a ragged, abandoned attempt
+    function tornNest(K, cx, top, w, h, seed) {
+      const g = K.g, r = rng(seed); g.save(); g.lineCap = "round";
+      for (let k = 0; k < 70; k++) { const v = 0.05 + r() * 0.6, side = r() < 0.5 ? -1 : 1, x = cx + side * HW(w, v) * (0.6 + r() * 0.4), y = top + v * h;
+        blade(g, x, y, x + (r() - 0.5) * 22, y + 6 + r() * 26, ["#a89a6a", "#b8a878", "#8f8456"][k % 3], 1.2, 0.75); }
+      for (let k = 0; k < 10; k++) { const x = cx + (r() - 0.5) * w * 0.7, y = top + h * (0.35 + r() * 0.3); blade(g, x, y, x + (r() - 0.5) * 10, y + 30 + r() * 50, "#a89a6a", 1, 0.6); }
+      g.globalAlpha = 0.7; g.strokeStyle = "#8f8456"; g.lineWidth = 2; g.beginPath(); g.ellipse(cx, top + h * 0.38, w * 0.3, h * 0.3, 0, Math.PI * (0.9 + r() * 0.3), Math.PI * (2.1 + r() * 0.2)); g.stroke();
+      g.restore();
+    }
+    // Kito's practice nest, built in stages: 1 knot to the branch, 2 the ring, 3 the roof, 4 one thin wall, 5 thick walls, 6 the doorway
+    const PART = ["", "the knot to the branch", "the standing ring", "the roof", "one thin wall", "the walls, √x layers deep", "the doorway, weatherproofed"];
+    function practiceNest(K, cx, top, s, stage, o = {}) {
+      const g = K.g, w = 84 * s, h = 130 * s, r = rng(Math.round(cx * 3 + top)), glow = o.glow ?? 0, GOLD = "#e0b23a";
+      const hi = (k) => k === stage && glow > 0;
+      // the branch
+      g.save(); g.strokeStyle = "#8b5e34"; g.lineWidth = 6 * s; g.lineCap = "round"; g.beginPath(); g.moveTo(cx - 62 * s, top - 4 * s); g.lineTo(cx + 62 * s, top + 2 * s); g.stroke(); g.restore();
+      if (stage >= 5) { nest(K, cx, top, w, h); }
+      else {
+        g.save(); g.lineCap = "round";
+        if (stage >= 4) { const n = 90; for (let k = 0; k < n; k++) { const v = 0.08 + (k / n) * 0.88, hw = HW(w, v), y = top + v * h;
+          blade(g, cx - hw, y, cx + hw, y + (r() - 0.5) * 8, hi(4) ? GOLD : NG[k % 6], 1.1, hi(4) ? 0.55 + 0.4 * glow : 0.6); } }
+        if (stage >= 3) { for (let k = 0; k < 60; k++) { const v = 0.04 + (k / 60) * 0.42, hw = HW(w, v), y = top + v * h;
+          blade(g, cx - hw * 0.9, y, cx + hw * 0.9, y + 2, hi(3) ? GOLD : NG[k % 6], 1.6, hi(3) ? 0.6 + 0.4 * glow : 0.85); } }
+        if (stage >= 2) { g.globalAlpha = 1; g.strokeStyle = hi(2) ? GOLD : "#7d8a3a"; g.lineWidth = 5 * s; g.beginPath(); g.ellipse(cx, top + 0.42 * h, 0.33 * w, 0.3 * h, 0, 0, Math.PI * 2); g.stroke();
+          for (let k = 0; k < 30; k++) { const a = (k / 30) * Math.PI * 2; blade(g, cx + 0.33 * w * Math.cos(a), top + 0.42 * h + 0.3 * h * Math.sin(a), cx + 0.36 * w * Math.cos(a + 0.3), top + 0.42 * h + 0.33 * h * Math.sin(a + 0.3), NG[k % 6], 1.4, 0.9); } }
+        if (stage >= 1) { for (let k = 0; k < 12; k++) { const x = cx + (k - 5.5) * 3 * s; blade(g, x, top - 8 * s, x + 2, top + (stage >= 2 ? 0.12 * h : 0.3 * h + (k % 3) * 8), hi(1) ? GOLD : NG[k % 6], 1.8, 1); }
+          g.globalAlpha = 1; g.fillStyle = hi(1) ? GOLD : "#6a7630"; g.beginPath(); g.ellipse(cx, top, 9 * s, 6 * s, 0, 0, Math.PI * 2); g.fill(); }
+        g.restore();
+      }
+      if (stage >= 6) { // the entrance tube, hanging from the doorway
+        const dx = cx + 0.07 * w, dy = top + 0.7 * h; g.save(); g.lineCap = "round";
+        for (let k = 0; k < 22; k++) { const f = k / 21, x = dx - 0.2 * w + f * 0.4 * w; blade(g, x, dy, x + (r() - 0.5) * 4, dy + 0.45 * h, hi(6) ? GOLD : NG[k % 6], 1.6, hi(6) ? 0.6 + 0.4 * glow : 0.95); }
+        g.restore(); }
+      if (stage >= 5 && hi(5)) { g.save(); g.strokeStyle = GOLD; g.globalAlpha = 0.5 * glow; g.lineWidth = 4; g.beginPath(); g.ellipse(cx, top + 0.55 * h, 0.58 * w, 0.55 * h, 0, 0, Math.PI * 2); g.stroke(); g.restore(); }
+      if (o.label !== false) {
+        const ly = top + h * (stage >= 6 ? 1.5 : 1.08) + 14;
+        K.text("Kito's practice nest", cx, ly, { size: 13, align: "center", color: K.col.muted, halo: true });
+        if (stage >= 1) K.text("+ " + PART[stage], cx, ly + 18, { size: 13, bold: true, align: "center", color: "#b8860b", halo: true });
+      }
+    }
+    window.WEAVE.practiceNest = practiceNest; window.WEAVE.tornNest = tornNest;
+
+    // add the practice nest to the page that closes each stretch of the road
+    const STAGES = { "w-dawns": [1, 90, 500, 0.75], "w-fourier": [2, 880, 120, 0.9], "w-gap": [3, 850, 500, 0.7], "w-scale": [4, 590, 330, 0.7], "w-minimum": [5, 860, 60, 0.85], "w-noise": [6, 620, 40, 0.7] };
+    Object.entries(STAGES).forEach(([name, [stage, x, y, s]]) => {
+      const f = DECK.get(name); if (!f) return;
+      S(name, (ctx) => { const inner = f(ctx) || {};
+        return Object.assign({}, inner, { draw(K, t) { const more = inner.draw ? inner.draw(K, t) : false;
+          const glow = ctx.reduced ? 0.6 : 0.35 + 0.65 * K.ph(t, 0.5, 2.5) * (0.75 + 0.25 * Math.sin(t * 2));
+          practiceNest(K, x, y, s, stage, { glow }); return more === false ? false : more; } }); });
+    });
+
+    // page 12: one morning, a finished nest in the old tree, among the torn attempts; the inspector tugs every knot
+    S("w-files", ({ reduced }) => {
+      const TOT = 175187, NX = 560, NT = 100, NW = 200, NH = 310, PTS = [];
+      for (let row = 0; row < 15; row++) { const v = 0.06 + row * 0.062, hw = HW(NW, v) - 10, y = NT + v * NH, n = Math.max(2, Math.round(hw / 16));
+        const line = []; for (let k = 0; k <= n; k++) line.push([NX - hw + (2 * hw * k) / n, y]); PTS.push(...(row % 2 ? line.reverse() : line)); }
+      return {
+        draw(K, t) {
+          const { col } = K, g = K.g, f = reduced ? 1 : K.ease(K.ph(t, 0.8, 8)), done = Math.floor(f * PTS.length);
+          // the old tree
+          g.save(); g.lineCap = "round"; g.strokeStyle = "#6e4a2a"; g.lineWidth = 26; g.beginPath(); g.moveTo(70, 640); g.quadraticCurveTo(60, 300, 96, 70); g.stroke();
+          g.strokeStyle = "#7a5230"; g.lineWidth = 13; g.beginPath(); g.moveTo(90, 86); g.quadraticCurveTo(500, 60, 975, 92); g.stroke();
+          g.lineWidth = 6; g.beginPath(); g.moveTo(300, 76); g.lineTo(350, 40); g.moveTo(760, 78); g.lineTo(800, 44); g.stroke(); g.restore();
+          [[210, 60, 100, 11], [340, 55, 120, 23], [770, 62, 110, 37], [890, 50, 95, 51]].forEach(([x, w, h, sd]) => tornNest(K, x, 84, w, h, sd));
+          K.text("every weaver who ever tried", 280, 230, { size: 14, align: "center", color: col.muted, halo: true });
+          // the strange finished nest
+          nest(K, NX, NT, NW, NH);
+          PTS.forEach(([x, y], k) => K.dot(x, y, k < done ? 3.6 : 2.8, k < done ? col.green : "#4f5a22", k < done ? 0.95 : 0.7));
+          if (done < PTS.length) { const [x, y] = PTS[done]; bird(K, x, y - 1, 0.5, { color: "#8fb0c9" }); }
+          K.text("the knot inspector", NX - NW / 2 - 14, NT + NH * 0.78, { size: 14, align: "right", color: "#5f87a8", bold: true, halo: true });
+          // Kito and Grey below, looking up
+          K.seg(150, 600, 440, 600, { color: col.axis, width: 2 });
+          bird(K, 230, 598, 1.0); bird(K, 320, 598, 1.15, { color: GREY, flip: true });
+          const n = Math.round(TOT * f);
+          K.box(600, 470, 360, 120, { fill: col.surface, fillAlpha: 0.92, color: col.axis, r: 10, sketch: false });
+          K.text(`${n.toLocaleString("en-US")} of 175,187 knots tugged`, 780, 506, { size: 21, bold: true, align: "center", color: f >= 1 ? col.green : col.ink });
+          K.text(f >= 1 ? "not one slipped" : "tugging every knot", 780, 540, { size: 17, align: "center", color: f >= 1 ? col.green : col.muted });
+          K.text("too big to take in at once", 780, 568, { size: 15, align: "center", color: col.muted });
+          return !reduced && t < 8.2;
+        },
+      };
+    });
+
+    // page 2: torn attempts hang among the colony's nests
+    { const f = DECK.get("w-colony"); if (f) S("w-colony", (ctx) => { const inner = f(ctx) || {};
+      return Object.assign({}, inner, { draw(K, t) { tornNest(K, 390, 128, 60, 100, 7); tornNest(K, 640, 124, 64, 110, 19); return inner.draw ? inner.draw(K, t) : true; } }); }); }
+
+    // page 44: in the round aviary, a nest finished long ago
+    { const f = DECK.get("w-clockcurve"); if (f) S("w-clockcurve", (ctx) => { const inner = f(ctx) || {};
+      return Object.assign({}, inner, { draw(K, t) { const more = inner.draw ? inner.draw(K, t) : false;
+        const g = K.g; g.save(); g.strokeStyle = "#8b5e34"; g.lineWidth = 6; g.lineCap = "round"; g.beginPath(); g.moveTo(40, 20); g.lineTo(150, 24); g.stroke(); g.restore();
+        nest(K, 95, 22, 50, 78); K.text("the aviary's nest,", 132, 64, { size: 13, align: "left", color: K.col.muted }); K.text("finished long ago", 132, 81, { size: 13, align: "left", color: K.col.muted });
+        return more; } }); }); }
+
+    // page 50: both nests hang by the wires; Kito on the middle wire
+    S("w-end", () => ({
+      draw(K, t) {
+        const { col } = K, g = K.g, yAt = window.WEAVE.wires(K, 60, 940, [220, 340, 460]), Z = (window.RH_DATA && RH_DATA.zeros) || [];
+        g.save(); g.strokeStyle = "#8b5e34"; g.lineWidth = 6; g.lineCap = "round"; g.beginPath(); g.moveTo(60, 70); g.lineTo(200, 76); g.moveTo(940, 70); g.lineTo(800, 76); g.stroke(); g.restore();
+        nest(K, 140, 74, 72, 112); practiceNest(K, 862, 74, 0.62, 6, { label: false });
+        K.text("the strange nest", 140, 200, { size: 13, align: "center", color: col.muted, halo: true });
+        K.text("Kito's", 862, 200, { size: 13, align: "center", color: col.muted, halo: true });
+        Z.slice(0, 30).forEach((z, i) => { const x = 90 + (z - 14) * 9.3; if (x < 920) bird(K, x, yAt(1, x), 0.55, { flip: i % 3 === 0, alpha: 0.9 + 0.1 * Math.sin(t + i) }); });
+        const kx = 470; bird(K, kx, yAt(1, kx), 0.9, { sing: t }); K.text("Kito", kx, yAt(1, kx) + 26, { size: 15, bold: true, align: "center", color: col.ink, halo: true });
+        return true;
+      },
+    }));
+  }
 })();
