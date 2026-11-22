@@ -205,11 +205,19 @@
   </div>
 </section>
 
+<section class="slide" data-scene="taylor" data-tone="red" data-title="A storm warning in a list of numbers">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>A smooth function can be rebuilt around a point z from a list of numbers, its <b>Taylor coefficients</b>: <span class="m">f(s) = c₀ + c₁(s − z) + c₂(s − z)² + ⋯</span></p>
+    <p>The list also works like a storm warning. If the function blows up somewhere (a <b>pole</b>, as ζ does at s = 1), the coefficients grow like <span class="m">(1/r)<sup>k</sup></span>, where r is the distance to the pole. The closer the trouble, the faster they grow.</p>
+  </div>
+</section>
+
 <section class="slide" data-scene="trap" data-tone="red" data-title="Landau's trap">
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
-    <p>Why does a ceiling catch zeros? In 1905 Edmund Landau saw that each zero becomes a <b>pole</b> of a Laplace transform.</p>
-    <p>A pole close by forces Taylor coefficients to be big. The ceiling forces them to be small. If the zero is right of the ceiling's line, both can't be true.</p>
+    <p>In 1905 Edmund Landau found a way to turn a ceiling into a trap. Repackage G as a new function (its <b>Laplace transform</b>) whose poles sit exactly at the zeros of ζ. A ceiling of size x<sup>θ</sup> draws a line at real part θ.</p>
+    <p>A zero right of that line is a pole close to the point z, so the Taylor coefficients at z must grow fast (red). But the ceiling keeps them small (green). Both can't be true, so no such zero exists.</p>
     <div class="tags"><span class="tag schem">schematic</span></div>
   </div>
 </section>
@@ -243,17 +251,18 @@
 <section class="slide" data-scene="bins" data-tone="green" data-part="V. Step B: four bins" data-title="A blind spot">
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
-    <p>The proof's machine has a blind spot. It's built from two helper primes, and they give every other prime two labels, each +1 or −1.</p>
-    <p>That sorts the primes into four bins, and the machine can only count <b>one</b> of them.</p>
-    <div class="tags"><span class="tag schem">toy helpers 3 and 7</span></div>
+    <p>The proof's machine has a blind spot. It's built from two helper primes, and they give every other prime two labels, each +1 or −1. That sorts the primes into four bins, and the machine can only count <b>one</b> of them.</p>
+    <p>Why only one? The machine works inside a bigger number system built from the helpers. There, many primes break apart, the way 5 = (2 + i)(2 − i) once you allow i, while 3 stays whole. The machine can only weigh primes that stay whole: those are the <span class="m">χ = −1</span> primes. An averaging step then narrows them to <span class="m">ψ = +1</span>.</p>
+    <div class="tags"><span class="tag schem">toy helpers 3 and 7</span><span class="tag reading">our reading of the source</span></div>
   </div>
 </section>
 
 <section class="slide" data-scene="fourier" data-tone="green" data-title="Getting the rest back">
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
-    <p>Fourier analysis gets the rest back. Four ±1 patterns combine to pick out exactly one bin, like coordinates in a basis.</p>
-    <p>So one bin = ¼ × (all primes + three "helper" sums). The helpers are chosen so their sums are already known to be small. A ceiling on one bin becomes a ceiling on all primes.</p>
+    <p>To get all the primes back, the proof uses the simplest case of <b>Fourier analysis</b>: splitting something into pure patterns, the way an equalizer splits music into bass and treble. Here the patterns are four rows of ±1 signs.</p>
+    <p>Add the rows as shown. Every prime outside the gold bin cancels to 0, and every prime inside counts 4 times. So one bin = ¼ × (all primes + three helper sums).</p>
+    <p>The helpers are hand-picked: most possible helpers are known to behave well, so the proof chooses good ones, whose sums are small. A ceiling on one bin becomes a ceiling on all primes.</p>
   </div>
 </section>
 
@@ -294,17 +303,17 @@
 <section class="slide" data-scene="machine" data-tone="blue" data-part="VII. What one lift does" data-title="A theta lift">
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
-    <p>Where can that measurement be made so that geometry forces an inequality? The proof's answer is a <b>theta lift</b>: a classical machine that carries a highly symmetric function from one group to a partner group.</p>
-    <p>For us, one feature matters. It pairs polynomials of a <b>huge</b> degree a with polynomials of a <b>small</b> degree b.</p>
+    <p>Where does the proof make its two-way count? Inside a classical machine called a <b>theta lift</b>. Think of it as a gearbox that carries a perfectly symmetric object from one world into a partner world.</p>
+    <p>For us, one feature matters. It meshes two polynomials, one of <b>huge</b> degree a and one of <b>small</b> degree b, with a = x · b, like a big gear driving a small one. (A polynomial's degree is its highest power: x³ + 1 has degree 3.)</p>
     <div class="tags"><span class="tag schem">schematic</span></div>
   </div>
 </section>
 
-<section class="slide" data-scene="ring" data-tone="blue" data-title="A ring of slots">
+<section class="slide" data-scene="ring" data-tone="blue" data-title="Seats at a round table">
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
-    <p>The polynomials live in a ring of <b>slots</b>. In its home slot, a polynomial has degree a in its ordinary variables and degree b in a second, mirror-image set.</p>
-    <p>Going around the ring, every other slot swaps the two.</p>
+    <p>Picture the polynomials being passed around a round table. Each one has an <b>ordinary</b> part and a <b>mirror-image</b> part (think of z and its mirror image z̄). Each seat has a big pocket, with room for degree a, and a small pocket, with room for degree b.</p>
+    <p>At the home seat, the ordinary part goes in the big pocket. At every other seat around the table, the two pockets are swapped.</p>
     <div class="tags"><span class="tag schem">schematic</span></div>
   </div>
 </section>
@@ -313,7 +322,7 @@
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
     <p>At a prime p there's a magic move. In arithmetic mod p, <span class="m">(u + v)<sup>p</sup> = u<sup>p</sup> + v<sup>p</sup></span>, because every middle coefficient is divisible by p.</p>
-    <p>So the substitution x → x<sup>p</sup>, called <b>Frobenius</b>, plays nicely with everything. It divides a polynomial's degree by p, and it moves it to the next slot.</p>
+    <p>So the substitution x → x<sup>p</sup>, called <b>Frobenius</b>, plays nicely with everything. It divides a polynomial's degree by p, and it passes the polynomial to the next seat.</p>
   </div>
 </section>
 
@@ -323,8 +332,8 @@
     <label>p <span class="seg ps"><button data-p="2">2</button><button data-p="3" class="on">3</button><button data-p="5">5</button><button data-p="7">7</button></span></label></div>
   </div>
   <div class="words">
-    <p>Follow the big degree around the ring. After e hops it's a/pᵉ.</p>
-    <p>Even hops land on its own side, with room for a: it fits. Odd hops land on the mirror side, with room for only b. Whatever sticks out, shown in red, turns into <b>forced factors of p</b>.</p>
+    <p>Follow the big degree around the table. After e hops it's a/pᵉ.</p>
+    <p>Even hops land on a seat where it goes in the big pocket: it fits. Odd hops land on a swapped seat, where it must squeeze into the small pocket of size b. Whatever sticks out, shown in red, turns into <b>forced factors of p</b>.</p>
     <p class="try">Try other values of x and p.</p>
   </div>
 </section>
@@ -333,7 +342,7 @@
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
     <p>That one picture explains the shape of the overflow formula from Step D.</p>
-    <p>Dividing by pᵉ is Frobenius. Subtracting b is the room on the mirror side. Counting only odd e is the hops that change sides. And once pᵉ is past x, everything fits.</p>
+    <p>Dividing by pᵉ is Frobenius. Subtracting b is the small pocket. Counting only odd e is the hops that land on swapped seats. And once pᵉ is past x, everything fits.</p>
     <div class="tags"><span class="tag reading">our reading of the source's formulas</span></div>
   </div>
 </section>
@@ -411,8 +420,10 @@
 <section class="slide" data-scene="stepanov" data-tone="purple" data-title="Multiplicity without derivatives">
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
-    <p>The author calls each lift "one more order of multiplicity." Over finite fields, Stepanov bounded points with a polynomial vanishing m times at each: <span class="m">(points) × m ≤ degree</span>.</p>
-    <p>Here too, the thing to bound gets multiplied by m. A chain of lifts stands in for "differentiating whole numbers."</p>
+    <p>Why does the author call each lift "one more order of multiplicity"? The phrase comes from a cousin of RH for clock arithmetic (like mod 7), proved by André Weil in the 1940s.</p>
+    <p>In 1969 Sergei Stepanov found a short proof: build a polynomial with a double, triple, … root (multiplicity m) at every point you want to count. Degree D allows at most D roots counted this way, so <span class="m">(points) × m ≤ D</span>.</p>
+    <p>This proof has the same shape: <span class="m">G × m ≤ x + m²</span>. Multiplicity normally needs derivatives, which whole numbers lack. The chain of lifts stands in for them.</p>
+    <div class="tags"><span class="tag reading">the comparison is our reading</span></div>
   </div>
 </section>
 
@@ -433,14 +444,6 @@
   </div>
 </section>
 
-<section class="slide" data-scene="critique" data-tone="red" data-title="The placeholder critique">
-  <div class="art"><canvas aria-hidden="true"></canvas></div>
-  <div class="words">
-    <p>One critique found "geometry" in the files that is just a placeholder, defined to be True.</p>
-    <p>It really is there. But nothing in the proof ever looks inside it, so it can't make the result false. It does mean some names mislead about where the real work happens.</p>
-  </div>
-</section>
-
 <section class="slide" data-scene="unknown" data-tone="purple" data-title="What nobody has yet">
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
@@ -453,7 +456,7 @@
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
     <h1>The end</h1>
-    <p class="sub" style="font-size:0.95rem;text-align:left;font-style:normal">Sources: L. Alpöge, <i>Remark</i> (20 Nov 2026); the Lean proof, mirrored at <a href="https://github.com/leanprover-community/riemann-hypothesis">leanprover-community/riemann-hypothesis</a>, and the reader's map in its issue #5; ishaan2006, <a href="https://github.com/ishaan2006/rh-lean-reproduction">a human-readable account</a>; J. Shore's <a href="https://github.com/james-shore/rh-proof-dependencies">dependency-graph dataset</a>; J. L. Nielsen, <i>The Invalidity of Alpöge's Proposed Proof</i> (20 Nov 2026). Primes are sieved and ζ is evaluated live in your browser; the first 200 zeros were precomputed with mpmath. The pictures are an interpretation by this book, not by the proof's author.</p>
+    <p class="sub" style="font-size:0.95rem;text-align:left;font-style:normal">Sources: L. Alpöge, <i>Remark</i> (20 Nov 2026); the Lean proof, mirrored at <a href="https://github.com/leanprover-community/riemann-hypothesis">leanprover-community/riemann-hypothesis</a>, and the reader's map in its issue #5; ishaan2006, <a href="https://github.com/ishaan2006/rh-lean-reproduction">a human-readable account</a>; J. Shore's <a href="https://github.com/james-shore/rh-proof-dependencies">dependency-graph dataset</a>. Primes are sieved and ζ is evaluated live in your browser; the first 200 zeros were precomputed with mpmath. The pictures are an interpretation by this book, not by the proof's author.</p>
   </div>
 </section>
 

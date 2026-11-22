@@ -1,4 +1,4 @@
-/* scenes-2.js: illustrations for pages 27–49 (Step D, one theta lift, the chain, running it forward, verification). */
+/* scenes-2.js: illustrations for pages 28–49 (Step D, one theta lift, the chain, running it forward, verification). */
 (function () {
   "use strict";
   const S = DECK.scene, ZEROS = (window.RH_DATA && RH_DATA.zeros) || [];
@@ -122,7 +122,7 @@
       gear(K, 450, 250, 62, 10, t * 0.8, col.blue); gear(K, 553, 318, 48, 8, -t * 0.8 * 62 / 48 + 0.2, col.gold); gear(K, 462, 380, 40, 7, -t * 0.8 * 62 / 40, col.purple);
       K.math("Θ", 500, 520, { size: 46, italic: true });
       const s = (t * 60) % 60;
-      for (let k = 0; k < 7; k++) { const x = 40 + ((k * 60 + s) % 300); K.dot(x, 230, 2.5, col.blue, 0.7); }
+      for (let k = 0; k < 7; k++) { const x = 40 + ((k * 60 + s) % 300); K.dot(x, 272, 2.5, col.blue, 0.7); }
       K.box(30, 205, 300, 50, { color: col.blue, width: 2.5, fill: col.blue, fillAlpha: 0.2, r: 8, seed: 3 });
       K.text("degree a = x · b", 180, 230, { size: 24, align: "center", bold: true, color: col.blue });
       K.box(250, 390, 80, 50, { color: col.red, width: 2.5, fill: col.red, fillAlpha: 0.2, r: 8, seed: 4 });
@@ -135,7 +135,7 @@
     },
   }));
 
-  // ------------------------------------------------------------------ 28 a ring of slots
+  // ------------------------------------------------------------------ seats around a table
   S("ring", () => ({
     draw(K, t) {
       const { col } = K, cx = 500, cy = 320, R = 225, N = 8, at = (i) => [cx + R * Math.sin((i / N) * Math.PI * 2), cy - R * Math.cos((i / N) * Math.PI * 2)];
@@ -148,12 +148,13 @@
         const [x, y] = at(i), even = i % 2 === 0, c = even ? col.blue : col.red;
         K.ring(x, y, 54, { color: c, width: 2.6, fill: c, fillAlpha: 0.12 });
         K.text(even ? "a │ b" : "b │ a", x, y - 4, { size: 23, align: "center", bold: true, color: c });
-        K.text(i === 0 ? "home" : even ? "own side" : "mirror", x, y + 72, { size: 18, align: "center", color: c, halo: true });
+        K.text(i === 0 ? "home seat" : even ? "like home" : "swapped", x, y + 72, { size: 18, align: "center", color: c, halo: true });
       }
       const pos = (t * 0.8) % N, i0 = Math.floor(pos), f = K.ease(pos - i0), th = ((i0 + f) / N) * Math.PI * 2;
       K.dot(cx + (R - 92) * Math.sin(th), cy - (R - 92) * Math.cos(th), 10, col.gold);
+      K.serif("pocket sizes:", cx, cy - 48, { size: 22, align: "center", color: col.muted });
       K.serif("ordinary │ mirror", cx, cy - 14, { size: 24, align: "center", color: col.muted });
-      K.serif("degrees", cx, cy + 20, { size: 22, align: "center", color: col.muted });
+      K.serif("part     part", cx, cy + 20, { size: 22, align: "center", color: col.muted });
       return true;
     },
   }));
@@ -204,7 +205,7 @@
           const xa = 10 + e * cw + 6, xb = 10 + (e + 1) * cw - 6, xm = (xa + xb) / 2, odd = e % 2 === 1, c = odd ? col.red : col.blue;
           K.box(xa, yt - 10, xb - xa, yb - yt + 10, { color: c, width: 1.6, fill: c, fillAlpha: 0.06, sketch: false });
           K.text(e === 0 ? "home" : `hop ${e}`, xm, yb + 28, { size: 21, align: "center", bold: true, color: e === shown ? col.gold : col.muted });
-          K.text(odd ? "mirror side" : "own side", xm, yb + 56, { size: 17, align: "center", color: c });
+          K.text(odd ? "swapped seat" : "like home", xm, yb + 56, { size: 17, align: "center", color: c });
           if (e > 0) K.seg(xa + 4, ym(odd ? 1 : x), xb - 4, ym(odd ? 1 : x), { color: c, width: 2.2, dash: [7, 5], sketch: false });
           if (e > shown) continue;
           const v = x / Math.pow(p, e), g = e === shown ? K.ease(Math.min(1, (pos - shown) * 1.6)) : 1, top = yb + (ym(v) - yb) * g;
@@ -220,7 +221,7 @@
           }
         }
         let tot = 0; for (let e = 1, pk = p; pk < x; e += 2, pk *= p * p) tot += x / pk - 1;
-        K.text(`dashed: room in the slot (b on the mirror side, about a on its own)   ·   total overflow at p = ${p}: ${num(tot)} b`, 500, 610, { size: 18, align: "center", color: col.muted, maxW: 980 });
+        K.text(`dashed: pocket size (b on a swapped seat, about a otherwise)   ·   total overflow at p = ${p}: ${num(tot)} b`, 500, 610, { size: 18, align: "center", color: col.muted, maxW: 980 });
         K.text(`p = ${p}: each hop divides the degree by ${p}`, 14, 30, { size: 22, bold: true });
         return pos < NS + 0.3;
       },
@@ -234,8 +235,8 @@
       K.math("max( a/pᵉ − b , 0 ),   odd e only", 500, 70, { size: 38 });
       const cards = [
         ["÷ pᵉ", "each Frobenius hop\ndivides the degree by p", col.blue],
-        ["− b", "the room on\nthe mirror side", col.red],
-        ["odd e", "only the hops that\nchange sides overflow", col.purple],
+        ["− b", "the small\npocket", col.red],
+        ["odd e", "only hops to swapped\nseats overflow", col.purple],
         ["pᵉ ≤ x", "past x = a/b,\neverything fits", col.green],
       ];
       cards.forEach(([h, s, c], i) => {

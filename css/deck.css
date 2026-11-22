@@ -101,3 +101,12 @@ a.deeper:hover { text-decoration: underline; }
   .dbar .brand { font-size: 0.8rem; }
   .dbar .long { display: none; }
 }
+
+/* short phones (e.g. 375 × 667, 390 × 780): tighter text so pages fit without scrolling */
+@media (max-width: 860px) and (max-height: 800px) {
+  .slide .art canvas { aspect-ratio: 1000 / 600; }
+  .slide .words { padding: 0.5rem 0.9rem 0.4rem; }
+  .words p { font-size: 0.95rem; line-height: 1.42; margin-bottom: 0.45em; }
+  .words .sub { font-size: 0.88rem; }
+  .words .tags { margin-top: 0.5rem; }
+}

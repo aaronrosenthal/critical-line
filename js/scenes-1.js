@@ -1,4 +1,4 @@
-/* scenes-1.js: illustrations for pages 1–26 (opening, primes, zeta, the map, Step A, Step B).
+/* scenes-1.js: illustrations for pages 1–27 (opening, primes, zeta, the map, Step A, Step B).
    Every scene draws on a 1000 × 640 board. draw(K, t) gets seconds since the page opened; return false when finished. */
 (function () {
   "use strict";
@@ -375,15 +375,15 @@
   // ------------------------------------------------------------------ 12 one off-key note
   S("offkey", () => ({
     draw(K, t) {
-      const { col } = K, A = K.axes([110, 40, 830, 500], [1, 200], [-80, 80]), g0 = 14.134725;
+      const { col } = K, A = K.axes([110, 40, 830, 450], [1, 200], [-80, 80]), g0 = 14.134725;
       A.frame({ xticks: [[1, "1"], [50, "50"], [100, "100"], [150, "150"], [200, "200"]], yticks: [[-60, "−60"], [0, "0"], [60, "60"]], xlabel: "x" });
       const upto = 1 + 199 * K.ease(K.ph(t, 0.3, 6));
       A.curve((x) => Math.sqrt(x), 1, 200, 100, { color: col.blue, width: 1.6, dash: [6, 6] }); A.curve((x) => -Math.sqrt(x), 1, 200, 100, { color: col.blue, width: 1.6, dash: [6, 6] });
       A.curve((x) => Math.pow(x, 0.8), 1, 200, 100, { color: col.red, width: 1.6, dash: [6, 6] }); A.curve((x) => -Math.pow(x, 0.8), 1, 200, 100, { color: col.red, width: 1.6, dash: [6, 6] });
       A.curve((x) => Math.sqrt(x) * Math.cos(g0 * Math.log(x)), 1, upto, 900, { color: col.blue, width: 2.6 });
       A.curve((x) => Math.pow(x, 0.8) * Math.cos(g0 * Math.log(x) + 1), 1, upto, 900, { color: col.red, width: 2.6 });
-      K.text("a zero on the line: size √x", 130, 572, { size: 22, color: col.blue, bold: true });
-      K.text("a zero off the line (β = 0.8): size x^{0.8}", 130, 606, { size: 22, color: col.red, bold: true });
+      K.text("a zero on the line: size √x", 130, 578, { size: 22, color: col.blue, bold: true });
+      K.text("a zero off the line (β = 0.8): size x^{0.8}", 130, 612, { size: 22, color: col.red, bold: true });
       return t < 6.3;
     },
   }));
@@ -505,6 +505,37 @@
   }));
 
   // ------------------------------------------------------------------ 18 Landau's trap
+  // ------------------------------------------------------------------ Taylor coefficients as a storm warning
+  S("taylor", ({ reduced }) => ({
+    draw(K, t) {
+      const { col } = K, zx = 170, zy = 330, u = 170, g = K.g;
+      const r = reduced ? 0.85 : 1.25 + 0.42 * Math.cos(t * 0.6);
+      const px = zx + r * u;
+      K.seg(50, zy, 540, zy, { color: col.axis, width: 1.4, sketch: false });
+      K.ring(zx, zy, r * u, { color: col.green, width: 2.4, dash: [7, 6], fill: col.green, fillAlpha: 0.05 });
+      K.dot(zx, zy, 7, col.ink); K.text("z", zx - 10, zy - 18, { size: 22, bold: true, align: "right" });
+      // the pole: a red spike marker
+      K.ring(px, zy, 12, { color: col.red, width: 3 }); K.dot(px, zy, 5, col.red);
+      K.text("pole: f blows up here", px + 8, zy + 40, { size: 19, bold: true, color: col.red, align: "center", halo: true });
+      K.seg(zx, zy - 6, px, zy - 6, { color: col.muted, width: 1.4, sketch: false });
+      K.text(`r = ${r.toFixed(2)}`, (zx + px) / 2, zy - 22, { size: 19, align: "center", color: col.muted, halo: true });
+      K.text("the coefficients at z rebuild f", 60, 70, { size: 19, color: col.green, bold: true });
+      K.text("inside this circle, out to the pole", 60, 96, { size: 19, color: col.green, bold: true });
+      // bars: size of c_k = (1/r)^k
+      const x0 = 610, bw = 34, base = 470, hs = 48;
+      K.seg(x0 - 8, base, x0 + 9 * (bw + 6), base, { color: col.axis, width: 2, sketch: false });
+      for (let k = 0; k <= 8; k++) {
+        const v = Math.pow(1 / r, k), h = Math.min(v * hs, 380), x = x0 + k * (bw + 6);
+        g.save(); g.fillStyle = col.red; g.globalAlpha = 0.75; g.fillRect(x, base - h, bw, h); g.restore();
+        K.text(String(k), x + bw / 2, base + 22, { size: 17, align: "center", color: col.muted });
+      }
+      K.text("size of each cₖ", x0 - 8, 70, { size: 20, bold: true, color: col.red });
+      K.text("k →", x0 + 9 * (bw + 6), base + 48, { size: 18, align: "right", color: col.muted });
+      K.serif(r < 1 ? "pole close: the list grows fast" : "pole far: the list stays tame", 780, 560, { size: 23, align: "center", color: r < 1 ? col.red : col.muted });
+      return true;
+    },
+  }));
+
   S("trap", () => ({
     draw(K, t) {
       const { col } = K, sc = 170, X = (re) => 50 + (re + 0.15) * sc, Y = (im) => 320 - im * sc, sig = 1.55, theta = 0.6;
@@ -619,7 +650,7 @@
         const { col } = K, bins = [[1, 1], [1, -1], [-1, 1], [-1, -1]], bw = 210, gap = 26, x0 = 500 - (4 * bw + 3 * gap) / 2, top = 330, bot = 600;
         bins.forEach(([a, b], i) => {
           const x = x0 + i * (bw + gap), hl = a === 1 && b === -1;
-          if (hl) K.wash(x + bw / 2, (top + bot) / 2, bw * 0.62, 170, col.gold, 0.22, 8);
+          if (hl) K.wash(x + bw / 2, (top + bot) / 2 + 8, bw * 0.62, (bot - top) / 2 - 4, col.gold, 0.22, 8);
           K.line([[x, top], [x + 8, bot], [x + bw - 8, bot], [x + bw, top]], { color: hl ? col.gold : col.axis, width: hl ? 3.4 : 2.2, sketch: true, seed: i + 2 });
           K.text(`ψ = ${a > 0 ? "+1" : "−1"},  χ = ${b > 0 ? "+1" : "−1"}`, x + bw / 2, top - 18, { size: 19, align: "center", bold: true, color: hl ? col.gold : col.muted });
         });
