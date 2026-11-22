@@ -5,7 +5,7 @@
   const { $, $$, reducedMotion, drawRich, colors, registerDraw } = RH;
   const VW = 1000, VH = 640;
   const SCENES = {};
-  window.DECK = { scene(name, factory) { SCENES[name] = factory; } };
+  window.DECK = { scene(name, factory) { SCENES[name] = factory; }, get(name) { return SCENES[name]; } };
 
   // ------------------------------------------------------------------ drawing kit
   function rng(seed) { let s = (seed * 2654435761) >>> 0 || 1; return () => { s ^= s << 13; s >>>= 0; s ^= s >> 17; s ^= s << 5; s >>>= 0; return s / 4294967296; }; }

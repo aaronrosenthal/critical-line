@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Weavers and the Middle Wire</title>
+<meta name="description" content="An illustrated, one-idea-per-page tour of the November 2026 Lean proof of the Riemann Hypothesis, for readers who know calculus and complex variables.">
+<script>
+  (function () { var t = localStorage.getItem("rh-theme"); if (!t) t = "light"; document.documentElement.dataset.theme = t; })();
+</script>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/deck.css">
+<style>
+.words p.inmath { font: 0.86rem/1.45 "Avenir Next", "Segoe UI", system-ui, sans-serif; font-style: normal; text-align: left; color: var(--muted);
+  border-left: 3px solid color-mix(in srgb, var(--accent) 55%, transparent); padding: 0.1em 0 0.1em 0.8em; margin: 1em 0 0; }
+.words p.inmath b.lbl { display: block; font-size: 0.68rem; letter-spacing: 0.09em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
+.words p.inmath .m { font-size: 0.95rem; }
+.words p.say { margin-bottom: 0.6em; }
+@media (max-width: 860px) { .words p.inmath { font-size: 0.78rem; margin-top: 0.6em; } }
+</style>
+</head>
+<body class="deck">
+
+<div class="dprogress" id="dprogress"></div>
+<header class="dbar">
+  <a class="brand" href="#1"><span>ζ</span>The Weavers and the Middle Wire</a>
+  <span class="part" id="partname"></span>
+  <span class="spacer"></span>
+  <button class="pill" id="open-contents" type="button" aria-haspopup="dialog">Contents</button>
+  <button id="theme-toggle" type="button" aria-label="Toggle dark mode"><span class="knob"></span></button>
+</header>
+
+<main id="stage" aria-live="polite">
+
+<section class="slide" data-scene="w-cover" data-tone="gold" data-part="Opening" data-title="Cover">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <h1>The Weavers and the Middle Wire</h1>
+    <p class="sub">A story about the first computer-checked proof of the Riemann Hypothesis.</p>
+    <p class="try" style="margin-top:1.2rem">Press → or tap the arrow to turn the page</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-colony" data-tone="gold" data-title="Meet the colony">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Kito hatched in a colony of weaver birds, the kind that tie real knots. Every evening the whole colony settled on three long wires to sing, and every evening somebody asked the old question: <b>will a bird ever perch above the middle wire?</b></p>
+    <p>Old Grey, the oldest weaver, always said the same thing. “Ten trillion birds, and not one has. But watching isn't knowing.” Kito decided to find out.</p>
+    <p class="inmath"><b class="lbl">In the math</b>This book retells a real proof. Tags: <span class="tag real">real data</span> <span class="tag schem">schematic</span> <span class="tag reading">our reading</span> marks a picture that is our interpretation, not something the proof says.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-twigs" data-tone="gold" data-part="I. Twigs and the chorus" data-title="Twigs that can't be split">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Grey began with twigs. “Every bundle in this colony is tied from twigs that can't be split: 2, 3, 5, 7, 11… Twelve is a bundle of 2, 2 and 3, and there's no other way to tie it.”</p>
+    <p>Kito walked the path looking for them. They lay scattered with no pattern at all: 41 and 43 side by side, then nothing from 89 to 97.</p>
+    <p class="inmath"><b class="lbl">In the math</b>The unsplittable twigs are the <b>primes</b>. Every whole number factors into them in exactly one way. Give twig p the length log p, and bundle n has length log n.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-chorus" data-tone="blue" data-title="The chorus at dusk">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>At dusk the colony counted its twigs aloud and compared the count with a smooth guess. The two never quite agreed. The difference rose and fell like a murmur: the colony's <b>chorus</b>.</p>
+    <p>“How loud can the chorus get?” asked Kito. “That,” said Grey, “is the whole question.”</p>
+    <p class="inmath"><b class="lbl">In the math</b>Count each prime power p<sup>k</sup> ≤ x with weight log p and subtract x. The Riemann Hypothesis says this error stays about <span class="m">√x</span> in size.</p>
+    <div class="tags"><span class="tag real">real primes, up to 100,000</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-coins" data-title="As fair as tossed seeds">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Grey tossed a seed, light side up or dark side up, again and again, keeping score. The score wandered, but never far: after n tosses, about √n.</p>
+    <p>“If the twigs are honest,” said Grey, “the chorus wanders just like my seeds.”</p>
+    <p class="inmath"><b class="lbl">In the math</b>A fair random walk drifts by about √n. The Riemann Hypothesis says the primes are that fair: no hidden bias, just honest noise.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-euler" data-tone="purple" data-part="II. Birds on the wire" data-title="A song that knows the twigs">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Grey kept an old songbook, written down by Bernhard Riemann in 1859. Every song in it is made from the twigs.</p>
+    <p>“Race it two ways,” said Grey. One bird added note after note: 1 + ¼ + ⅑ + ⋯. The other used nothing but twigs, one factor for each, multiplied together. Both stopped at exactly the same mark, π²/6. “So the songbook,” said Grey, “knows the twigs.”</p>
+    <p class="inmath"><b class="lbl">In the math</b><span class="m">ζ(s) = 1 + 1/2<sup>s</sup> + 1/3<sup>s</sup> + ⋯</span> equals a product with one factor per prime (Euler). The zeros of ζ are the birds of this story.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-voices" data-tone="purple" data-title="Every voice is a bird">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Then Grey showed Kito where the chorus comes from. Hidden on the wires sits a flock of birds, and each one sings a single pure note.</p>
+    <p>Add their voices and the jagged twig count appears, step by step. With a hundred birds singing it is already close.</p>
+    <p class="inmath"><b class="lbl">In the math</b>Riemann's explicit formula, proved by von Mangoldt: the prime-count error is a sum of waves, one for each zero of ζ. A zero's position along the line sets its pitch.</p>
+    <div class="tags"><span class="tag real">the first 100 zeros, added live</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-wires" data-tone="purple" data-title="Three wires">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>The birds perch on three wires. None ever sits outside the outer two, and they come in mirror pairs: a bird above the middle wire would have a twin just as far below.</p>
+    <p>“Every bird anyone has spotted sits on the middle wire,” said Grey. “More than ten trillion. But the flock never ends.”</p>
+    <p class="inmath"><b class="lbl">In the math</b>The zeros lie in the strip 0 &lt; Re s &lt; 1, symmetric about Re s = ½. <b>The Riemann Hypothesis</b>: every one has Re s = ½. Computers have checked more than 10<sup>13</sup>.</p>
+    <div class="tags"><span class="tag real">birds at the first 13 zeros</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-flight" data-tone="purple" data-title="Where the night's flight passes home">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>That night Kito couldn't sleep, so Kito flew. The path swung out in long loops and curled back, again and again, while Grey watched from below.</p>
+    <p>Every so often the flight swept exactly over the home perch. Each time, a bird fluttered down and settled on the middle wire, at the very hour Kito passed overhead. By the end of the night, six birds sat in a row.</p>
+    <p class="inmath"><b class="lbl">In the math</b>Kito's position at hour t is <span class="m">ζ(½ + i·t)</span>, and the home perch is ζ = 0. So each pass over it is a zero, ½ + i·t: the first at t = 14.13. These are the birds of the story.</p>
+    <p class="try">Drag along the wire to move through the night.</p>
+    <div class="tags"><span class="tag real">ζ(½ + i·t) computed live, t from 0 to 40</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-loud" data-tone="purple" data-title="A bird perched high sings louder">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>“Why does it matter where they sit?” asked Kito.</p>
+    <p>Grey hopped up the pole. “On the middle wire a bird sings at the chorus's normal volume. Sit higher, and the voice grows faster. Sooner or later it drowns out everyone.”</p>
+    <p class="inmath"><b class="lbl">In the math</b>A zero at height β contributes a wave of size <span class="m">x<sup>β</sup></span>. On the middle line that is <span class="m">x<sup>½</sup> = √x</span>.</p>
+    <p class="try">Drag the bird up and down.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-colors" data-tone="purple" data-title="Other colonies">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Across the valley there are other colonies. Each paints its twigs with its own repeating pattern of +1 and −1, and each has its own songbook and its own flock.</p>
+    <p>“The same question hangs over all of them,” said Grey.</p>
+    <p class="inmath"><b class="lbl">In the math</b>Each pattern is a <b>Dirichlet character</b> with its own L-function. The <b>Generalized</b> Riemann Hypothesis says all their zeros sit on the middle line. This proof covers ζ and every one of them.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-files" data-tone="green" data-part="III. The proof arrives" data-title="A net across the valley">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>One November morning the colony woke to find something enormous strung across the valley: a net of 175,187 knots, woven by a mathematician named Levent Alpöge, working with Claude.</p>
+    <p>Before anyone dared touch it, the <b>knot inspector</b> went along it and tugged every knot. Not one slipped. But it was far too big to take in at once. “We won't understand it by staring,” said Grey. “We'll read it like a map.”</p>
+    <p class="inmath"><b class="lbl">In the math</b>The proof is 175,187 files of <b>Lean</b>, a language in which a small trusted program, the kernel, checks every logical step.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-map" data-tone="green" data-title="The map">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>The map showed six landmarks. “Walk it backwards,” said Grey, “from where we want to end up.”</p>
+    <p>First <b>A</b>, a trap for birds nobody can see. Then <b>B</b>, four piles of twigs. Then <b>D</b>, a balance. Then <b>C</b>, the great loom. <b>E</b> and <b>F</b> lie out toward the Far Ones' country; the main road only leans on them.</p>
+    <p class="inmath"><b class="lbl">In the math</b>Six steps, A to F, taken in the order in which each answers the question the one before it leaves open.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-gz" data-part="IV. Step A: Landau's trap" data-title="The chorus, measured carefully">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>To hear the chorus clearly, the colony learned to listen to a smoothed version of it, called <b>G</b>.</p>
+    <p>If every bird sits on the middle wire, G stays inside a thin band, about √x wide, forever. Kito listened all the way out to 200,000. It stayed inside.</p>
+    <p class="inmath"><b class="lbl">In the math</b>G(x) is a smoothed prime count, Σ Λ(n)(x/n − 1), minus its expected trend. The plot shows G(x)/√x.</p>
+    <div class="tags"><span class="tag real">real data</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-ceiling" data-tone="red" data-title="A volume limit is enough">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>“First, a trap,” said Grey, “for birds you can't see. We can't search an endless wire bird by bird. But we can listen: a bird perched too high would make the chorus too loud.</p>
+    <p>“If it never rises above about √x, even on one side only, no bird can hide above the middle wire. And so its mirror twin can't hide below.” “But how can listening catch anything?” asked Kito. “I'll show you,” said Grey.</p>
+    <p class="inmath"><b class="lbl">In the math</b>One-sided bounds are enough: Edmund Landau, 1905.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-echo" data-tone="red" data-title="Echoes tell how near">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Grey led Kito to the first landmark, the echo cave. “Call into the dark,” said Grey, “and listen.” A distant bird's echo comes back faint. A near one's comes back stronger with every call, and the nearer the bird, the faster it grows.</p>
+    <p>A bird above the middle wire would be close enough to make the echoes grow without end.</p>
+    <p class="inmath"><b class="lbl">In the math</b>The echoes are the <b>Taylor coefficients</b> of a function built from the chorus. A pole at distance r makes them grow like <span class="m">(1/r)<sup>k</sup></span>.</p>
+    <div class="tags"><span class="tag schem">schematic</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-trap" data-tone="red" data-title="The trap snaps shut">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Then Grey sprang the trap. Echoes that grow without end need a chorus that grows without end. But the chorus has a volume limit. Both can't be true, so no bird sits up there.</p>
+    <p>“That's all?” said Kito. “That's all,” said Grey, “as long as we can prove the limit.”</p>
+    <p class="inmath"><b class="lbl">In the math</b>Landau's argument: a zero with Re s &gt; ½ forces a growth that the one-sided bound forbids.</p>
+    <p class="try">Drag the bird down to the middle wire.</p>
+    <div class="tags"><span class="tag schem">schematic</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-dawns" data-tone="red" data-title="Listening at certain dawns">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>There was a catch. The weavers can't listen every night. Their method works only on certain stretches of nights, each much longer than the one before, with another always further on. Kito's heart sank.</p>
+    <p>“Enough,” said Grey. “A high bird is loud everywhere. One dawn far enough out will catch it.” So the task was set: on those dawns, keep the chorus no louder than about √x.</p>
+    <p class="inmath"><b class="lbl">In the math</b>Windows from Y to <span class="m">Y<sup>3/2</sup></span>, reaching to infinity, suffice. The bound needed is <span class="m">x<sup>½+ε</sup></span>. To get it, the proof ties a bundle, weighs it two ways, and weaves a lattice to settle the difference.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-bins" data-tone="green" data-part="V. Step B: four piles" data-title="A blind spot">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Next on the map: four big piles of twigs, and the first wall. The great loom, further on, is strung from two helper twigs that sort every twig into four piles, and it can weigh only <b>one</b>: the gold pile.</p>
+    <p>“Why only one?” asked Kito. “Inside the loom,” said Grey, “most twigs split into pieces. Only whole ones can be weighed.”</p>
+    <p>Kito stared at the other three piles. “Then we're blind to three twigs out of four.”</p>
+    <p class="inmath"><b class="lbl">In the math</b>The helpers give each prime two labels, <span class="m">χ, ψ = ±1</span>. Inside the bigger number system some primes split, like 5 = (2 + i)(2 − i), while 3 stays whole. The loom sees the <span class="m">χ = −1</span> half; averaging narrows it to <span class="m">ψ = +1</span>.</p>
+    <div class="tags"><span class="tag schem">toy helpers 3 and 7</span><span class="tag real">four piles, half then one: checked in the Lean code</span><span class="tag reading">split vs. whole: our reading</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-fourier" data-tone="green" data-title="Getting the other piles back">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>“Not blind,” said Grey. “Just looking from the wrong side. Write the four piles as four rows of signs, and add the rows.”</p>
+    <p>Kito did. Every twig outside the gold pile cancelled to nothing; every twig inside counted four times. “So a limit on one pile,” said Kito slowly, “is a limit on all of them?” “If the helpers are quiet,” said Grey. “And we get to choose quiet ones.”</p>
+    <p class="inmath"><b class="lbl">In the math</b>One pile = ¼ × (all primes + three helper sums): Fourier analysis on four classes. Known averages guarantee good helpers exist.</p>
+    <div class="tags"><span class="tag real">this exact combination is in the Lean code</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-farones" data-tone="purple" data-part="VI. Step D: weigh it two ways" data-title="Neighbours at infinity">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>The weighing needed help. Past the edge of the colony live the <b>Far Ones</b>, “at infinity”, in directions no bird can point to. From the edge of the colony, Kito saw only a shadow: a cage of light that kept turning itself inside out.</p>
+    <p>The Far Ones can't count twigs. But they can measure size, and carry strands. They follow fixed rules, and the inspector checks them too.</p>
+    <p class="inmath"><b class="lbl">In the math</b>Birds stand for the primes. Far Ones stand for the place “at infinity” (size, in the real and complex numbers) and the high-dimensional spaces the proof works in.</p>
+    <div class="tags"><span class="tag reading">our framing</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-twoways" data-tone="gold" data-title="Weigh it two ways">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>At the third landmark stood an old balance, older than anyone in the colony. “Tie the biggest bundle you can. Weigh it by its twigs on this side, and let a Far One weigh it by its size on that one.”</p>
+    <p>The Far One's shadow turned once, and the scale settled, perfectly level. “So the size,” said Grey, “tells you about the twigs.”</p>
+    <p class="inmath"><b class="lbl">In the math</b>The bundle is <span class="m">a! = 1 · 2 · 3 ⋯ a</span>, and Σ (copies of p in a!) · log p = log(a!). Chebyshev, 1850.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-legendre" data-tone="gold" data-title="Counting twigs, in layers">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>“How many 3-twigs are in the big bundle?” asked Grey.</p>
+    <p>Kito counted in layers. Every third number gives one. Every ninth gives a second. Every 27th, a third, and the last one more. Forty in all. “Layers,” said Grey. “Remember layers.”</p>
+    <p class="inmath"><b class="lbl">In the math</b>81! contains 27 + 9 + 3 + 1 = 40 threes. <b>Legendre's formula</b>: about a/p + a/p² + a/p³ + ⋯ copies of p.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-overflow" data-tone="gold" data-title="Twig ends over the rim">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Then the proof added a twist. Grey set out a row of baskets, all the same small size, one for each layer of each twig. Into each basket went that layer's copies, stacked up. Only what stuck up over the <b>rim</b> was kept.</p>
+    <p>Small twigs stick up a long way. Their higher layers stick up less and less, and far enough along, every stack fits inside its basket.</p>
+    <p class="inmath"><b class="lbl">In the math</b>With <span class="m">a = x · b</span>: each basket holds b, and the stack for <span class="m">p<sup>e</sup></span> is <span class="m">a/p<sup>e</sup></span> tall. Keep <span class="m">(a/p<sup>e</sup> − b)<sub>+</sub></span>; past <span class="m">p<sup>e</sup> = x</span> it is zero.</p>
+    <p class="try">Drag x.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-gap" data-tone="gold" data-title="The gap is the chorus">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Kito weighed the overhangs, each by its twig's length, against what the Far One measured.</p>
+    <p>The scale tipped, just slightly. And the tilt was exactly the chorus.</p>
+    <p class="inmath"><b class="lbl">In the math</b>Σ log p · (a/p<sup>e</sup> − b)<sub>+</sub>, minus the size side, equals <b>b · G(x)</b>. The trap needs a limit on this gap.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-pass" data-tone="blue" data-part="VII. One weaving pass" data-title="One weaving pass">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>At last they reached the great loom, where the weighing really happens. Kito watched Grey make a single weaving pass. Grey fed out a strand of enormous length, and a Far One carried it over into a partner world, where it was paired with a short one, like thread passed from a big hoop to a small one.</p>
+    <p class="inmath"><b class="lbl">In the math</b>A pass is a <b>theta lift</b>. The strands are polynomials of degree a and b, with a = x · b (a polynomial's degree is its highest power).</p>
+    <div class="tags"><span class="tag schem">schematic</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-ring" data-tone="blue" data-title="Pegs around the hoop">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Kito watched a pass up close. The strand hopped along a row of pegs on the loom, and each peg held a big loop and a small one. At the home peg, the strand's gold, ordinary side went in the big loop.</p>
+    <p>On the way to the next peg a Far One turned the strand over, through a direction no bird can see. It arrived mirrored, with its gold side in the small loop. At the peg after that it was turned back again.</p>
+    <p class="inmath"><b class="lbl">In the math</b>Each polynomial has a z part and a z̄ part. At every other peg the two swap roles.</p>
+    <div class="tags"><span class="tag schem">schematic</span><span class="tag reading">the turn-over picture: our framing</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-hops" data-tone="blue" data-title="Frobenius hops round the hoop">
+  <div class="art"><canvas aria-hidden="true"></canvas>
+    <div class="ctl"><label>x = a/b <input type="range" class="x" min="2" max="400" value="100"><output></output></label>
+    <label>p <span class="seg ps"><button data-p="2">2</button><button data-p="3" class="on">3</button><button data-p="5">5</button><button data-p="7">7</button></span></label></div>
+  </div>
+  <div class="words">
+    <p>At each twig there's a magic hop. Each hop shrinks a strand and carries it to the next peg. Every other hop, it lands in a big loop and fits. In between, it must squeeze into a small loop, and whatever sticks out, in red, becomes knots the weave is forced to tie.</p>
+    <p>“The overhangs again!” said Kito. “The same ones as on the scale.”</p>
+    <p class="inmath"><b class="lbl">In the math</b>Frobenius, x → x<sup>p</sup>, divides degree by p, since <span class="m">(u + v)<sup>p</sup> = u<sup>p</sup> + v<sup>p</sup></span> mod p. Odd hops overflow by a/p<sup>e</sup> − b: Step D's formula.</p>
+    <p class="try">Try other values of x and p.</p>
+    <div class="tags"><span class="tag reading">the match with Step D: our reading</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-denser" data-tone="blue" data-title="Forced factors make the weave bigger">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Grey hopped along the beam, tying a knot of p onto every strand. “Forced knots are good news,” said Grey. “If every strand carries one, the whole weave can be divided by p.”</p>
+    <p>The mesh grows finer. And to the Far Ones, measuring at infinity, a finer mesh counts as <b>bigger</b>.</p>
+    <p class="inmath"><b class="lbl">In the math</b>The polynomials form a <b>lattice</b>. Divisibility at p shrinks its covolume, and this is how the proof builds the lattice it weighs.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-period" data-tone="blue" data-title="The size side, at infinity">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Two panes of light hung from the loom. A Far One measured the other pan: the area of a very special lattice of light.</p>
+    <p>Out of the measurement fell Euler's constant γ, the very number the chorus G subtracts.</p>
+    <p class="inmath"><b class="lbl">In the math</b>The <b>Chowla–Selberg formula</b> gives the periods of CM lattices exactly, and γ appears.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-scale" data-tone="red" data-title="One pass isn't enough">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Kito worked out one pass and slumped down beside the scale. The books could only be so unbalanced, but the slack was enormous, far bigger than the chorus itself.</p>
+    <p>“One pass,” said Grey, “tells you nothing.”</p>
+    <p class="inmath"><b class="lbl">In the math</b>Geometry gives b · G(x) ≤ errors, but the errors are about b · x. Useless on its own.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-chain" data-tone="green" data-part="VIII. Step C: √x passes" data-title="Weave again, m times">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>“Then weave again,” said Grey. Feed one pass into the next, m times over. With each new layer, Kito turned one more bead on the sign cord from minus to plus.</p>
+    <p>Every pass forces its own knots of p, and the gains add up, layer on layer.</p>
+    <p class="inmath"><b class="lbl">In the math</b>A chain of m theta lifts. Each turns one minus sign of its group into a plus.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-cost" data-tone="green" data-title="What each layer costs">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>But weaving isn't free. Each new pass opens directions that only the Far Ones can carry, and each pass carries a little more than the one before.</p>
+    <p>Kito added it up and frowned. The cost grew much faster than the passes did.</p>
+    <p class="inmath"><b class="lbl">In the math</b>Pass j costs about j blocks of new coordinates, so m passes cost about 1 + 2 + ⋯ + m ≈ <b>m²/2</b>.</p>
+    <div class="tags"><span class="tag real">matches Rubinstein's independent account</span><span class="tag reading">the ½ in m²/2: our arithmetic</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-ineq" data-tone="green" data-title="The inequality">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Kito wrote it all out as a <b>budget</b>. The prize, the chorus G, is collected once per pass. Against it: an overhead x, paid once, and the weaving's cost.</p>
+    <p>Share the overhead over m passes, and the chorus must fit inside the rest.</p>
+    <p class="inmath"><b class="lbl">In the math</b>In units of b: <span class="m">m · G(x) ≤ x + m²</span>, so <span class="m">G(x) ≤ x/m + m</span>. The write-ups call the smaller error lines “budgets” (B₀, N<sub>c</sub>); each fits in the same allowance.</p>
+    <div class="tags"><span class="tag real">"budgets", "allowance": the write-ups' words</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-minimum" data-tone="green" data-title="The best number of passes">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>How many passes? Too few, and the overhead crushes you. Too many, and the weaving does.</p>
+    <p>Kito walked down into the valley between, and at the very bottom, where Grey was already waiting, found the answer: the square root of x. And there, the chorus fits exactly where the Riemann Hypothesis needs it.</p>
+    <p class="inmath"><b class="lbl">In the math</b><span class="m">x/m + m</span> is smallest at <span class="m">m = √x</span>, giving <span class="m">G ≤ 2√x</span>.</p>
+    <p class="try">Drag the red point.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-barrier" data-tone="red" data-title="The 2/3 barrier">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Grey had seen it nearly fail. In an early count, each pass seemed to re-weave every pass before it, and the cost ran away.</p>
+    <p>“Then the best you get,” said Grey, “is far too loud, and the trap stays open.” The finished loom pays for each knot exactly once.</p>
+    <p class="inmath"><b class="lbl">In the math</b>If the chain cost m³, <span class="m">x/m + m²</span> is smallest near m = x<sup>1/3</sup>, giving x<sup>2/3</sup> instead of √x. Alpöge's timeline: an early count “would stop at 2/3”.</p>
+    <div class="tags"><span class="tag real">"2/3": Alpöge's timeline</span><span class="tag reading">the m³ example: our illustration</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-stepanov" data-tone="purple" data-title="Old Grey's knot">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>“I've seen this shape before,” said Grey. “Long ago a weaver named Stepanov tied every knot over and over, and with that one trick settled the question in a round aviary far from here.”</p>
+    <p>“Then why not here?” “To tie a knot twice you need a kind of slope, and whole numbers have none. That wall stood for more than fifty years, until these passes got over it.”</p>
+    <p class="inmath"><b class="lbl">In the math</b>Stepanov, 1969: a polynomial of degree D with roots of multiplicity m at the points gives points × m ≤ D. Here, G × m ≤ x + m². Multiplicity needs derivatives, and integers have none. The author calls each lift “one more order of multiplicity”.</p>
+    <div class="tags"><span class="tag reading">the multiplicity claim is the author's; the comparison is ours</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-noise" data-tone="blue" data-part="IX. The supporting cast" data-title="Steps E and F: no tangles, calm weather">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Off the main road, out toward the Far Ones' country, stood the last two landmarks. The Far Ones made sure the loom's many pieces never tangled: in their many directions, almost any two strands run nearly at right angles. And deep inside the giant number systems, the weather stayed calm.</p>
+    <p>Neither could decide the answer. But without them, the loom would fail.</p>
+    <p class="inmath"><b class="lbl">In the math</b>E: overlap ≤ about <span class="m">e<sup>−x<sup>ε</sup>/8</sup></span>, and it must shrink to nothing. F: Selmer-group noise (cousins of Ш) ≤ <span class="m">e<sup>x<sup>ε</sup>/2</sup></span>, with room. The ½ comes from Step C.</p>
+    <div class="tags"><span class="tag schem">schematic</span><span class="tag reading">right angles: our picture</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-forward" data-tone="gold" data-part="X. Running it forward, and what it unlocks" data-title="Now run it forward">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Now Kito ran the whole story forward. √x passes of the loom put a limit on one pile of twigs. Grey's rows of signs brought back all four piles. That capped the chorus on the far dawns.</p>
+    <p>And the echo trap left no room for any bird above the middle wire.</p>
+    <p class="inmath"><b class="lbl">In the math</b>Geometric divisibility estimates → bounds on weighted prime sums → zero-free regions for L-functions, with the exponent ½ + ε for every ε &gt; 0.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-checks" data-tone="green" data-title="The knot inspector">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>The inspector had tugged every knot, using only the oldest, most trusted rules. Within two days, five other inspectors, each working alone, had checked it again and agreed.</p>
+    <p>“Checked,” said Grey, “is not the same as understood.”</p>
+    <p class="inmath"><b class="lbl">In the math</b>Lean's kernel checked every step, using only Lean's standard axioms. By 22 November rebuilds matched byte for byte, five independent checkers had accepted it, and Lean and Mathlib maintainers had certified statement and proof; one official run was still finishing. Nobody has yet written the core argument by hand.</p>
+    <div class="tags"><span class="tag real">status as of 22 Nov 2026</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-ifholds" data-tone="green" data-title="If it holds">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Up on a high shelf sat a row of old eggs, each labelled “assuming GRH”. Generations of weavers had laid them there and waited.</p>
+    <p>If the proof holds, they hatch, all at once.</p>
+    <p class="inmath"><b class="lbl">In the math</b>Miller's fast primality test becomes provably correct; primes arrive in every progression with near-perfect regularity; “Siegel zeros” cannot exist. The files also add new libraries and a counting theorem for any number field. The proof restates 444 published theorems; each still needs a human check.</p>
+    <div class="tags"><span class="tag reading">the author's further previews are not in the code</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-handmap" data-tone="green" data-part="XI. Old Grey's stories: toward a why" data-title="A first map drawn by hand">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>That night Grey told stories, because nobody yet knows <b>why</b> the loom works.</p>
+    <p>“The very next day,” said Grey, “a weaver named Michael Rubinstein drew the first map by hand. It shows the whole net as one big weighing, and traces the road from a single knot to the middle wire. The road is drawn in ink. The knot itself is still borrowed from the net.”</p>
+    <p class="inmath"><b class="lbl">In the math</b>A 164-page draft (21 Nov), written with three AI systems, reads the proof as Step D's two-way count with a better number and reduces it to one inequality, <b>(M)</b>. (M) ⇒ RH is written out by hand; (M) itself is still taken from the Lean code.</p>
+    <div class="tags"><span class="tag real">from the draft's own summary</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-lemniscate" data-tone="green" data-title="A number divisible at just the right primes">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>“The better bundle,” said Grey, “comes from a figure-eight flight.” Its numbers are all whole. Some twigs are forced into them smoothly, the same share every time, with none of the old rounding. Others are never forced at all.</p>
+    <p>“The blind spot again,” said Kito. “Just like the four piles!”</p>
+    <p class="inmath"><b class="lbl">In the math</b>The <b>lemniscate sine</b>, inverse of <span class="m">∫ dt/√(1 − t⁴)</span>, has whole-number derivatives 1, −12, 3024, −4390848, … Primes ≡ 3 mod 4 divide the n-th about n·p/(p² − 1) times; 5 and 13 are not forced.</p>
+    <div class="tags"><span class="tag real">computed exactly, n up to 201</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-clockcurve" data-tone="purple" data-title="The round aviary">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Grey grew up in a round aviary where counting wraps around like a clock. There, the old question has an answer.</p>
+    <p>Take a curve and count its points on a clock with any number of hours. The count always lands close to the number of hours, and the birds there know exactly how close.</p>
+    <p class="inmath"><b class="lbl">In the math</b><span class="m">y² = x³ − x + 1</span> on a clock with p hours has about p points, never off by more than 2√p: Hasse, 1933; Weil, for every curve. The RH of clock arithmetic, with two classic proofs: Stepanov's balance, and a positivity.</p>
+    <div class="tags"><span class="tag real">counted live</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-hasse" data-tone="blue" data-title="A quadratic that can't go negative">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>The aviary's proof is short. Grey strung a hammock between two posts. “Its height counts whole things,” said Grey, “so it can never go below the ground.”</p>
+    <p>Kito tugged it lower and lower. Up to a point it held. Past that point it would have to sink into the earth, and it can't. That point is exactly the limit.</p>
+    <p class="inmath"><b class="lbl">In the math</b>The degree of r − s·Frobenius is r² + a·r·s + p·s², a whole number ≥ 0. Never negative ⇒ discriminant ≤ 0 ⇒ a² ≤ 4p ⇒ |a| ≤ 2√p (+9 at p = 41).</p>
+    <p class="try">Drag a past the limit.</p>
+    <div class="tags"><span class="tag real">the textbook proof, exact</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-positivity" data-tone="blue" data-title="The positivity was in plain sight">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>“So which is it,” asked Kito, “a balance or a positivity?”</p>
+    <p>“In this loom, both,” said Grey. “You can't have part of a twig. A bundle that isn't empty holds at least one whole twig.” That plain fact sits right where the passes are measured.</p>
+    <p class="inmath"><b class="lbl">In the math</b>Stepanov's “roots ≤ degree” has a whole-number twin: <b>a nonzero integer is at least 1 in size</b>. For lattices it is the <b>slope inequality</b>, on the path to the main theorem; Rubinstein's draft draws the same parallel.</p>
+    <div class="tags"><span class="tag real">traced in the dependency data</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-route" data-tone="blue" data-title="The author's route: weak positivity, amplified">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Grey read from the author's notebook. In early October there was only a faint note: a positivity so weak it kept the birds off just a thin strip of wire.</p>
+    <p>Then, on 15 November: wind it through the loom again and again, as many times as the square root. One faint note, echoed through every pass, became a full chorus.</p>
+    <p class="inmath"><b class="lbl">In the math</b>Notes: “W(1<sub>S</sub>) ≥ 0 via a determinant … bootstrap!!”, then “Iterated theta lifts … wins multiplicity m. Time to take m like √X.” Weil, 1952: RH ⇔ W ≥ 0. The determinant became the slope inequality.</p>
+    <div class="tags"><span class="tag real">quotes from the author's Remark</span><span class="tag reading">the thin strip: Rubinstein's reading and ours</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-nosurface" data-tone="purple" data-title="Why this route could work">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>“Why did this road work when others stalled?” asked Kito.</p>
+    <p>“The aviary's proof stands on a floor,” said Grey, “the curve times itself. For whole numbers that floor has never been built, not even by the Far Ones. Stepanov's road never needed it. The author thought hard about building the floor, and took the other road.”</p>
+    <p class="inmath"><b class="lbl">In the math</b>Weil's proof uses the surface C × C. Its whole-number analogue would need the hoped-for “field with one element”, F<sub>1</sub>. The author weighed “how hard fighting for some sort of F<sub>1</sub> … would be”.</p>
+    <div class="tags"><span class="tag reading">our reading; no expert has said this yet</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-threads" data-tone="gold" data-title="Three threads to pull">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Kito wanted more. “Then pull a thread,” said Grey.</p>
+    <p>Kito tugged the middle one: weave fewer passes. With a fence partway down the valley, the walk stops early. The chorus is held to a weaker limit, and the trap clears only part of the strip. No one has ever cleared even that much.</p>
+    <p>The other two threads are still loose. Does the loom, run in the round aviary, become Stepanov's knot? And why does tying knots over and over make a positivity so strong?</p>
+    <p class="inmath"><b class="lbl">In the math</b>With m = x<sup>θ</sup> passes (θ ≤ ½), x/m + m gives G(x) ≲ x<sup>1−θ</sup>: no zeros with Re s &gt; 1 − θ. Simplified budget; the real proof may give nothing partial.</p>
+    <p class="try">Drag the fence.</p>
+    <div class="tags"><span class="tag reading">our arithmetic and reading, not in the proof</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="w-end" data-tone="gold" data-title="The end and sources">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <h1>The end</h1>
+    <p>At dawn Kito settled on the middle wire, among ten trillion others. Every bird ever spotted sits there. If the proof holds, every bird ever will.</p>
+    <p class="sub" style="font-size:0.9rem;text-align:left;font-style:normal">Sources: L. Alpöge, <i>Remark</i> (20 Nov 2026); the Lean proof, mirrored at <a href="https://github.com/leanprover-community/riemann-hypothesis">leanprover-community/riemann-hypothesis</a> and its reader's map (issue #5); ishaan2006, <a href="https://github.com/ishaan2006/rh-lean-reproduction">a human-readable account</a>; J. Shore's <a href="https://github.com/james-shore/rh-proof-dependencies">dependency data</a>; M. Rubinstein et al., <a href="https://www.math.uwaterloo.ca/~mrubinst/alpoge_claude_grh/">working draft</a>; A. Sutherland, <a href="https://math.mit.edu/~drew/grh/">verification results</a>; S. Allahyar, <a href="https://github.com/sahibzada-allahyar/math/blob/main/preprint/alpoge-riemann/reconstruction.pdf">reconstruction</a>; R. Zhang, <a href="https://www.ihes.fr/~rzhang/files/GRH%20note.pdf">preliminary note</a>; S. Slijepčević, <a href="https://cantabpi.com/grh.pdf">outline</a>. Lemniscate and clock-curve numbers are computed by this book; primes and ζ are computed live. The pictures are this book's interpretation, not the author's.</p>
+  </div>
+</section>
+
+</main>
+
+<nav class="dnav" aria-label="Pages">
+  <button type="button" id="prev" aria-label="Previous page">←</button>
+  <span id="counter"></span>
+  <button type="button" id="next" aria-label="Next page">→</button>
+</nav>
+<div class="hint" id="hint">← → keys, space, or swipe · C for contents</div>
+
+<div id="contents" role="dialog" aria-label="Contents"><button class="pill close" type="button" id="close-contents">Close ✕</button><div class="in" id="contents-in"></div></div>
+
+<script src="js/core.js"></script>
+<script src="js/data.js"></script>
+<script src="js/deck.js"></script>
+<script src="js/scenes-1.js"></script>
+<script src="js/scenes-2.js"></script>
+<script src="js/scenes-3.js"></script>
+<script src="js/scenes-weavers.js"></script>
+<script src="js/scenes-weavers-2.js"></script>
+<script src="js/scenes-weavers-3.js"></script>
+</body>
+</html>
