@@ -1,0 +1,103 @@
+/* deck.css: the picture-book version. One idea per page, an animated illustration and a few sentences. */
+html, body { height: 100%; overflow: hidden; }
+body.deck { margin: 0; background: var(--bg); color: var(--ink); font: 18px/1.55 "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif; }
+body.deck::before { /* faint paper grain */
+  content: ""; position: fixed; inset: 0; pointer-events: none; opacity: 0.5; z-index: 0;
+  background-image: radial-gradient(color-mix(in srgb, var(--ink) 5%, transparent) 0.6px, transparent 0.7px);
+  background-size: 5px 5px;
+}
+.dbar { position: fixed; top: 0; left: 0; right: 0; height: 50px; z-index: 20; display: flex; align-items: center; gap: 0.9rem; padding: 0 1rem;
+  font: 500 0.85rem "Avenir Next", "Segoe UI", system-ui, sans-serif; color: var(--muted); }
+.dbar .brand { color: var(--ink); text-decoration: none; font-weight: 600; white-space: nowrap; }
+.dbar .brand span { color: var(--accent); font: italic 1.05rem "STIX Two Math", "Times New Roman", serif; margin-right: 0.3em; }
+.dbar .part { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dbar .spacer { flex: 1; }
+.dbar button.pill, .dbar a.pill { border: 1px solid var(--rule); background: var(--surface); color: var(--ink); border-radius: 999px; padding: 0.28rem 0.8rem; font: inherit; cursor: pointer; text-decoration: none; white-space: nowrap; }
+.dbar button.pill:hover, .dbar a.pill:hover { border-color: var(--accent); }
+#theme-toggle { border: 1px solid var(--rule); background: var(--surface); color: var(--ink); border-radius: 999px; width: 60px; height: 30px; position: relative; cursor: pointer; padding: 0; flex: none; }
+#theme-toggle::before { content: "☀"; position: absolute; left: 8px; top: 4px; font-size: 14px; opacity: 0.8; }
+#theme-toggle::after { content: "☾"; position: absolute; right: 9px; top: 4px; font-size: 14px; opacity: 0.8; }
+#theme-toggle .knob { position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: var(--accent); transition: transform 0.25s; z-index: 1; }
+#theme-toggle[data-mode="dark"] .knob { transform: translateX(30px); }
+.dprogress { position: fixed; top: 0; left: 0; height: 3px; background: var(--accent); z-index: 30; transition: width 0.35s ease; }
+
+#stage { position: fixed; top: 50px; left: 0; right: 0; bottom: 0; z-index: 1; }
+.slide { position: absolute; inset: 0; display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(300px, 1fr); align-items: center; gap: 1.5rem;
+  padding: 0.5rem 4.2rem 3.6rem 2rem; opacity: 0; visibility: hidden; transform: translateX(40px); transition: opacity 0.45s ease, transform 0.45s ease, visibility 0s 0.45s; }
+.slide.before { transform: translateX(-40px); }
+.slide.on { opacity: 1; visibility: visible; transform: none; transition: opacity 0.45s ease, transform 0.45s ease, visibility 0s; }
+@media (prefers-reduced-motion: reduce) { .slide, .slide.on, .slide.before { transition: none; transform: none; } }
+
+.slide .art { position: relative; height: 100%; min-height: 0; display: flex; flex-direction: column; }
+.slide .art canvas { flex: 1; width: 100%; min-height: 0; display: block; touch-action: pan-y; }
+.slide .art .ctl { display: flex; flex-wrap: wrap; gap: 0.6rem 1.2rem; align-items: center; justify-content: center; padding: 0.3rem 0 0; font: 0.9rem "Avenir Next", system-ui, sans-serif; color: var(--muted); }
+.slide .art .ctl input[type=range] { accent-color: var(--accent); width: 170px; vertical-align: middle; }
+.slide .art .ctl output { display: inline-block; min-width: 2.6em; font-weight: 600; color: var(--ink); }
+.seg { display: inline-flex; border: 1px solid var(--rule); border-radius: 999px; overflow: hidden; vertical-align: middle; }
+.seg button { border: 0; background: var(--surface); color: var(--ink); padding: 0.2rem 0.7rem; font: inherit; cursor: pointer; }
+.seg button.on { background: var(--accent); color: var(--bg); font-weight: 600; }
+
+/* the words, on a soft watercolour wash */
+.slide .words { position: relative; padding: 2.2rem 2.2rem; max-height: 100%; overflow-y: auto; }
+.slide .words::before { content: ""; position: absolute; inset: 0.4rem; z-index: -1; border-radius: 46% 54% 42% 58% / 55% 44% 56% 45%;
+  background: radial-gradient(ellipse at 30% 35%, var(--wash) 0%, transparent 70%), radial-gradient(ellipse at 70% 65%, var(--wash) 0%, transparent 72%);
+  filter: blur(6px); opacity: 0.9; }
+.slide { --wash: color-mix(in srgb, var(--c-blue) 17%, transparent); }
+.slide[data-tone="gold"] { --wash: color-mix(in srgb, var(--c-gold) 20%, transparent); }
+.slide[data-tone="green"] { --wash: color-mix(in srgb, var(--c-green) 17%, transparent); }
+.slide[data-tone="red"] { --wash: color-mix(in srgb, var(--c-red) 14%, transparent); }
+.slide[data-tone="purple"] { --wash: color-mix(in srgb, var(--c-purple) 15%, transparent); }
+.words p { font-style: italic; font-size: 1.32rem; line-height: 1.5; margin: 0 0 0.75em; text-align: center; text-wrap: pretty; }
+.words p:last-of-type { margin-bottom: 0; }
+.words b { font-style: normal; font-weight: 700; }
+.words .m { font-family: "STIX Two Math", "Cambria Math", "Times New Roman", serif; font-style: italic; white-space: nowrap; }
+.words .eq { font-family: "STIX Two Math", "Cambria Math", "Times New Roman", serif; font-style: normal; font-size: 1.35rem; text-align: center; margin: 0.4em 0 0.7em; white-space: nowrap; overflow-x: auto; }
+.words h1 { font: 600 2.3rem/1.15 "Avenir Next", system-ui, sans-serif; text-align: center; margin: 0 0 0.6rem; }
+.words .sub { font-style: italic; text-align: center; color: var(--muted); font-size: 1.15rem; }
+.words .tags { text-align: center; margin-top: 1rem; font: 0.8rem "Avenir Next", system-ui, sans-serif; display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; }
+.tag { display: inline-block; border-radius: 999px; padding: 0.12rem 0.6rem; border: 1px solid var(--rule); color: var(--muted); background: var(--surface); font: 600 0.72rem "Avenir Next", system-ui, sans-serif; letter-spacing: 0.03em; }
+.tag.reading { border-color: var(--c-red); color: var(--c-red); }
+.tag.schem { border-color: var(--c-purple); color: var(--c-purple); }
+.tag.real { border-color: var(--c-green); color: var(--c-green); }
+a.deeper { color: var(--c-blue); text-decoration: none; font: 600 0.8rem "Avenir Next", system-ui, sans-serif; }
+a.deeper:hover { text-decoration: underline; }
+.try { font: 0.85rem "Avenir Next", system-ui, sans-serif !important; font-style: normal !important; color: var(--accent); }
+
+/* page turning */
+.dnav { position: fixed; right: 1rem; bottom: 0.9rem; z-index: 20; display: flex; align-items: center; gap: 0.6rem; font: 600 0.85rem "Avenir Next", system-ui, sans-serif; color: var(--muted); }
+.dnav button { width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--rule); background: var(--surface); color: var(--ink); font-size: 1.25rem; cursor: pointer; box-shadow: var(--shadow); }
+.dnav button:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.dnav button:disabled { opacity: 0.35; cursor: default; }
+.hint { position: fixed; left: 50%; bottom: 1.1rem; transform: translateX(-50%); z-index: 15; font: 0.8rem "Avenir Next", system-ui, sans-serif; color: var(--muted); transition: opacity 0.6s; pointer-events: none; }
+
+/* contents overlay */
+#contents { position: fixed; inset: 0; z-index: 40; background: color-mix(in srgb, var(--bg) 94%, transparent); backdrop-filter: blur(6px); display: none; overflow-y: auto; }
+#contents.open { display: block; }
+#contents .in { max-width: 920px; margin: 0 auto; padding: 4.5rem 1.5rem 3rem; columns: 2 300px; column-gap: 2.5rem; }
+#contents h2 { font: 600 1.6rem "Avenir Next", system-ui, sans-serif; margin: 0 0 1rem; column-span: all; }
+#contents .grp { break-inside: avoid; margin-bottom: 1.2rem; }
+#contents h3 { font: 600 0.8rem "Avenir Next", system-ui, sans-serif; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin: 0 0 0.3rem; }
+#contents a { display: block; color: var(--ink); text-decoration: none; padding: 0.12rem 0; font-size: 0.98rem; }
+#contents a span { display: inline-block; width: 2.1em; color: var(--muted); font: 0.8rem "Avenir Next", system-ui, sans-serif; }
+#contents a.cur { color: var(--accent); font-weight: 600; }
+#contents a:hover { color: var(--c-blue); }
+#contents .close { position: fixed; top: 0.7rem; right: 1rem; }
+
+@media (max-width: 860px) {
+  .dbar .part { display: none; }
+  .slide { grid-template-columns: 1fr; grid-template-rows: auto minmax(0, 1fr); gap: 0; padding: 0.4rem 0.5rem 4.2rem; align-items: start; }
+  .slide .art { height: auto; }
+  .slide .art canvas { flex: none; aspect-ratio: 1000 / 660; height: auto; }
+  .slide .words { padding: 0.9rem 1.1rem 0.6rem; max-height: 100%; align-self: center; }
+  .words p { font-size: 1.06rem; margin-bottom: 0.55em; }
+  .words .eq { font-size: 1.08rem; }
+  .words h1 { font-size: 1.6rem; }
+  .words .sub { font-size: 1rem; }
+  .slide .art .ctl { font-size: 0.82rem; gap: 0.4rem 0.8rem; }
+  .slide .art .ctl input[type=range] { width: 120px; }
+  .dnav { right: 0.6rem; bottom: 0.6rem; }
+  .dnav button { width: 40px; height: 40px; }
+  .hint { display: none; }
+  .dbar .brand { font-size: 0.8rem; }
+  .dbar .long { display: none; }
+}

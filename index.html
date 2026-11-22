@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A Walk Along the Critical Line: the Riemann Hypothesis proof, as a picture book</title>
+<meta name="description" content="An illustrated, one-idea-per-page tour of the November 2026 Lean proof of the Riemann Hypothesis, for readers who know calculus and complex variables.">
+<script>
+  (function () { var t = localStorage.getItem("rh-theme"); if (!t) t = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; document.documentElement.dataset.theme = t; })();
+</script>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/deck.css">
+</head>
+<body class="deck">
+
+<div class="dprogress" id="dprogress"></div>
+<header class="dbar">
+  <a class="brand" href="#1"><span>ζ</span>A Walk Along the Critical Line</a>
+  <span class="part" id="partname"></span>
+  <span class="spacer"></span>
+  <button class="pill" id="open-contents" type="button" aria-haspopup="dialog">Contents</button>
+  <button id="theme-toggle" type="button" aria-label="Toggle dark mode"><span class="knob"></span></button>
+</header>
+
+<main id="stage" aria-live="polite">
+
+<!-- ======================================================= opening -->
+<section class="slide" data-scene="cover" data-tone="gold" data-part="Opening" data-title="Cover">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <h1>A Walk Along the Critical Line</h1>
+    <p class="sub">An illustrated tour of the first computer-checked proof of the Riemann Hypothesis</p>
+    <p class="try" style="margin-top:1.2rem">Press → or tap the arrow to turn the page</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="howto" data-tone="gold" data-title="How to read this book">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Each page holds one idea. If you've met calculus and complex numbers, you have everything you need.</p>
+    <p>Some pages are marked <span class="tag real">real data</span>, some <span class="tag schem">schematic</span>, and a few <span class="tag reading">our reading</span>, where the picture is an interpretation and not something the proof says.</p>
+    <p>Wherever a picture says so, it is computed live in your browser from real primes and real zeros of ζ.</p>
+  </div>
+</section>
+
+<!-- ======================================================= I. primes -->
+<section class="slide" data-scene="sieve" data-part="I. The primes" data-title="Numbers that can't be split">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Some numbers can't be split into smaller factors: 2, 3, 5, 7, 11, 13, … These are the <b>primes</b>.</p>
+    <p>Cross out the multiples of 2, then of 3, then of 5 and 7. Whatever survives is prime, and every other number is built by multiplying them.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="gaps" data-title="Scattered, up close">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Up close, the primes look scattered at random.</p>
+    <p>Sometimes two arrive side by side. Sometimes there's a long silence. No simple rule tells you where the next one will land.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="staircase" data-title="Orderly, from far away">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>But step back, and a pattern appears.</p>
+    <p>Give each prime p a weight of ln p, and keep a running total. Call it <b>ψ(x)</b>. The total climbs almost exactly along the line <span class="m">y = x</span>.</p>
+    <div class="tags"><span class="tag real">real data</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="wobble" data-title="How far it strays">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>How far does the staircase stray from the line? Zoom in on the difference, <span class="m">ψ(x) − x</span>, and it wobbles back and forth.</p>
+    <p>The <b>Riemann Hypothesis</b> says the wobbles stay about the size of <b>√x</b>, forever.</p>
+    <div class="tags"><span class="tag real">real data, primes up to 200,000</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="coins" data-title="As fair as coins">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Why √x? Flip a fair coin n times and count heads minus tails. The count drifts, but only by about <b>√n</b>.</p>
+    <p>So the Riemann Hypothesis says the primes are as fair as coins: no hidden bias, just honest noise.</p>
+  </div>
+</section>
+
+<!-- ======================================================= II. zeta -->
+<section class="slide" data-scene="euler" data-part="II. Zeta and its zeros" data-title="One function that knows the primes">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>In 1859 Bernhard Riemann studied one function:</p>
+    <div class="eq">ζ(s) = 1 + 1/2<sup>s</sup> + 1/3<sup>s</sup> + 1/4<sup>s</sup> + ⋯</div>
+    <p>Euler had noticed it secretly knows the primes: the same number is also a <b>product with one factor per prime</b>. Watch the sum and the product race to the same value.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="landscape" data-tone="purple" data-title="A landscape with holes">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Riemann let s be a complex number. Then |ζ(s)| becomes a landscape over the plane.</p>
+    <p>Most of it is gentle hills. But here and there the ground drops all the way to zero. Those points are the <b>zeros</b> of ζ, and they are the heart of the story.</p>
+    <div class="tags"><span class="tag real">computed live</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="line" data-tone="purple" data-title="They all line up">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Every zero ever found sits on one vertical line, where the real part is exactly ½. It's called the <b>critical line</b>.</p>
+    <p>The Riemann Hypothesis says they all do. Computers have checked more than ten trillion, but there are infinitely many, so checking can never finish.</p>
+    <div class="tags"><span class="tag real">the first 200 zeros</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="music" data-tone="purple" data-title="Zeros are notes">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Here's why zeros matter. Each zero is a pure tone, and the primes are the music.</p>
+    <p>Start from the smooth line y = x and add one wave for each zero. With more and more zeros, the prime staircase appears, step by step.</p>
+    <div class="tags"><span class="tag real">the first 200 zeros</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="offkey" data-tone="red" data-title="One off-key note">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>A zero on the line makes a wave whose size grows like <b>√x</b>.</p>
+    <p>A zero off the line, with real part β bigger than ½, would make a wave growing like <b>x<sup>β</sup></b>. Sooner or later it drowns out everything else. One off-key note would spoil the whole song.</p>
+    <div class="tags"><span class="tag schem">schematic</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="colors" data-tone="purple" data-title="Coloring the primes">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>There isn't just one ζ. Color the primes with a repeating pattern of +1 and −1, called a <b>Dirichlet character</b>, and you get a new zeta function with its own zeros.</p>
+    <p>The <b>Generalized Riemann Hypothesis</b> says all of those zeros sit on the line too. This proof does every one of them.</p>
+  </div>
+</section>
+
+<!-- ======================================================= III. the proof -->
+<section class="slide" data-scene="files" data-tone="green" data-part="III. The proof" data-title="A proof made of code">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>In November 2026 the mathematician Levent Alpöge, working with Claude, released a proof. Not a paper: <b>175,187 files</b> of <b>Lean</b>, a language in which a computer checks every logical step.</p>
+    <p>No human has read it all yet. So we read it like a map.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="map" data-tone="green" data-title="The map">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>The proof has six steps. We'll walk them backwards from the goal, because each step answers the question the one before it leaves open.</p>
+    <p>First <b>A</b>, then <b>B</b>, then <b>D</b>, then <b>C</b>. E and F hold up the others from below.</p>
+  </div>
+</section>
+
+<!-- ======================================================= IV. Step A -->
+<section class="slide" data-scene="gz" data-part="IV. Step A: Landau's trap" data-title="The quantity everything is about">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>The proof watches one quantity, <b>G(x)</b>: a smoothed version of the prime total, minus its expected trend.</p>
+    <p>If RH is true, G(x) divided by √x stays inside a thin band forever. Here it is, computed from every prime up to 200,000.</p>
+    <div class="tags"><span class="tag real">real data</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="rogue" data-tone="red" data-title="A ceiling is enough">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Now imagine one zero just off the line. Its wave grows, and the crests climb higher and higher.</p>
+    <p>So to rule such a zero out, it's enough to show G(x) never gets too <b>high</b>. Not a two-sided band: just a <b>ceiling</b>.</p>
+    <div class="tags"><span class="tag schem">hypothetical zero added to real data</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="trap" data-tone="red" data-title="Landau's trap">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Why does a ceiling catch zeros? In 1905 Edmund Landau saw that each zero becomes a <b>pole</b> of a Laplace transform.</p>
+    <p>A pole close by forces Taylor coefficients to be big. The ceiling forces them to be small. If the zero is right of the ceiling's line, both can't be true.</p>
+    <div class="tags"><span class="tag schem">schematic</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="windows" data-tone="red" data-title="Only on windows">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>The proof gets away with even less. The ceiling only has to hold on scattered <b>windows</b> of x, from some Y up to Y<sup>1.5</sup>.</p>
+    <p>That's because each Taylor coefficient only looks at one stretch of x. As you go further out, its view fits inside a single window.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="goal" data-tone="gold" data-title="The whole job, in one line">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>So everything comes down to one sentence:</p>
+    <p><b>show that G(x) is at most about √x, on enough windows.</b></p>
+    <p>All the exotic machinery from here on serves that one goal.</p>
+  </div>
+</section>
+
+<!-- ======================================================= V. Step B -->
+<section class="slide" data-scene="bins" data-tone="green" data-part="V. Step B: four bins" data-title="A blind spot">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>The proof's machine has a blind spot. It's built from two helper primes, and they give every other prime two labels, each +1 or −1.</p>
+    <p>That sorts the primes into four bins, and the machine can only count <b>one</b> of them.</p>
+    <div class="tags"><span class="tag schem">toy helpers 3 and 7</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="fourier" data-tone="green" data-title="Getting the rest back">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Fourier analysis gets the rest back. Four ±1 patterns combine to pick out exactly one bin, like coordinates in a basis.</p>
+    <p>So one bin = ¼ × (all primes + three "helper" sums). The helpers are chosen so their sums are already known to be small. A ceiling on one bin becomes a ceiling on all primes.</p>
+  </div>
+</section>
+
+<!-- ======================================================= VI. Step D -->
+<section class="slide" data-scene="twoways" data-tone="gold" data-part="VI. Step D: count two ways" data-title="Count one thing two ways">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>How does the machine bound one bin? With a trick from 1850: measure one number in two ways.</p>
+    <p>Take a! = 1 · 2 · 3 ⋯ a. Measure it <b>by its primes</b>, or measure it <b>by its size</b>. The two bars must be the same length, so the size teaches you about the primes.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="legendre" data-tone="gold" data-title="Counting by primes, in layers">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>How many times does the prime 3 divide 81!? Every third number gives one factor. Every ninth gives a second. Every 27th, a third.</p>
+    <p>That's <b>Legendre's formula</b>: about a/p + a/p² + a/p³ + ⋯ factors of p.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="overflow" data-tone="gold" data-title="The proof's twist: overflow">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>The proof adds a twist. It measures a huge number a <b>against</b> a smaller one b, with <span class="m">a = x · b</span>.</p>
+    <p>At each prime power pᵉ it keeps only the <b>overflow</b>: how far a/pᵉ sticks out above b. Once pᵉ passes x, nothing sticks out.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="gap" data-tone="gold" data-title="The gap is G(x)">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Add up the overflows, each weighted by ln p, and out comes exactly the prime sum inside G(x).</p>
+    <p>Subtract the size side, and what's left is <b>b · G(x)</b>. The quantity Step A needs is the gap between two ways of measuring.</p>
+  </div>
+</section>
+
+<!-- ======================================================= VII. one lift -->
+<section class="slide" data-scene="machine" data-tone="blue" data-part="VII. What one lift does" data-title="A theta lift">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Where can that measurement be made so that geometry forces an inequality? The proof's answer is a <b>theta lift</b>: a classical machine that carries a highly symmetric function from one group to a partner group.</p>
+    <p>For us, one feature matters. It pairs polynomials of a <b>huge</b> degree a with polynomials of a <b>small</b> degree b.</p>
+    <div class="tags"><span class="tag schem">schematic</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="ring" data-tone="blue" data-title="A ring of slots">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>The polynomials live in a ring of <b>slots</b>. In its home slot, a polynomial has degree a in its ordinary variables and degree b in a second, mirror-image set.</p>
+    <p>Going around the ring, every other slot swaps the two.</p>
+    <div class="tags"><span class="tag schem">schematic</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="pascal" data-tone="blue" data-title="A magic move at p">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>At a prime p there's a magic move. In arithmetic mod p, <span class="m">(u + v)<sup>p</sup> = u<sup>p</sup> + v<sup>p</sup></span>, because every middle coefficient is divisible by p.</p>
+    <p>So the substitution x → x<sup>p</sup>, called <b>Frobenius</b>, plays nicely with everything. It divides a polynomial's degree by p, and it moves it to the next slot.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="hops" data-tone="blue" data-title="Hops and overflow">
+  <div class="art"><canvas aria-hidden="true"></canvas>
+    <div class="ctl"><label>x = a/b <input type="range" class="x" min="2" max="400" value="100"><output></output></label>
+    <label>p <span class="seg ps"><button data-p="2">2</button><button data-p="3" class="on">3</button><button data-p="5">5</button><button data-p="7">7</button></span></label></div>
+  </div>
+  <div class="words">
+    <p>Follow the big degree around the ring. After e hops it's a/pᵉ.</p>
+    <p>Even hops land on its own side, with room for a: it fits. Odd hops land on the mirror side, with room for only b. Whatever sticks out, shown in red, turns into <b>forced factors of p</b>.</p>
+    <p class="try">Try other values of x and p.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="three" data-tone="blue" data-title="Three mysteries, one picture">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>That one picture explains the shape of the overflow formula from Step D.</p>
+    <p>Dividing by pᵉ is Frobenius. Subtracting b is the room on the mirror side. Counting only odd e is the hops that change sides. And once pᵉ is past x, everything fits.</p>
+    <div class="tags"><span class="tag reading">our reading of the source's formulas</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="denser" data-tone="blue" data-title="Forced factors make the lattice bigger">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Forced factors are good news. The polynomials form a <b>lattice</b>, a grid of points. If every one of them is divisible by p, you may divide the whole lattice by p.</p>
+    <p>The grid gets denser, and in this kind of geometry a denser lattice counts as <b>bigger</b>. The proof builds the lattice it measures in exactly this way.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="period" data-tone="blue" data-title="The size side, at infinity">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>The size side is measured "at infinity", with the areas of very special lattices in the complex plane.</p>
+    <p>A formula of Chowla and Selberg computes those areas exactly, and Euler's constant γ falls out: the same γ that G(x) subtracts.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="scale" data-tone="red" data-title="True, but useless">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Geometry then says the books can't be too unbalanced: the prime side is at most the size side, plus errors. For one lift that reads</p>
+    <div class="eq">b · G(x) ≤ errors</div>
+    <p>But the errors are about b · x, far too big to say anything. One lift isn't enough.</p>
+  </div>
+</section>
+
+<!-- ======================================================= VIII. chain -->
+<section class="slide" data-scene="chain" data-tone="green" data-part="VIII. A chain of √x lifts" data-title="Do it again, m times">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>So do it again. Feed the output of one lift into another, m times. Each lift turns one minus sign of its group into a plus.</p>
+    <p>Every round forces its own factors of p, and the gains <b>add up</b>.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="cost" data-tone="green" data-title="What the chain costs">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>The price: every lift adds a block of new coordinates, so lift number j has more to carry than the ones before. It costs about j.</p>
+    <p>The whole chain costs about 1 + 2 + ⋯ + m ≈ <b>m²/2</b>.</p>
+    <div class="tags"><span class="tag reading">likely, not traced line by line</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="ineq" data-tone="green" data-title="The inequality">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Put it together. In units of b:</p>
+    <div class="eq">m · G(x) ≤ x + m²</div>
+    <p>The gap G, collected once per lift, is at most an overhead x paid once, plus the chain's cost. Divide by m:</p>
+    <div class="eq">G(x) ≤ x/m + m</div>
+  </div>
+</section>
+
+<section class="slide" data-scene="minimum" data-tone="green" data-title="The best chain length">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>A longer chain spreads the overhead over more rounds, but costs more. Where's the sweet spot?</p>
+    <p>Set the derivative to zero: <b>m = √x</b>, and then G(x) ≤ 2√x. That's exactly the size the Riemann Hypothesis needs.</p>
+    <p class="try">Drag the red point.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="barrier" data-tone="red" data-title="The 2/3 barrier">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>It could easily have gone wrong. If each lift had to redo the bookkeeping of every lift before it, the chain would cost m³, and the best bound would be x<sup>2/3</sup>: useless.</p>
+    <p>The proof charges every piece of bookkeeping to exactly one lift.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="stepanov" data-tone="purple" data-title="Multiplicity without derivatives">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>The author calls each lift "one more order of multiplicity." Over finite fields, Stepanov bounded points with a polynomial vanishing m times at each: <span class="m">(points) × m ≤ degree</span>.</p>
+    <p>Here too, the thing to bound gets multiplied by m. A chain of lifts stands in for "differentiating whole numbers."</p>
+  </div>
+</section>
+
+<!-- ======================================================= IX. forward -->
+<section class="slide" data-scene="forward" data-tone="gold" data-part="IX. Running it forward" data-title="Now run it forward">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Now run the whole story forward.</p>
+    <p>A chain of √x lifts bounds one bin of primes. Fourier analysis recovers all the primes. That puts a ceiling on G(x), on windows. And Landau's trap leaves no room for a zero right of ½.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="checks" data-tone="green" data-title="How do we know it's right?">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>A small trusted core of Lean, the <b>kernel</b>, checked every step. Independent builds agree, only Lean's standard axioms are used, and the statement is the community library's own.</p>
+    <p>A verdict from a second, independently written checker was still pending when this was written.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="critique" data-tone="red" data-title="The placeholder critique">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>One critique found "geometry" in the files that is just a placeholder, defined to be True.</p>
+    <p>It really is there. But nothing in the proof ever looks inside it, so it can't make the result false. It does mean some names mislead about where the real work happens.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="unknown" data-tone="purple" data-title="What nobody has yet">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>What nobody has yet is a human understanding of <b>why</b> it works.</p>
+    <p>The pictures in this book are a first reading, not the last word. The author expects the proof to be "massively simplified, likely immediately."</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="end" data-tone="gold" data-title="The end and sources">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <h1>The end</h1>
+    <p class="sub" style="font-size:0.95rem;text-align:left;font-style:normal">Sources: L. Alpöge, <i>Remark</i> (20 Nov 2026); the Lean proof, mirrored at <a href="https://github.com/leanprover-community/riemann-hypothesis">leanprover-community/riemann-hypothesis</a>, and the reader's map in its issue #5; ishaan2006, <a href="https://github.com/ishaan2006/rh-lean-reproduction">a human-readable account</a>; J. Shore's <a href="https://github.com/james-shore/rh-proof-dependencies">dependency-graph dataset</a>; J. L. Nielsen, <i>The Invalidity of Alpöge's Proposed Proof</i> (20 Nov 2026). Primes are sieved and ζ is evaluated live in your browser; the first 200 zeros were precomputed with mpmath. The pictures are an interpretation by this book, not by the proof's author.</p>
+  </div>
+</section>
+
+</main>
+
+<nav class="dnav" aria-label="Pages">
+  <button type="button" id="prev" aria-label="Previous page">←</button>
+  <span id="counter"></span>
+  <button type="button" id="next" aria-label="Next page">→</button>
+</nav>
+<div class="hint" id="hint">← → keys, space, or swipe · C for contents</div>
+
+<div id="contents" role="dialog" aria-label="Contents"><button class="pill close" type="button" id="close-contents">Close ✕</button><div class="in" id="contents-in"></div></div>
+
+<script src="js/core.js"></script>
+<script src="js/data.js"></script>
+<script src="js/deck.js"></script>
+<script src="js/scenes-1.js"></script>
+<script src="js/scenes-2.js"></script>
+</body>
+</html>
