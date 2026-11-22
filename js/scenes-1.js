@@ -366,7 +366,9 @@
         });
         A.clip(() => K.line(XS.map((x, i) => [A.X(x), A.Y(ys[i])]), { color: col.purple, width: 2.6 }));
         K.text(`zeros used: ${Kz}`, 130, 40, { size: 26, bold: true, color: col.purple });
-        K.text("gray: the true staircase ψ(x)", 560, 40, { size: 19, color: col.muted });
+        PRIMES.filter((q) => q < 40).forEach((q) => K.dot(A.X(q), A.Y(-2) - 7, 4.5, col.gold));
+        K.text("gray: the true staircase ψ(x)", 560, 30, { size: 19, color: col.muted });
+        K.text("gold dots: the primes, where it steps", 560, 56, { size: 19, color: col.gold, bold: true });
         return t < 9.3;
       },
     };
