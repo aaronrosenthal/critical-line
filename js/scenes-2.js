@@ -57,31 +57,70 @@
   }));
 
   // ------------------------------------------------------------------ 25 overflow against b
-  S("overflow", () => ({
-    draw(K, t) {
-      const { col } = K, x = 30, ns = []; for (let n = 2; n <= 40; n++) if (primePower(n)) ns.push(n);
-      const A = K.axes([90, 50, 860, 440], [0, ns.length], [0, 16]);
-      A.frame({ yticks: [[0, "0"], [5, "5b"], [10, "10b"], [15, "15b"]] });
-      const grow = K.ease(K.ph(t, 0.3, 2)), split = K.ph(t, 2.6, 3.4), bw = (A.X(1) - A.X(0)) * 0.7;
-      ns.forEach((n, i) => {
-        const v = (x / n) * grow, xa = A.X(i + 0.15), over = Math.max(0, v - 1);
-        if (split > 0 && over > 0) {
-          K.box(xa, A.Y(Math.min(v, 1)), bw, A.Y(0) - A.Y(Math.min(v, 1)), { color: null, fill: col.ink, fillAlpha: 0.25 });
-          K.box(xa, A.Y(v), bw, A.Y(1) - A.Y(v), { color: null, fill: col.red, fillAlpha: 0.25 + 0.55 * split });
-        } else K.box(xa, A.Y(v), bw, A.Y(0) - A.Y(v), { color: null, fill: n > x && split > 0 ? col.green : col.blue, fillAlpha: 0.6 });
-        K.text(String(n), xa + bw / 2, A.Y(0) + 20, { size: 15, align: "center", color: n > x ? col.green : col.muted });
-      });
-      if (split > 0) {
-        K.seg(A.X(0), A.Y(1), A.X(ns.length), A.Y(1), { color: col.gold, width: 3, sketch: false });
-        K.text("b", A.X(ns.length) + 8, A.Y(1), { size: 24, bold: true, color: col.gold });
-        K.text("red: the overflow, a/n − b", A.X(4), A.Y(13), { size: 22, bold: true, color: col.red });
-        K.text("past x = 30: nothing sticks out", A.X(ns.length) - 4, A.Y(4), { size: 19, align: "right", bold: true, color: col.green });
-      }
-      K.text("bars: a/n for each prime power n, with a = 30 · b", 100, 30, { size: 20, color: col.muted });
-      K.text("prime powers n", A.X(ns.length), A.Y(0) + 48, { size: 18, align: "right", color: col.muted });
-      return t < 3.6;
-    },
-  }));
+  S("overflow", ({ reduced }) => {
+    const ns = []; for (let n = 2; n <= 25; n++) if (primePower(n)) ns.push(n);
+    let x = 12, touched = false, A = null;
+    const sx0 = 200, sx1 = 760, sy = 590, XMIN = 3, XMAX = 16;
+    const near = (px, py) => Math.abs(py - sy) < 32 && px > sx0 - 26 && px < sx1 + 26;
+    const set = (px) => { x = Math.round(Math.max(XMIN, Math.min(XMAX, XMIN + ((px - sx0) / (sx1 - sx0)) * (XMAX - XMIN)))); };
+    return {
+      hit: near,
+      press(px, py) { if (!near(px, py)) return false; touched = true; set(px); return true; },
+      drag(px) { set(px); },
+      draw(K, t) {
+        const { col } = K, g = K.g, T = touched || reduced ? 99 : t;
+        A = K.axes([100, 60, 800, 400], [0, ns.length], [0, 8.6]);
+        A.frame({ yticks: [[0, "0"], [1, "b"], [4, "4b"], [8, "8b"]] });
+        const bw = (A.X(1) - A.X(0)) * 0.68, lvl = K.ease(K.ph(T, 2.3, 3.6)), mark = K.ph(T, 3.9, 4.6);
+        ns.forEach((n, i) => {
+          const grow = K.ease(K.ph(T, 0.3 + i * 0.09, 1.1 + i * 0.09)), v = (x / n) * grow, xa = A.X(i + 0.16);
+          const cover = Math.min(v, lvl), past = n > x;
+          // part under the waterline: grey; part above: blue, turning red once the water is up
+          if (cover > 0) K.box(xa, A.Y(cover), bw, A.Y(0) - A.Y(cover), { color: null, fill: col.axis, fillAlpha: 0.55 });
+          if (v > cover) K.box(xa, A.Y(v), bw, A.Y(cover) - A.Y(v), { color: null, fill: lvl >= 1 ? col.red : col.blue, fillAlpha: lvl >= 1 ? 0.8 : 0.6 });
+          K.text(String(n), xa + bw / 2, A.Y(0) + 20, { size: 16, align: "center", bold: past && mark > 0, color: past && mark > 0 ? col.green : col.muted });
+        });
+        // the waterline b rises
+        if (lvl > 0) {
+          K.seg(A.X(0), A.Y(lvl), A.X(ns.length), A.Y(lvl), { color: col.gold, width: 3.5, sketch: false });
+          K.text("b", A.X(ns.length) + 10, A.Y(lvl), { size: 26, bold: true, color: col.gold });
+        }
+        if (mark > 0) {
+          K.g.globalAlpha = Math.min(1, mark * 1.5);
+          // the cutoff at x
+          const k = ns.filter((n) => n <= x).length;
+          if (k < ns.length) {
+            const cxl = A.X(k + 0.08);
+            K.seg(cxl, A.Y(7.3), cxl, A.Y(0), { color: col.green, width: 2.2, dash: [7, 6], sketch: false });
+            K.text(`past x = ${x}:`, cxl + 10, A.Y(4.6), { size: 19, bold: true, color: col.green, halo: true });
+            K.text("under the line,", cxl + 10, A.Y(4.6) + 26, { size: 19, bold: true, color: col.green, halo: true });
+            K.text("no overflow", cxl + 10, A.Y(4.6) + 52, { size: 19, bold: true, color: col.green, halo: true });
+          }
+          // worked example on n = 3
+          const i3 = ns.indexOf(3), cx = A.X(i3 + 0.16) + bw + 8, top = x / 3;
+          if (top > 1.4) {
+            K.seg(cx, A.Y(top), cx, A.Y(1), { color: col.red, width: 2, sketch: false });
+            K.seg(cx - 4, A.Y(top), cx + 4, A.Y(top), { color: col.red, width: 2, sketch: false }); K.seg(cx - 4, A.Y(1), cx + 4, A.Y(1), { color: col.red, width: 2, sketch: false });
+            const f = (v) => (Number.isInteger(v) ? String(v) : v.toFixed(1));
+            const lx = A.X(i3 + 1.5), ly = A.Y(7.9);
+            K.seg(cx + 2, A.Y((top + 1) / 2), lx - 6, ly + 12, { color: col.red, width: 1.5, sketch: false });
+            K.text(`n = 3:  a/3 = ${f(top)}b,  overflow ${f(top - 1)}b`, lx, ly, { size: 19, bold: true, color: col.red, halo: true });
+          }
+          K.g.globalAlpha = 1;
+        }
+        K.text(`bars: a/n for each prime power n, with a = x · b`, 100, 30, { size: 20, color: col.muted });
+        K.text("prime powers n", A.X(ns.length), A.Y(0) + 46, { size: 18, align: "right", color: col.muted });
+        if (mark > 0) {
+          K.seg(sx0, sy, sx1, sy, { color: col.axis, width: 4, sketch: false });
+          const hx = sx0 + ((x - XMIN) / (XMAX - XMIN)) * (sx1 - sx0);
+          K.dot(hx, sy, 13, col.red); K.ring(hx, sy, 13, { color: K.surface, width: 2.5 });
+          K.text(`x = ${x}`, sx0 - 20, sy, { size: 20, bold: true, align: "right" });
+          K.text("drag", sx1 + 20, sy, { size: 17, color: col.muted });
+        }
+        return !touched && !reduced && t < 4.8;
+      },
+    };
+  });
 
   // ------------------------------------------------------------------ 26 the gap is G(x)
   S("gap", () => ({
