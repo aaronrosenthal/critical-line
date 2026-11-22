@@ -5,7 +5,6 @@
   // ------------------------------------------------------------------ theme
   const root = document.documentElement;
   const stored = localStorage.getItem("rh-theme");
-  const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
   function applyTheme(t) {
     root.dataset.theme = t;
     const btn = document.getElementById("theme-toggle");
@@ -15,10 +14,7 @@
     }
     redrawAll();
   }
-  root.dataset.theme = stored || (systemDark.matches ? "dark" : "light");
-  systemDark.addEventListener("change", (e) => {
-    if (!localStorage.getItem("rh-theme")) applyTheme(e.matches ? "dark" : "light");
-  });
+  root.dataset.theme = stored || "light"; // light by default; the toggle remembers a reader's choice
 
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
