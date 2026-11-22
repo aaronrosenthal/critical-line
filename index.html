@@ -513,6 +513,83 @@
   <div class="words">
     <p>What nobody has yet is a human understanding of <b>why</b> it works.</p>
     <p>The pictures in this book are a first reading, not the last word. The author expects the proof to be "massively simplified, likely immediately."</p>
+    <p>The last few pages take some first steps toward a why.</p>
+  </div>
+</section>
+
+<!-- ======================================================= XII. toward a why -->
+<section class="slide" data-scene="clockcurve" data-tone="purple" data-part="XII. Toward a why" data-title="A world where we know the answer">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>To see why an idea works, try it somewhere the answer is already known. Clock arithmetic is such a place.</p>
+    <p>Solve <span class="m">y² = x³ − x + 1</span> on a clock with p hours. The number of solutions always lands near p. In 1933 Helmut Hasse proved it is never off by more than <span class="m">2√p</span>, and Weil later proved a bound of the same kind for every curve. This is the Riemann Hypothesis of clock arithmetic.</p>
+    <div class="tags"><span class="tag real">counted live</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="clockwobble" data-tone="purple" data-title="Off by about √p, every time">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Here is how far off the count is, for every prime clock size up to 3,000. It wobbles the way the primes did near the start of this book, and stays inside a square-root envelope.</p>
+    <p>On clocks this is a theorem with several proofs. Two of them explain the square root in two different ways, and each has a counterpart in the new proof.</p>
+    <div class="tags"><span class="tag real">counted live</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="balance" data-tone="purple" data-title="The first explanation: a balance">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Stepanov's proof builds a polynomial with a root of multiplicity m at every point being counted. Each extra order of vanishing adds a batch of new conditions, which cost about m² in total. The overhead, about p, is paid only once. With constants dropped:</p>
+    <div class="eq">(error) × m ≲ p + m²</div>
+    <p>That is the shape of this proof's inequality, and in both the best m is a square root.</p>
+    <div class="tags"><span class="tag schem">schematic: constants dropped</span><span class="tag reading">the match is our reading</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="hasse" data-tone="blue" data-title="The second: a quadratic that can't go negative">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Hasse's theorem also has a short proof. Counting the points involves a map called Frobenius, and maps between curves have a <b>degree</b>: a whole number that is never negative.</p>
+    <p>For whole numbers r and s, the degree of "r minus s copies of Frobenius" is <span class="m">r² + a·r·s + p·s²</span>, where a is how far the count is off (+9 on the first page of this part). A quadratic that never dips below zero has discriminant at most 0. So <span class="m">a² ≤ 4p</span>, which says <span class="m">|a| ≤ 2√p</span>.</p>
+    <p class="try">Drag a past the limit.</p>
+    <div class="tags"><span class="tag real">the textbook proof, exact</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="positivity" data-tone="blue" data-title="Is there a hidden positivity?">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>So the square root has two classic explanations: a balance, and a positivity. The new proof visibly uses the balance.</p>
+    <p>Weil showed in 1952 that RH for the whole numbers is equivalent to a certain quantity never being negative. This proof only ever uses one-sided bounds: a ceiling for Landau's trap, an upper bound on lattice sizes. Perhaps its two-way count is a positivity in disguise. Whoever can name it may have found the "why".</p>
+    <div class="tags"><span class="tag reading">speculation</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="dial" data-tone="green" data-title="A dial, not a switch">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Nothing in <span class="m">m·G ≤ x + m²</span> forces m = √x. A chain of length <span class="m">x<sup>α</sup></span> gives <span class="m">G ≤ x<sup>1−α</sup> + x<sup>α</sup></span>, and Step A, as written in the code, turns any bound <span class="m">x<sup>θ</sup></span> into "no zeros with real part above θ".</p>
+    <p>So a short chain should give a weaker result. Even <span class="m">α = 0.01</span> would rule out zeros above 0.99, which nobody had proved before. If so, a short chain is the smallest case worth understanding. The code itself only uses chains near √x.</p>
+    <p class="try">Drag the dial.</p>
+    <div class="tags"><span class="tag real">Step A takes any θ</span><span class="tag reading">short chains: our extrapolation</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="weight" data-tone="gold" data-title="Where the new idea lives">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Where should we look? Of the 146,288 files the main theorem leans on, the two ends of the argument, Landau's trap and the four bins, take about 250. Folders about theta lifts take about 4,800, and background libraries take most of the rest.</p>
+    <p>A computer-checked proof can be taken apart by experiment: change one choice, rebuild, and see which step breaks. Whatever survives every change is the core.</p>
+    <div class="tags"><span class="tag real">file counts by folder name, approximate</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="threads" data-tone="gold" data-title="Three threads to pull">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>The author calls each lift "one more order of multiplicity". Three experiments could turn that phrase into an explanation.</p>
+    <p>Run the argument on clock arithmetic and see whether it becomes Stepanov's proof. Turn the dial down and see whether a short chain still works. Look for a positivity hiding in the two-way count. Until then, we have a checked proof and a promising slogan.</p>
+    <div class="tags"><span class="tag reading">our reading</span></div>
   </div>
 </section>
 
@@ -540,5 +617,6 @@
 <script src="js/deck.js"></script>
 <script src="js/scenes-1.js"></script>
 <script src="js/scenes-2.js"></script>
+<script src="js/scenes-3.js"></script>
 </body>
 </html>
