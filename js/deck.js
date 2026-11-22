@@ -104,10 +104,6 @@
   let cur = -1, loop = null, t0 = 0;
   const inst = new Map(); // slide index -> scene instance
 
-  slides.forEach((s) => { // "Go deeper" links
-    const more = s.dataset.more;
-    if (more) { const p = document.createElement("p"); p.style.textAlign = "center"; p.style.marginTop = "0.9rem"; p.innerHTML = `<a class="deeper" href="${more}">Go deeper in the long version →</a>`; $(".words", s).appendChild(p); }
-  });
 
   function board(s) {
     const c = $("canvas", s), dpr = window.devicePixelRatio || 1, w = c.clientWidth, h = c.clientHeight;

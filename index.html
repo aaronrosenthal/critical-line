@@ -182,7 +182,7 @@
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
     <p>The proof has six steps. We'll walk them backwards from the goal, because each step answers the question the one before it leaves open.</p>
-    <p>First <b>A</b>, then <b>B</b>, then <b>D</b>, then <b>C</b>. Steps E and F supply background facts that the main chain rests on. We won't open them in this book; both hold with plenty of room to spare.</p>
+    <p>First <b>A</b>, then <b>B</b>, then <b>D</b>, then <b>C</b>. Steps E and F supply background facts that the main chain rests on. Both hold with plenty of room to spare, so we visit them briefly near the end.</p>
   </div>
 </section>
 
@@ -435,8 +435,27 @@
   </div>
 </section>
 
-<!-- ======================================================= IX. forward -->
-<section class="slide" data-scene="forward" data-tone="gold" data-part="IX. Running it forward" data-title="Now run it forward">
+<!-- ======================================================= IX. the supporting cast -->
+<section class="slide" data-scene="crosstalk" data-tone="blue" data-part="IX. The supporting cast" data-title="Step E: no crosstalk">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Step D's count is averaged over a huge family of pieces, one for each of an enormous number of code words. That average is only fair if the pieces barely overlap, like a room full of microphones where each one hears only its own instrument.</p>
+    <p>In very high dimensions, random directions are almost always nearly perpendicular. The proof shows its pieces overlap by at most about <span class="m">e<sup>−x<sup>ε</sup>/8</sup></span>, far less than it needs. The tool is a classical identity called the <b>Siegel–Weil formula</b>.</p>
+    <div class="tags"><span class="tag schem">random directions, computed live</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="noise" data-tone="blue" data-title="Step F: keeping the noise down">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>The proof works inside gigantic number systems, of degree around x². They carry their own arithmetic noise, measured by objects called <b>Ш</b> ("Sha") and class groups, which could distort the lattices being measured.</p>
+    <p>The noise only has to stay below about <span class="m">e<sup>x<sup>ε</sup>/2</sup></span>, a very generous limit, and deep classical theorems keep it far below. Like Step E, it has room to spare: the ½ is decided by Step C alone.</p>
+    <div class="tags"><span class="tag schem">schematic</span></div>
+  </div>
+</section>
+
+<!-- ======================================================= X. forward -->
+<section class="slide" data-scene="forward" data-tone="gold" data-part="X. Running it forward" data-title="Now run it forward">
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
     <p>Now run the whole story forward.</p>
@@ -453,7 +472,7 @@
 </section>
 
 <!-- ======================================================= X. why now, what next -->
-<section class="slide" data-scene="wall" data-tone="purple" data-part="X. Why now, and what next" data-title="A wall since 1969">
+<section class="slide" data-scene="wall" data-tone="purple" data-part="XI. Why now, and what next" data-title="A wall since 1969">
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
     <p>Why did this take 160 years? Part of the answer is a wall that has stood since 1969. In clock arithmetic, Stepanov's proof works because polynomials there have a variable to differentiate. Over the whole numbers there is none: what is the derivative of 12?</p>

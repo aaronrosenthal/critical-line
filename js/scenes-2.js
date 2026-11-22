@@ -1,4 +1,4 @@
-/* scenes-2.js: illustrations for pages 29–54 (Step D, one theta lift, the chain, running it forward, verification). */
+/* scenes-2.js: illustrations for pages 29–56 (Step D, one theta lift, the chain, running it forward, verification). */
 (function () {
   "use strict";
   const S = DECK.scene, ZEROS = (window.RH_DATA && RH_DATA.zeros) || [];
@@ -513,6 +513,58 @@
       K.serif("but the names mislead about where the work happens", 500, 550, { size: 24, align: "center", color: col.muted });
       K.g.globalAlpha = 1;
       return t < 2.6;
+    },
+  }));
+
+  // ------------------------------------------------------------------ Step E: random directions are nearly perpendicular
+  let gramV = null;
+  function gramVecs() {
+    if (gramV) return gramV;
+    let s = 977; const r = () => { s = (s * 1664525 + 1013904223) >>> 0; return s / 4294967296; };
+    const N = 10, D = 3000; gramV = [];
+    for (let i = 0; i < N; i++) { const v = new Float64Array(D); for (let k = 0; k < D; k += 2) { const u = Math.max(r(), 1e-12), w = r(), m = Math.sqrt(-2 * Math.log(u)); v[k] = m * Math.cos(2 * Math.PI * w); if (k + 1 < D) v[k + 1] = m * Math.sin(2 * Math.PI * w); } gramV.push(v); }
+    return gramV;
+  }
+  S("crosstalk", ({ reduced }) => ({
+    draw(K, t) {
+      const { col } = K, V = gramVecs(), N = V.length, g = K.g;
+      const d = reduced ? 3000 : Math.round(Math.exp(Math.log(2) + (Math.log(3000) - Math.log(2)) * (0.5 - 0.5 * Math.cos(t * 0.45))));
+      const dot = (a, b) => { let s = 0, na = 0, nb = 0; for (let k = 0; k < d; k++) { s += a[k] * b[k]; na += a[k] * a[k]; nb += b[k] * b[k]; } return s / Math.sqrt(na * nb); };
+      const x0 = 90, y0 = 70, c = 44; let tot = 0, cnt = 0;
+      for (let i = 0; i < N; i++) for (let j = 0; j < N; j++) {
+        const v = i === j ? 1 : Math.abs(dot(V[i], V[j])); if (i !== j) { tot += v; cnt++; }
+        g.save(); g.fillStyle = i === j ? col.ink : col.blue; g.globalAlpha = 0.06 + 0.9 * v; g.fillRect(x0 + j * c, y0 + i * c, c - 3, c - 3); g.restore();
+      }
+      K.text("overlap between each pair of", 560, 110, { size: 20, color: col.muted }); K.text("10 random directions", 560, 138, { size: 20, color: col.muted });
+      K.text("dark diagonal: each with itself", 560, 186, { size: 19, color: col.ink });
+      K.math(`dimension d = ${d.toLocaleString("en-US")}`, 560, 270, { size: 30, color: col.blue, align: "left" });
+      K.text(`typical overlap: ${(tot / cnt).toFixed(3)}`, 560, 330, { size: 21, bold: true, color: col.blue });
+      K.text(`about 1/√d = ${(1 / Math.sqrt(d)).toFixed(3)}`, 560, 362, { size: 19, color: col.muted });
+      K.text("the proof's pieces: below exp(−x^{ε}/8)", 560, 440, { size: 20, bold: true, color: col.green });
+      K.text("(far tinier still)", 560, 470, { size: 19, color: col.green });
+      K.serif("higher dimension → the grid fades to just the diagonal", 500, 560, { size: 22, align: "center", color: col.muted });
+      return true;
+    },
+  }));
+
+  // ------------------------------------------------------------------ Step F: noise far below a generous ceiling
+  S("noise", () => ({
+    draw(K, t) {
+      const { col } = K, g = K.g, xL = 90, xR = 910, ceil = 110, floor = 400;
+      K.seg(xL, ceil, xR, ceil, { color: col.red, width: 3, dash: [10, 7], sketch: false });
+      K.text("allowed noise: about exp(x^{ε}/2)", xL, ceil - 26, { size: 21, bold: true, color: col.red });
+      K.seg(xL, floor, xR, floor, { color: col.axis, width: 1.6, sketch: false });
+      const pts = []; for (let x = xL; x <= xR; x += 4) { const u = x * 0.05 + t * 3; pts.push([x, floor - 22 - 9 * Math.sin(u) - 6 * Math.sin(u * 2.7 + 1) - 4 * Math.sin(u * 5.3 + 2)]); }
+      K.line(pts, { color: col.blue, width: 2.4 });
+      K.text("actual noise from Ш and class groups", xL, floor + 30, { size: 20, bold: true, color: col.blue });
+      K.arrow(700, floor - 48, 700, ceil + 10, { color: col.green, width: 2.6, sketch: false }); K.arrow(700, ceil + 40, 700, floor - 44, { color: col.green, width: 2.6, sketch: false });
+      K.text("room to spare", 716, (ceil + floor) / 2, { size: 22, bold: true, color: col.green });
+      K.text("kept small by:", xL, 488, { size: 19, color: col.muted });
+      [["Ferrero–Washington (1979)", col.purple], ["Poitou–Tate duality", col.gold], ["complex multiplication", col.green]].forEach(([s, c], i) => {
+        const x = xL + i * 280; K.box(x, 510, 260, 56, { color: c, width: 2.2, fill: c, fillAlpha: 0.13, r: 10, seed: i }); K.text(s, x + 130, 538, { size: 16, bold: true, align: "center", color: c });
+      });
+      K.text("all rebuilt from scratch in the archive", xL, 600, { size: 18, color: col.muted });
+      return true;
     },
   }));
 
