@@ -490,7 +490,7 @@
       gzFrame(K, A, [[-0.3, "−0.3"], [0, "0"], [0.3, "0.3"]]);
       K.g.save(); K.g.fillStyle = col.green; K.g.globalAlpha = 0.14; K.g.fillRect(A.X(50), A.Y(BAND), A.X(200000) - A.X(50), A.Y(-BAND) - A.Y(BAND)); K.g.restore();
       K.seg(A.X(50), A.Y(BAND), A.X(200000), A.Y(BAND), { color: col.red, width: 3, seed: 5 });
-      K.text("a ceiling", A.X(200000) + 8, A.Y(BAND), { size: 21, bold: true, color: col.red });
+      K.text("a ceiling", A.X(60), A.Y(BAND) - 18, { size: 21, bold: true, color: col.red });
       const beta = 0.5 + 0.32 * K.ease(K.ph(t, 0.5, 6)), gam = 20, bb = beta * (beta - 1) - gam * gam, ci = gam * (2 * beta - 1), den = bb * bb + ci * ci;
       const ys = D.xs.map((x, i) => {
         const L = Math.log(x), xb = Math.pow(x, beta), nr = xb * Math.cos(gam * L), ni = xb * Math.sin(gam * L);
@@ -507,7 +507,7 @@
   // ------------------------------------------------------------------ 18 Landau's trap
   S("trap", () => ({
     draw(K, t) {
-      const { col } = K, sc = 205, X = (re) => 70 + (re + 0.15) * sc, Y = (im) => 320 - im * sc, sig = 1.55, theta = 0.6;
+      const { col } = K, sc = 170, X = (re) => 50 + (re + 0.15) * sc, Y = (im) => 320 - im * sc, sig = 1.55, theta = 0.6;
       const reR = 0.6 + 0.32 * Math.sin(t * 0.7 - 1.2), imR = 0;
       K.g.save(); K.g.beginPath(); K.g.rect(0, 0, 640, 640); K.g.clip();
       K.g.fillStyle = col.purple; K.g.globalAlpha = 0.07; K.g.fillRect(X(0), 0, X(1) - X(0), 640); K.g.restore();
@@ -520,7 +520,7 @@
       K.ring(X(sig), Y(0), rr * sc, { color: col.red, width: 2.5, dash: [7, 5] });
       K.g.restore();
       K.dot(X(sig), Y(0), 7, col.ink); K.text("z", X(sig) + 10, Y(0) - 16, { size: 22, bold: true });
-      K.dot(X(reR), Y(imR), 9, col.red); K.text("zero ρ", X(reR), Y(imR) + 30, { size: 20, bold: true, color: col.red, align: "center" });
+      K.dot(X(reR), Y(imR), 9, col.red); K.text("zero ρ", X(reR), Y(imR) + 30, { size: 20, bold: true, color: col.red, align: "center", halo: true });
       // coefficient sizes, log scale: pole forces (1/rr)^k, ceiling allows (1/rg)^k
       const A = K.axes([700, 120, 260, 300], [0, 20], [-4, 14]);
       A.frame({ xlabel: "k", xticks: [[0, "0"], [20, "20"]] });
@@ -528,9 +528,10 @@
       A.curve((k) => k * Math.log(1 / rg) / Math.LN10 + 0, 0, 20, 30, { color: col.green, width: 2.8 });
       K.text("size of the k-th", 700, 70, { size: 18, color: col.muted }); K.text("Taylor coefficient", 700, 94, { size: 18, color: col.muted });
       const bad = reR > theta;
-      K.text("forced by the pole", 960, A.Y(20 * Math.log(1 / rr) / Math.LN10) - 14, { size: 16, align: "right", color: col.red, bold: true });
-      K.text("allowed by the ceiling", 960, A.Y(20 * Math.log(1 / rg) / Math.LN10) + 18, { size: 16, align: "right", color: col.green, bold: true });
-      K.serif(bad ? "zero right of the line: contradiction!" : "zero left of the line: no conflict", 830, 500, { size: 24, align: "center", color: bad ? col.red : col.green });
+      K.seg(700, 500, 730, 500, { color: col.red, width: 2.8, sketch: false }); K.text("forced by the pole", 740, 500, { size: 17, color: col.red, bold: true });
+      K.seg(700, 528, 730, 528, { color: col.green, width: 2.8, sketch: false }); K.text("allowed by the ceiling", 740, 528, { size: 17, color: col.green, bold: true });
+      K.serif(bad ? "zero right of the line:" : "zero left of the line:", 830, 578, { size: 24, align: "center", color: bad ? col.red : col.green });
+      K.serif(bad ? "contradiction!" : "no conflict", 830, 610, { size: 24, align: "center", color: bad ? col.red : col.green });
       return true;
     },
   }));
