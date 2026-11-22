@@ -2147,4 +2147,56 @@
       },
     }));
   }
+  // ================================================================== page 5: Grey's bundle tally (Mertens' function), in place of the seed toss
+  S("w-coins", ({ reduced }) => {
+    const NST = 400, fac = (n) => { const r = []; for (let p = 2; n > 1; p++) while (n % p === 0) { r.push(p); n /= p; } return r; };
+    const MU = [0], M = [0]; for (let n = 1; n <= NST; n++) { const f = fac(n), sq = f.some((p, i) => i && f[i - 1] === p); const v = sq ? 0 : f.length % 2 ? -1 : 1; MU.push(v); M.push(M[n - 1] + v); }
+    const coin = [0]; { let s = 97, a = 0; for (let i = 0; i < NST; i++) { s = (s * 1664525 + 1013904223) >>> 0; a += s / 4294967296 < 0.5 ? 1 : -1; coin.push(a); } }
+    const TC = { 2: "#3d7cc9", 3: "#c47a2a", 5: "#4f9a4a", 7: "#8a5cc9" };
+    function mini(K, x, y, n, al) { // a tiny bundle: one stick per twig, tied
+      const f = fac(n), g = K.g; g.save(); g.globalAlpha = al; g.lineCap = "round";
+      f.forEach((p, i) => { g.strokeStyle = TC[p] || "#8b5e34"; g.lineWidth = 3; g.beginPath(); g.moveTo(x - 7, y - i * 4); g.lineTo(x + 7, y - i * 4 - 1); g.stroke(); });
+      if (f.length > 1) { g.strokeStyle = "#7d8a3a"; g.lineWidth = 1.6; g.beginPath(); g.moveTo(x, y + 2); g.lineTo(x, y - (f.length - 1) * 4 - 3); g.stroke(); }
+      if (!f.length) { g.strokeStyle = "#b59a74"; g.lineWidth = 1.2; g.setLineDash([2, 2]); g.beginPath(); g.ellipse(x, y - 2, 6, 3, 0, 0, Math.PI * 2); g.stroke(); }
+      g.restore();
+    }
+    return {
+      draw(K, t) {
+        const { col } = K, ROW = 34, RATE = 5, T0 = 0.6, T1 = T0 + ROW / RATE, T2 = T1 + 7;
+        const nf = reduced ? NST : t < T1 ? Math.max(0, (t - T0) * RATE) : ROW + K.ease(K.ph(t, T1, T2)) * (NST - ROW), n = Math.floor(nf);
+        // Grey on a branch, setting the bundles down in a row
+        K.seg(40, 132, 210, 126, { color: BIRD.twig, width: 7 });
+        bird(K, 140, 128, 1.45, { color: GREY });
+        K.text("old Grey keeps the tally", 125, 160, { size: 16, align: "center", color: col.muted });
+        const gy = 262, slotX = (k) => 272 + k * 19.5;
+        K.seg(250, gy + 12, 940, gy + 12, { color: col.axis, width: 2 });
+        for (let k = 1; k <= Math.min(n, ROW); k++) {
+          const born = T0 + k / RATE, u = reduced ? 1 : clamp((t - born + 0.35) / 0.35, 0, 1), x = slotX(k - 1), y = gy - 6 * (1 - K.ease(u)), v = MU[k];
+          mini(K, x, y + 6, k, (v === 0 ? 0.35 : 1) * u);
+          K.text(String(k), x, gy + 26, { size: 10, align: "center", color: col.muted, alpha: u });
+          K.text(v > 0 ? "▲" : v < 0 ? "▼" : "·", x, gy - 38, { size: v ? 12 : 16, align: "center", bold: true, color: v > 0 ? col.green : v < 0 ? col.red : col.muted, alpha: u });
+        }
+        // the tally board
+        const up = MU.slice(1, n + 1).filter((v) => v > 0).length, dn = MU.slice(1, n + 1).filter((v) => v < 0).length, aside = n - up - dn;
+        K.box(690, 30, 262, 110, { fill: col.surface, fillAlpha: 0.9, color: col.axis, r: 8, sketch: false });
+        K.text(`▲ even count  ${up}`, 706, 56, { size: 16, color: col.green, bold: true });
+        K.text(`▼ odd count  ${dn}`, 706, 80, { size: 16, color: col.red, bold: true });
+        K.text(`· a twig used twice  ${aside}`, 706, 104, { size: 14, color: col.muted });
+        K.text(`tally ${M[n] >= 0 ? "+" : "−"}${Math.abs(M[n])}`, 940, 68, { size: 21, bold: true, align: "right", color: col.gold });
+        K.text(`${n} bundles`, 940, 128, { size: 14, align: "right", color: col.muted });
+        // the tally's walk, inside ±√n, with a fair coin's walk faint behind it
+        const A = K.axes([110, 330, 740, 230], [0, NST], [-30, 30]);
+        A.frame({ xticks: [[0, "0"], [100, "100"], [200, "200"], [300, "300"], [400, "400"]], yticks: [[-20, "−20"], [0, "0"], [20, "20"]], xlabel: "bundles n" });
+        A.curve((m) => Math.sqrt(m), 0, NST, 120, { color: col.green, width: 2.2, dash: [8, 6] });
+        A.curve((m) => -Math.sqrt(m), 0, NST, 120, { color: col.green, width: 2.2, dash: [8, 6] });
+        K.text("±√n", A.X(NST) + 8, A.Y(14), { size: 20, bold: true, color: col.green });
+        A.clip(() => K.line(coin.slice(0, n + 1).map((v, i) => [A.X(i), A.Y(v)]), { color: col.muted, width: 1.4, alpha: 0.45 }));
+        K.line(M.slice(0, n + 1).map((v, i) => [A.X(i), A.Y(v)]), { color: col.gold, width: 3 });
+        K.dot(A.X(n), A.Y(M[n]), 5, col.gold);
+        K.text("gold: Grey's tally (real)    faint: a fair coin's walk, for scale", 120, 316, { size: 15, color: col.muted });
+        return !reduced && t < T2 + 0.2;
+      },
+    };
+  });
+
 })();
