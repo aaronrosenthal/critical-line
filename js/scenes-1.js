@@ -1,4 +1,4 @@
-/* scenes-1.js: illustrations for pages 1–27 (opening, primes, zeta, the map, Step A, Step B).
+/* scenes-1.js: illustrations for pages 1–28 (opening, primes, zeta, the map, Step A, Step B).
    Every scene draws on a 1000 × 640 board. draw(K, t) gets seconds since the page opened; return false when finished. */
 (function () {
   "use strict";
@@ -505,6 +505,32 @@
   }));
 
   // ------------------------------------------------------------------ 18 Landau's trap
+  // ------------------------------------------------------------------ Taylor polynomials rebuild a function, out to the pole
+  S("rebuild", ({ reduced }) => ({
+    draw(K, t) {
+      const { col } = K, A = K.axes([110, 60, 800, 460], [-1.8, 1.6], [-3, 8]), g = K.g;
+      A.frame({ xticks: [[-1, "−1"], [0, "0"], [1, "1"]], yticks: [[0, "0"], [4, "4"], [8, "8"]], xlabel: "s (real values)" });
+      g.save(); g.fillStyle = col.green; g.globalAlpha = 0.1; g.fillRect(A.X(-1), A.Y(8), A.X(1) - A.X(-1), A.Y(-3) - A.Y(8)); g.restore();
+      K.seg(A.X(-1.8), A.Y(0), A.X(1.6), A.Y(0), { color: col.axis, width: 1, sketch: false });
+      K.seg(A.X(1), A.Y(8), A.X(1), A.Y(-3), { color: col.red, width: 2.4, dash: [7, 6], sketch: false });
+      A.clip(() => {
+        A.curve((x) => 1 / (1 - x), -1.8, 0.985, 300, { color: col.ink, width: 3.4 });
+        A.curve((x) => 1 / (1 - x), 1.03, 1.6, 100, { color: col.ink, width: 3.4 });
+      });
+      const n = reduced ? 10 : Math.floor((t * 1.3) % 14);
+      const P = (x) => { let s = 0, p = 1; for (let k = 0; k <= n; k++) { s += p; p *= x; } return s; };
+      A.clip(() => A.curve(P, -1.8, 1.6, 500, { color: col.gold, width: 3 }));
+      K.dot(A.X(0), A.Y(1), 7, col.ink); K.text("z = 0", A.X(0) + 10, A.Y(1) + 22, { size: 19, bold: true });
+      K.text("f(s) = 1/(1 − s)", 130, 30, { size: 22, bold: true, color: col.ink });
+      K.text(`gold: Taylor sum with ${n + 1} term${n ? "s" : ""}`, 420, 30, { size: 22, bold: true, color: col.gold });
+      K.text("pole", A.X(1) + 8, A.Y(7.3), { size: 19, bold: true, color: col.red });
+      K.text("rebuilt here", A.X(0), A.Y(7.3), { size: 19, bold: true, align: "center", color: col.green });
+      K.text("falls apart", A.X(-1.45), A.Y(7.3), { size: 19, align: "center", color: col.red, halo: true });
+      K.text("every coefficient is 1 here, since 1/(1 − s) = 1 + s + s² + ⋯", 110, 592, { size: 18, color: col.muted });
+      return true;
+    },
+  }));
+
   // ------------------------------------------------------------------ Taylor coefficients as a storm warning
   S("taylor", ({ reduced }) => ({
     draw(K, t) {

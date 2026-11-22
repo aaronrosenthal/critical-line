@@ -205,11 +205,19 @@
   </div>
 </section>
 
+<section class="slide" data-scene="rebuild" data-tone="red" data-title="Rebuilding a function from one spot">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Stand at one point z and record a list of numbers about a function there: its value, its slope, how it curves, and so on. These are its <b>Taylor coefficients</b>.</p>
+    <p>Add up <span class="m">c₀ + c₁(s − z) + c₂(s − z)² + ⋯</span> term by term and the function comes back, like a sketch gaining detail. But only out to a limit: past the nearest point where the function blows up, a <b>pole</b>, the sum falls apart however many terms you add.</p>
+  </div>
+</section>
+
 <section class="slide" data-scene="taylor" data-tone="red" data-title="A storm warning in a list of numbers">
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
-    <p>A smooth function can be rebuilt around a point z from a list of numbers, its <b>Taylor coefficients</b>: <span class="m">f(s) = c₀ + c₁(s − z) + c₂(s − z)² + ⋯</span></p>
-    <p>The list also works like a storm warning. If the function blows up somewhere (a <b>pole</b>, as ζ does at s = 1), the coefficients grow like <span class="m">(1/r)<sup>k</sup></span>, where r is the distance to the pole. The closer the trouble, the faster they grow.</p>
+    <p>That limit leaves a fingerprint in the list itself. If the nearest pole is a distance r away, the coefficients grow like <span class="m">(1/r)<sup>k</sup></span>. The closer the trouble, the faster they grow.</p>
+    <p>So the list works like a storm warning, and that is the signal Landau's trap listens for. (ζ has a pole too, at s = 1.)</p>
   </div>
 </section>
 
@@ -441,6 +449,43 @@
   <div class="words">
     <p>A small trusted core of Lean, the <b>kernel</b>, checked every step. Independent builds agree, only Lean's standard axioms are used, and the statement is the community library's own.</p>
     <p>A verdict from a second, independently written checker was still pending when this was written.</p>
+  </div>
+</section>
+
+<!-- ======================================================= X. why now, what next -->
+<section class="slide" data-scene="wall" data-tone="purple" data-part="X. Why now, and what next" data-title="A wall since 1969">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Why did this take 160 years? Part of the answer is a wall that has stood since 1969. In clock arithmetic, Stepanov's proof works because polynomials there have a variable to differentiate. Over the whole numbers there is none: what is the derivative of 12?</p>
+    <p>The breakthrough is a way over the wall. A chain of theta lifts has the same effect as a higher-order zero, with no derivative at all. Charging each lift only for its own bookkeeping then lands the bound exactly on √x.</p>
+    <div class="tags"><span class="tag reading">the author's claim, plus our reading</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="sixweeks" data-tone="purple" data-title="Why six weeks?">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>The author's timeline runs from 6 October to 16 November 2026: about six weeks. Three things made that possible.</p>
+    <p>The route runs through six specialties that rarely meet, and an AI that has read all of them can hold them at once. Lean makes trying cheap: a bad idea fails in minutes, and a good one arrives already checked. And most of the 175,187 files rebuild a century of known theorems that the new idea stands on.</p>
+    <div class="tags"><span class="tag reading">our reading</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="ifholds" data-tone="green" data-title="If it holds">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>A great many published results begin "assuming GRH". If the proof holds, they become theorems. For example, Miller's fast primality test becomes provably correct, primes in every progression arrive with near-perfect regularity, and the dreaded "Siegel zeros" cannot exist.</p>
+    <p>The author previews more: RH for all number fields "with more time", a new proof of the Weil and Deligne bounds, and consequences in K-theory. None of that is in the code yet.</p>
+    <div class="tags"><span class="tag reading">previews are the author's, not checked</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="shelf" data-tone="green" data-title="Already in the code">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Some new mathematics is already visible in the files. To reach RH, the proof built whole libraries that had never been written in checkable form, plus a counting theorem that works over any number field.</p>
+    <p>Those are reusable whether or not anyone needs them for RH again. One caution: the proof restates 444 published theorems in its own words, and someone still needs to check that each restatement says what the original says.</p>
+    <div class="tags"><span class="tag real">file counts from the dependency data, approximate</span></div>
   </div>
 </section>
 

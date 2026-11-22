@@ -1,4 +1,4 @@
-/* scenes-2.js: illustrations for pages 28–49 (Step D, one theta lift, the chain, running it forward, verification). */
+/* scenes-2.js: illustrations for pages 29–54 (Step D, one theta lift, the chain, running it forward, verification). */
 (function () {
   "use strict";
   const S = DECK.scene, ZEROS = (window.RH_DATA && RH_DATA.zeros) || [];
@@ -516,7 +516,97 @@
     },
   }));
 
-  // ------------------------------------------------------------------ 44 what nobody has yet
+  // ------------------------------------------------------------------ a wall since 1969
+  S("wall", () => ({
+    draw(K, t) {
+      const { col } = K, ax = 450, c = 2.4e-6;
+      K.text("clock arithmetic", 230, 200, { size: 22, bold: true, align: "center", color: col.green });
+      K.seg(70, ax, 400, ax, { color: col.axis, width: 1.6, sketch: false });
+      const pts = []; for (let x = 90; x <= 400; x += 3) { const y = ax - c * Math.pow(x - 170, 2) * Math.pow(x - 330, 2); if (y > 250) pts.push([x, y]); }
+      K.line(pts, { color: col.green, width: 3 });
+      [170, 330].forEach((x) => { K.dot(x, ax, 7, col.red); K.text("×2", x, ax + 26, { size: 18, align: "center", bold: true, color: col.red }); });
+      K.text("double roots: f = f′ = 0", 230, ax + 66, { size: 19, align: "center", color: col.green });
+      K.text("derivatives work", 230, ax + 94, { size: 19, align: "center", color: col.green });
+      // the wall
+      for (let r = 0; r < 9; r++) for (let k = 0; k < 2; k++) {
+        const off = r % 2 ? 20 : 0, x = 445 + off + k * 40 - (r % 2 ? 20 : 0), y = 560 - (r + 1) * 40;
+        K.box(Math.max(445, x), y, Math.min(40, 525 - Math.max(445, x)), 40, { color: col.red, width: 1.8, fill: col.red, fillAlpha: 0.14, r: 2, seed: r * 3 + k });
+      }
+      K.text("whole numbers", 770, 200, { size: 22, bold: true, align: "center", color: col.purple });
+      K.serif("d/d(12) = ?", 770, 360, { size: 46, align: "center", color: col.purple });
+      K.text("nothing to differentiate", 770, 430, { size: 19, align: "center", color: col.muted });
+      // the arc over the wall
+      const f = K.ease(K.ph(t, 0.5, 2.6)), arc = [];
+      for (let i = 0; i <= 60 * f; i++) { const u = i / 60, x = 230 + u * 540, y = 170 - 110 * Math.sin(Math.PI * u); arc.push([x, y]); }
+      if (arc.length > 1) { K.line(arc, { color: col.gold, width: 4 }); if (f >= 1) K.arrow(arc[arc.length - 3][0], arc[arc.length - 3][1], 770, 172, { color: col.gold, width: 4, sketch: false }); }
+      if (f >= 1) K.text("a chain of theta lifts", 500, 32, { size: 23, bold: true, align: "center", color: col.gold });
+      K.text("Stepanov, 1969", 230, 610, { size: 18, align: "center", color: col.muted }); K.text("this proof, 2026", 770, 610, { size: 18, align: "center", color: col.muted });
+      return t < 2.8;
+    },
+  }));
+
+  // ------------------------------------------------------------------ why six weeks
+  S("sixweeks", () => ({
+    draw(K, t) {
+      const { col } = K, cx = 500, cy = 352, pal = [col.blue, col.red, col.gold, col.green, col.purple, col.blue];
+      const names = ["representation\ntheory", "lattice\ngeometry", "Iwasawa\ntheory", "Galois\ncohomology", "complex\nmultipli-\ncation", "analytic\nnumber\ntheory"];
+      const pos = names.map((n, i) => { const a = -Math.PI / 2 + (i * Math.PI) / 3; return [cx + 300 * Math.cos(a), cy + 200 * Math.sin(a)]; });
+      pos.forEach(([x, y], i) => { K.seg(x, y, cx, cy, { color: pal[i], width: 1.6, alpha: 0.5, sketch: false }); const ph = ((t * 0.5 + i / 6) % 1); K.dot(x + (cx - x) * ph, y + (cy - y) * ph, 5, pal[i], 0.9); });
+      pos.forEach(([x, y], i) => {
+        const c = pal[i], lines = names[i].split("\n").length;
+        K.ring(x, y, 78, { color: c, width: 2.4, fill: K.surface, fillAlpha: 1 }); K.ring(x, y, 78, { color: c, width: 2.4, fill: c, fillAlpha: 0.12 });
+        K.text(names[i], x, y - (lines - 1) * 11, { size: 17, align: "center", bold: true, color: c });
+      });
+      K.ring(cx, cy, 86, { color: col.ink, width: 2.6, fill: K.surface, fillAlpha: 0.95 });
+      const g = K.g, a0 = t * 1.2; g.save(); g.strokeStyle = col.green; g.lineWidth = 3; g.beginPath(); g.arc(cx, cy, 72, a0, a0 + 4.6); g.stroke(); g.restore();
+      K.arrow(cx + 72 * Math.cos(a0 + 4.5), cy + 72 * Math.sin(a0 + 4.5), cx + 72 * Math.cos(a0 + 4.65), cy + 72 * Math.sin(a0 + 4.65), { color: col.green, width: 3, head: 13, sketch: false });
+      K.text("try", cx, cy - 26, { size: 19, align: "center", bold: true });
+      K.text("Lean checks", cx, cy, { size: 19, align: "center", bold: true, color: col.green });
+      K.text("fix", cx, cy + 26, { size: 19, align: "center", bold: true });
+      K.serif("6 Oct → 16 Nov 2026", cx, 24, { size: 24, align: "center", color: col.muted });
+      return true;
+    },
+  }));
+
+  // ------------------------------------------------------------------ if it holds
+  S("ifholds", () => ({
+    draw(K, t) {
+      const { col } = K, items = ["Miller's fast primality test is provably correct", "every prime p has a non-square below 2(ln p)²", "primes in progressions: error only about √x", "no Siegel zeros, so many constants become explicit"];
+      items.forEach((s, i) => {
+        const y = 40 + i * 104, a = K.ease(K.ph(t, 0.4 + i * 0.55, 1.0 + i * 0.55));
+        K.box(60, y, 880, 84, { color: col.axis, width: 1.6, fill: K.surface, fillAlpha: 0.7, r: 10, seed: i });
+        K.text("if GRH", 130, y + 30, { size: 19, align: "center", color: col.muted });
+        if (a > 0) { K.seg(88, y + 30, 88 + 84 * a, y + 30, { color: col.red, width: 2.6, sketch: false }); }
+        if (a >= 1) K.text("✓ theorem", 130, y + 60, { size: 19, align: "center", bold: true, color: col.green });
+        K.text(s, 215, y + 44, { size: 21, color: col.ink, bold: a >= 1 });
+      });
+      K.box(60, 470, 880, 140, { color: col.muted, width: 1.6, dash: [7, 6], r: 10, sketch: false });
+      K.text("the author's previews, not in the code:", 90, 505, { size: 19, bold: true, color: col.muted });
+      K.text("RH for all number fields · Weil and Deligne by signs", 90, 545, { size: 19, color: col.muted });
+      K.text("· K-groups of the integers", 90, 577, { size: 19, color: col.muted });
+      return t < 3.2;
+    },
+  }));
+
+  // ------------------------------------------------------------------ already in the code
+  S("shelf", () => ({
+    draw(K, t) {
+      const { col } = K, rows = [["modularity machinery", 2268], ["étale cohomology", 900], ["Capelli identities", 793], ["resolution of singularities", 500], ["homological stability", 280], ["Poitou–Tate duality", 96], ["Ferrero–Washington", 64]];
+      const x0 = 410, W = 470, pal = [col.purple, col.blue, col.green, col.gold, col.red, col.blue, col.green];
+      K.text("files the main theorem depends on, by library (approx.)", 60, 34, { size: 20, bold: true, color: col.muted });
+      rows.forEach(([n, v], i) => {
+        const y = 90 + i * 60, f = K.ease(K.ph(t, 0.2 + i * 0.15, 1.4 + i * 0.15)), w = Math.max(4, (v / 2268) * W * f);
+        K.text(n, x0 - 14, y, { size: 20, align: "right", color: col.ink });
+        const g = K.g; g.save(); g.fillStyle = pal[i]; g.globalAlpha = 0.75; g.fillRect(x0, y - 16, w, 32); g.restore();
+        if (f >= 1) K.text((v >= 900 && v !== 2268 ? "~" : "") + v.toLocaleString("en-US"), x0 + w + 10, y, { size: 18, color: col.muted });
+      });
+      K.text("plus a counting theorem that works over any number field", 60, 530, { size: 20, color: col.green, bold: true });
+      K.text("⚠ 444 restated theorems still need a human check", 60, 580, { size: 20, color: col.gold, bold: true });
+      return t < 2.8;
+    },
+  }));
+
+  // ------------------------------------------------------------------ what nobody has yet
   S("unknown", () => ({
     draw(K, t) {
       const { col } = K;
