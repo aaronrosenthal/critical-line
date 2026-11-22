@@ -3,6 +3,7 @@
   "use strict";
   const S = DECK.scene, ZEROS = (window.RH_DATA && RH_DATA.zeros) || [];
   const isPrime = (n) => { if (n < 2) return false; for (let q = 2; q * q <= n; q++) if (n % q === 0) return false; return true; };
+  const DATA_LEMN = {"3":[1,3,4,6,7,10,10,12,13,15,16,19,19,21,22,24,25,29,28,30,31,33,34,37,37,39,40,42,43,46,46,48,49,51,52,56,55,57,58,60,61,64,64,66,67,69,70,73,73,75],"7":[0,1,1,2,3,3,4,4,5,5,6,7,7,8,8,9,10,10,11,11,12,12,13,14,14,15,15,16,18,17,18,18,19,19,20,21,21,22,22,23,24,24,25,25,26,26,27,28,28,29],"11":[0,0,2,1,1,2,2,3,3,3,4,4,4,5,5,5,6,6,7,7,7,8,8,9,9,9,9,10,10,11,11,11,13,12,12,13,13,14,14,14,15,15,15,16,16,16,17,17,18,18]};
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
   // the toy curve y² = x³ − x + 1 on a clock with p hours (good reduction except at 2 and 23)
   const rhs = (x, p) => (((x * x % p) * x - x + 1) % p + p) % p;
@@ -29,6 +30,59 @@
     K.dot(hx, y, 13, col.red); K.ring(hx, y, 13, { color: K.surface, width: 2.5 });
     return hx;
   }
+
+  // ------------------------------------------------------------------ a first map drawn by hand (Rubinstein's draft)
+  S("handmap", () => ({
+    draw(K, t) {
+      const { col } = K;
+      const node = (x, y, w, h, c, a, b, i, dash) => {
+        const f = K.ease(K.ph(t, 0.2 + i * 0.45, 0.7 + i * 0.45)); if (f <= 0) return false;
+        K.g.globalAlpha = f;
+        K.box(x, y, w, h, { color: c, width: 2.6, fill: c, fillAlpha: 0.12, r: 14, seed: 3 + i, dash });
+        K.text(a, x + w / 2, y + (b ? h / 2 - 13 : h / 2), { size: 22, align: "center", bold: true });
+        if (b) K.text(b, x + w / 2, y + h / 2 + 16, { size: 15.5, align: "center", color: col.muted });
+        K.g.globalAlpha = 1; return f >= 1;
+      };
+      node(40, 30, 440, 96, col.purple, "(M): divisibility against size", "compared m times; still from the Lean code", 0, [8, 6]);
+      node(520, 30, 440, 96, col.green, "B and C: two estimates", "helper characters; proved from known theorems", 1);
+      const a1 = node(300, 200, 400, 70, col.green, "Estimate A: one bin, then all primes", "", 2);
+      if (a1) { K.arrow(260, 130, 380, 196, { color: col.ink, width: 2.4, head: 12 }); K.arrow(740, 130, 620, 196, { color: col.ink, width: 2.4, head: 12 }); }
+      const a2 = node(300, 330, 400, 70, col.green, "G(x) ≤ x^{½+ε}, on windows", "", 3);
+      if (a2) K.arrow(500, 274, 500, 326, { color: col.ink, width: 2.4, head: 12 });
+      const a3 = node(350, 460, 300, 70, col.gold, "the Riemann Hypothesis", "", 4);
+      if (a3) K.arrow(500, 404, 500, 456, { color: col.ink, width: 2.4, head: 12 });
+      if (a3) {
+        K.text("written out by hand", 730, 400, { size: 19, bold: true, color: col.green });
+        K.text("(Parts I–II of the draft)", 730, 428, { size: 17, color: col.muted });
+        K.text("being written up, section by section", 40, 600, { size: 18, color: col.purple, bold: true });
+      }
+      return t < 2.6;
+    },
+  }));
+
+  // ------------------------------------------------------------------ a number divisible at just the right primes (lemniscate sine)
+  S("lemniscate", () => {
+    const V = DATA_LEMN, ns = V["3"].map((_, i) => 5 + 4 * i);
+    return {
+      draw(K, t) {
+        const { col } = K, A = K.axes([110, 70, 760, 410], [0, 205], [0, 80]);
+        A.frame({ xticks: [[1, "1"], [50, "50"], [100, "100"], [150, "150"], [200, "200"]], yticks: [[0, "0"], [20, "20"], [40, "40"], [60, "60"], [80, "80"]], xlabel: "n, which derivative" });
+        K.text("how many times p divides the n-th derivative", 110, 24, { size: 21, bold: true });
+        K.text("1,  −12,  3024,  −4390848,  21224560896,  …", 110, 52, { size: 18, color: col.muted });
+        const upto = K.ease(K.ph(t, 0.3, 3.8)) * 205;
+        [[3, col.blue], [7, col.green], [11, col.purple]].forEach(([p, c]) => {
+          const k = p / (p * p - 1);
+          A.curve((n) => n * k, 1, Math.max(1.01, upto), 60, { color: c, width: 1.8, dash: [7, 6], alpha: 0.8 });
+          V[String(p)].forEach((e, i) => { if (ns[i] <= upto) K.dot(A.X(ns[i]), A.Y(e), 4.5, c); });
+          if (upto >= 200) K.text(`p = ${p}`, A.X(205) + 10, A.Y(201 * k), { size: 19, bold: true, color: c });
+        });
+        ns.forEach((n) => { if (n <= upto) K.dot(A.X(n), A.Y(0), 4, col.red, 0.8); });
+        if (upto >= 200) K.text("p = 5, 13", A.X(205) + 10, A.Y(0) - 4, { size: 19, bold: true, color: col.red });
+        K.text("dots: computed exactly     dashed: n·p / (p² − 1)", 110, 600, { size: 19, color: col.muted });
+        return t < 4;
+      },
+    };
+  });
 
   // ------------------------------------------------------------------ a world where we know the answer
   S("clockcurve", ({ reduced }) => {

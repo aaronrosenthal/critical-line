@@ -394,7 +394,7 @@
   <div class="words">
     <p>The price: every lift adds a block of new coordinates, so lift number j has more to carry than the ones before. It costs about j.</p>
     <p>The whole chain costs about 1 + 2 + ⋯ + m ≈ <b>m²/2</b>.</p>
-    <div class="tags"><span class="tag reading">likely, not traced line by line</span></div>
+    <div class="tags"><span class="tag real">matches Rubinstein's independent account</span></div>
   </div>
 </section>
 
@@ -466,8 +466,9 @@
 <section class="slide" data-scene="checks" data-tone="green" data-title="How do we know it's right?">
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
-    <p>A small trusted core of Lean, the <b>kernel</b>, checked every step. Independent builds agree, only Lean's standard axioms are used, and the statement is the community library's own.</p>
-    <p>A verdict from a second, independently written checker was still pending when this was written.</p>
+    <p>A small trusted core of Lean, the <b>kernel</b>, checked every step. Only Lean's standard axioms are used, and the statement is the community library's own.</p>
+    <p>By 22 November, independent rebuilds matched byte for byte, five independently written checkers had accepted the proof, and the Lean and Mathlib maintainers had certified both statement and proof. One official end-to-end run was still finishing. Checked is not the same as understood: no one has yet written out the core argument by hand.</p>
+    <div class="tags"><span class="tag real">status as of 22 Nov 2026</span></div>
   </div>
 </section>
 
@@ -518,7 +519,25 @@
 </section>
 
 <!-- ======================================================= XII. toward a why -->
-<section class="slide" data-scene="clockcurve" data-tone="purple" data-part="XII. Toward a why" data-title="A world where we know the answer">
+<section class="slide" data-scene="handmap" data-tone="green" data-part="XII. Toward a why" data-title="A first map drawn by hand">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>On 21 November the mathematician Michael Rubinstein posted a 164-page working draft, written with three AI systems, that explains the proof for the zeta function in the style of classical number theory.</p>
+    <p>It reads the whole proof as the two-way count of Step D, run with a far better number, and reduces everything to one inequality, <b>(M)</b>: divisibility against size, compared m times over. The road from (M) to RH is written out by hand. (M) itself is still taken from the Lean code.</p>
+    <div class="tags"><span class="tag real">from the draft's own summary</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="lemniscate" data-tone="green" data-title="A number divisible at just the right primes">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>What is the better number? The draft starts with the <b>lemniscate sine</b>, the inverse of <span class="m">∫ dt/√(1 − t⁴)</span>. Its derivatives at 0 are whole numbers: 1, −12, 3024, −4390848, …</p>
+    <p>A prime like 3, 7 or 11 (remainder 3 after dividing by 4) divides the n-th one about <span class="m">n·p/(p² − 1)</span> times: a smooth formula, with none of the rounding in Legendre's. Primes like 5 and 13 are not forced to divide at all. That is the blind spot behind Step B's bins.</p>
+    <div class="tags"><span class="tag real">computed exactly, n up to 201</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="clockcurve" data-tone="purple" data-title="A world where we know the answer">
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
     <p>To see why an idea works, try it somewhere the answer is already known. Clock arithmetic is such a place.</p>
@@ -597,7 +616,7 @@
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
     <h1>The end</h1>
-    <p class="sub" style="font-size:0.95rem;text-align:left;font-style:normal">Sources: L. Alpöge, <i>Remark</i> (20 Nov 2026); the Lean proof, mirrored at <a href="https://github.com/leanprover-community/riemann-hypothesis">leanprover-community/riemann-hypothesis</a>, and the reader's map in its issue #5; ishaan2006, <a href="https://github.com/ishaan2006/rh-lean-reproduction">a human-readable account</a>; J. Shore's <a href="https://github.com/james-shore/rh-proof-dependencies">dependency-graph dataset</a>. Primes are sieved and ζ is evaluated live in your browser; the first 200 zeros were precomputed with mpmath. The pictures are an interpretation by this book, not by the proof's author.</p>
+    <p class="sub" style="font-size:0.95rem;text-align:left;font-style:normal">Sources: L. Alpöge, <i>Remark</i> (20 Nov 2026); the Lean proof, mirrored at <a href="https://github.com/leanprover-community/riemann-hypothesis">leanprover-community/riemann-hypothesis</a>, and the reader's map in its issue #5; ishaan2006, <a href="https://github.com/ishaan2006/rh-lean-reproduction">a human-readable account</a>; J. Shore's <a href="https://github.com/james-shore/rh-proof-dependencies">dependency-graph dataset</a>. M. Rubinstein et al., <a href="https://www.math.uwaterloo.ca/~mrubinst/alpoge_claude_grh/">working draft explaining the zeta case</a> (21 Nov 2026); A. Sutherland, <a href="https://math.mit.edu/~drew/grh/">independent verification results</a>. Lemniscate exponents and clock-curve counts are computed by this book. Primes are sieved and ζ is evaluated live in your browser; the first 200 zeros were precomputed with mpmath. The pictures are an interpretation by this book, not by the proof's author.</p>
   </div>
 </section>
 

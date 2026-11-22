@@ -476,16 +476,16 @@
   S("checks", () => ({
     draw(K, t) {
       const { col } = K, items = [
-        ["✓", "built independently by several people", col.green], ["✓", "only Lean's three standard axioms", col.green],
-        ["✓", "the statement is Mathlib's own RiemannHypothesis", col.green], ["✓", "replayed with Lean's standalone checker", col.green],
-        ["⧗", "a second, independent checker: pending", col.gold], ["…", "peer review and a human account: not yet", col.muted],
+        ["✓", "rebuilt independently, byte for byte the same", col.green], ["✓", "only Lean's three standard axioms", col.green],
+        ["✓", "the statement is Mathlib's own RiemannHypothesis", col.green], ["✓", "accepted by five independently written checkers", col.green],
+        ["✓", "certified by the Lean and Mathlib maintainers", col.green], ["…", "peer review and a human account: under way", col.muted],
       ];
       items.forEach(([m, s, c], i) => {
         const a = K.ease(K.ph(t, 0.3 + i * 0.5, 0.8 + i * 0.5)); if (a <= 0) return;
         const y = 70 + i * 92; K.g.globalAlpha = a;
         K.ring(140, y, 30, { color: c, width: 2.6, fill: c, fillAlpha: 0.15 });
         K.text(m, 140, y + 1, { size: 30, align: "center", bold: true, color: c });
-        K.text(s, 200, y, { size: 26, color: i > 3 ? col.muted : col.ink, bold: i <= 3 });
+        K.text(s, 200, y, { size: 26, color: i > 4 ? col.muted : col.ink, bold: i <= 4 });
         K.g.globalAlpha = 1;
       });
       return t < 3.8;
