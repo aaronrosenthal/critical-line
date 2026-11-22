@@ -635,60 +635,64 @@
       },
     };
   });
-  // ================================================================== "w-overflow": every layer of every twig goes in a basket that holds b; keep what sticks up over the rim
+  // ================================================================== "w-overflow": one basket per layer of each twig; its pile is one copy per every n-th bundle; keep what spills over the rim
   S("w-overflow", ({ reduced }) => {
     const SUP = "⁰¹²³⁴⁵⁶⁷⁸⁹", sup = (e) => String(e).split("").map((d) => SUP[+d]).join("");
+    const ORD = (n) => n + (n % 10 === 1 && n !== 11 ? "st" : n % 10 === 2 && n !== 12 ? "nd" : n % 10 === 3 && n !== 13 ? "rd" : "th");
     const pp = (n) => { for (let p = 2; p <= n; p++) if (n % p === 0) { let m = n, e = 0; while (m % p === 0) { m /= p; e++; } return m === 1 ? [p, e] : null; } return null; };
-    const ns = []; for (let n = 2; n <= 25; n++) { const q = pp(n); if (q) ns.push([n, q[0], q[1]]); }
+    const ns = []; for (let n = 2; n <= 16; n++) { const q = pp(n); if (q) ns.push([n, q[0], q[1]]); }
     const PCOL = { 2: "#3d7cc9", 3: "#c47a2a", 5: "#4f9a4a", 7: "#8a5cc9" };
     let x = 12, touched = false;
-    const sx0 = 200, sx1 = 760, sy = 610, XMIN = 3, XMAX = 16;
-    const near = (px, py) => Math.abs(py - sy) < 32 && px > sx0 - 26 && px < sx1 + 26;
+    const sx0 = 220, sx1 = 760, sy = 618, XMIN = 3, XMAX = 16;
+    const near = (px, py) => Math.abs(py - sy) < 28 && px > sx0 - 26 && px < sx1 + 26;
     const set = (px) => { x = Math.round(clamp(XMIN + ((px - sx0) / (sx1 - sx0)) * (XMAX - XMIN), XMIN, XMAX)); };
-    function basket(K, cx, top, w, h) {
-      const g = K.g, wt = w / 2, wb = w / 2 - 6;
-      g.save(); g.beginPath(); g.moveTo(cx - wt, top); g.lineTo(cx + wt, top); g.lineTo(cx + wb, top + h); g.lineTo(cx - wb, top + h); g.closePath();
-      g.fillStyle = "#b89357"; g.fill(); g.clip();
-      g.strokeStyle = "#8b6a35"; g.lineWidth = 2;
-      for (let k = -h; k < w + h; k += 9) { g.beginPath(); g.moveTo(cx - wt + k, top); g.lineTo(cx - wt + k - h * 0.6, top + h); g.stroke(); }
-      g.strokeStyle = "#d8bb7f"; g.lineWidth = 2;
-      for (let y = top + 9; y < top + h; y += 10) { g.beginPath(); g.moveTo(cx - wt, y); g.lineTo(cx + wt, y); g.stroke(); }
+    const BW = 58, BH = 70, GROUND = 520, RIM = GROUND - BH, CAP = 5.2, X0 = 128, DX = 82;
+    function basketBack(K, cx) { const g = K.g; g.save(); g.fillStyle = "#6e4a2a"; g.beginPath(); g.ellipse(cx, RIM, BW / 2, 8, 0, Math.PI, 2 * Math.PI); g.fill(); g.restore(); }
+    function basketFront(K, cx) {
+      const g = K.g, wt = BW / 2, wb = BW / 2 - 7;
+      g.save(); g.beginPath(); g.moveTo(cx - wt, RIM); g.ellipse(cx, RIM, wt, 8, 0, Math.PI, 0, true); g.lineTo(cx + wb, GROUND - 6); g.quadraticCurveTo(cx, GROUND + 4, cx - wb, GROUND - 6); g.closePath();
+      const grd = g.createLinearGradient(cx - wt, 0, cx + wt, 0); grd.addColorStop(0, "#a27c45"); grd.addColorStop(0.45, "#c9a265"); grd.addColorStop(1, "#8c6935");
+      g.fillStyle = grd; g.fill(); g.clip();
+      g.strokeStyle = "rgba(90,60,25,0.55)"; g.lineWidth = 1.6; for (let k = -3; k <= 3; k++) { g.beginPath(); g.moveTo(cx + k * 8.5, RIM); g.lineTo(cx + k * 7.4, GROUND); g.stroke(); }
+      g.strokeStyle = "rgba(240,215,160,0.55)"; g.lineWidth = 2.2; for (let y = RIM + 14; y < GROUND - 2; y += 11) { g.beginPath(); g.moveTo(cx - wt, y); g.quadraticCurveTo(cx, y + 5, cx + wt, y); g.stroke(); }
       g.restore();
-      g.save(); g.strokeStyle = "#6e4a2a"; g.lineWidth = 5; g.lineCap = "round"; g.beginPath(); g.moveTo(cx - wt - 2, top); g.lineTo(cx + wt + 2, top); g.stroke(); g.restore();
+      g.save(); g.strokeStyle = "#5c3d1e"; g.lineWidth = 5; g.beginPath(); g.ellipse(cx, RIM, wt, 8, 0, 0, Math.PI); g.stroke(); g.restore();
     }
     return {
       hit: near, press(px, py) { if (!near(px, py)) return false; touched = true; set(px); return true; }, drag(px) { set(px); },
       draw(K, t) {
-        const { col } = K, g = K.g, ground = 520, ub = 62, rim = ground - ub, x0 = 150, dx = 50, bw = 40, piece = ub / 3;
-        const grow = reduced || touched ? 1 : K.ease(K.ph(t, 0.3, 2.6));
-        K.seg(40, ground, 900, ground, { color: col.axis, width: 2, sketch: false });
-        bird(K, 62, ground, 0.95);
+        const { col } = K, g = K.g, grow = reduced || touched ? 1 : K.ease(K.ph(t, 0.4, 3.2));
+        K.seg(40, GROUND, 960, GROUND, { color: col.axis, width: 2, sketch: false });
+        bird(K, 70, GROUND, 1.0, { color: GREY }); 
         ns.forEach(([n, p, e], i) => {
-          const cx = x0 + i * dx, hgt = Math.min(6.6, x / n) * ub * grow, pieces = Math.ceil(hgt / piece - 1e-6);
-          // the stack of copies: short twig pieces, a/n tall in units of b
-          for (let k = 0; k < pieces; k++) {
-            const y1 = ground - k * piece, y0 = Math.max(ground - hgt, y1 - piece), above = y0 < rim - 0.5;
-            const yy = (y0 + y1) / 2, tilt = ((k * 7 + i * 3) % 5 - 2) * 0.03;
-            g.save(); g.strokeStyle = above ? col.red : "#8b5e34"; g.lineWidth = Math.max(2, (y1 - y0) - 7); g.lineCap = "round";
-            g.beginPath(); g.moveTo(cx - 13, yy + tilt * 26); g.lineTo(cx + 13, yy - tilt * 26); g.stroke(); g.restore();
+          const cx = X0 + i * DX, full = x / n, show = Math.min(CAP, full) * grow, hpx = show * BH, top = GROUND - hpx, c = PCOL[p] || "#8b5e34";
+          basketBack(K, cx);
+          // the pile: short twig pieces in the twig's colour, one row per tenth of b
+          const rows = Math.max(0, Math.round(hpx / 7));
+          g.save(); g.lineCap = "round";
+          for (let k = 0; k < rows; k++) { const y = GROUND - 6 - k * 7, w = 17 + ((k * 7 + i * 3) % 5); g.strokeStyle = c; g.globalAlpha = 0.95; g.lineWidth = 4.2;
+            g.beginPath(); g.moveTo(cx - w, y + ((k + i) % 3 - 1)); g.lineTo(cx + w, y - ((k + i) % 3 - 1)); g.stroke(); }
+          g.restore();
+          if (full > CAP && grow > 0.98) { g.save(); g.strokeStyle = K.surface || "#fff"; g.lineWidth = 5; g.beginPath(); g.moveTo(cx - 24, top + 18); g.lineTo(cx - 8, top + 12); g.lineTo(cx + 8, top + 20); g.lineTo(cx + 24, top + 14); g.stroke(); g.restore();
+            }
+          basketFront(K, cx);
+          // the kept part: a red bracket from the rim to the top of the pile
+          if (full > 1 && grow > 0.98) {
+            const bx = cx + BW / 2 + 6; K.seg(bx, RIM, bx, top, { color: col.red, width: 3, sketch: false }); K.seg(bx - 5, top, bx, top, { color: col.red, width: 3, sketch: false }); K.seg(bx - 5, RIM, bx, RIM, { color: col.red, width: 3, sketch: false });
+            K.text(`+${(full - 1).toFixed(1)}b${full > CAP ? " ↑" : ""}`, cx, top - 12, { size: 13, bold: true, color: col.red, halo: true, align: "center" });
           }
-          basket(K, cx, rim, bw, ub);
-          const lab = e === 1 ? String(p) : p + sup(e);
-          K.text(lab, cx, ground + 24, { size: 17, bold: true, align: "center", color: PCOL[p] || col.ink });
-          if (x / n > 1 && grow > 0.98 && i < 4) K.text(`+${(x / n - 1).toFixed(1)}b`, cx, ground - hgt - 16, { size: 14, bold: true, align: "center", color: col.red, halo: true });
+          K.text(e === 1 ? String(p) : p + sup(e), cx, GROUND + 22, { size: 18, bold: true, align: "center", color: c });
+          K.text(`every ${ORD(n)}`, cx, GROUND + 42, { size: 12, align: "center", color: col.muted });
         });
-        const last = x0 + (ns.length - 1) * dx;
-        K.text("every basket holds b", last + 28, rim - 26, { size: 15, bold: true, align: "right", color: col.muted });
-        K.text("one basket per layer of each twig:  2, 2², 2³ … are twig 2's layers", x0 - 20, ground + 52, { size: 15, color: col.muted });
-        K.text(`the stack for layer n is a/n tall  (here a = ${x}·b)`, 880, 150, { size: 17, align: "right", color: col.muted });
-        K.text("kept: what sticks up over the rim", 880, 178, { size: 17, bold: true, align: "right", color: col.red });
-        const out = ns.filter(([n]) => n < x).length;
-        K.text(out ? `${out} basket${out > 1 ? "s" : ""} overflowing` : "nothing overflows", 880, 210, { size: 17, align: "right", color: col.ink });
+        K.text("bundle", X0 + (ns.length - 1) * DX + 44, GROUND + 42, { size: 12, align: "left", color: col.muted });
+        K.text("each basket holds b copies", 940, 60, { size: 16, bold: true, align: "right", color: col.ink });
+        K.text(`a = ${x} · b bundles in all, so twig n's layer gives a/n copies`, 940, 86, { size: 15, align: "right", color: col.muted });
+        K.text("kept: what spills over the rim", 940, 112, { size: 15, bold: true, align: "right", color: col.red });
         // slider
         K.seg(sx0, sy, sx1, sy, { color: col.axis, width: 4, sketch: false });
-        const hx = sx0 + ((x - XMIN) / (XMAX - XMIN)) * (sx1 - sx0); K.dot(hx, sy, 13, col.red); K.ring(hx, sy, 13, { color: K.surface, width: 2.5 });
-        K.text(`x = ${x}`, sx1 + 30, sy, { size: 20, bold: true }); K.text("drag", sx0 - 24, sy, { size: 16, align: "right", color: col.muted });
-        return !reduced && !touched && t < 2.8;
+        const hx = sx0 + ((x - XMIN) / (XMAX - XMIN)) * (sx1 - sx0); K.dot(hx, sy, 12, col.red); K.ring(hx, sy, 12, { color: K.surface, width: 2.5 });
+        K.text(`x = ${x}`, sx1 + 28, sy, { size: 19, bold: true }); K.text("drag", sx0 - 22, sy, { size: 15, align: "right", color: col.muted });
+        return !reduced && !touched && t < 3.4;
       },
     };
   });
