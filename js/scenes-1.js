@@ -1,4 +1,4 @@
-/* scenes-1.js: illustrations for pages 1–25 (opening, primes, zeta, the map, Step A, Step B).
+/* scenes-1.js: illustrations for pages 1–26 (opening, primes, zeta, the map, Step A, Step B).
    Every scene draws on a 1000 × 640 board. draw(K, t) gets seconds since the page opened; return false when finished. */
 (function () {
   "use strict";
@@ -537,14 +537,50 @@
   }));
 
   // ------------------------------------------------------------------ 19 windows
-  S("windows", () => ({
+  // ------------------------------------------------------------------ spot checks: cameras on a road
+  S("cameras", ({ reduced }) => ({
+    draw(K, t) {
+      const { col } = K, A = K.axes([70, 120, 860, 300], [2, 140], [0, 1], { xlog: true }), road = 420, g = K.g;
+      const WINS = [5, 11, 24, 52, 110].map((U) => [U, U * 1.5]);
+      // road
+      g.save(); g.fillStyle = col.axis; g.globalAlpha = 0.16; g.fillRect(50, road - 30, 900, 60); g.restore();
+      for (let x = 60; x < 940; x += 46) K.seg(x, road, x + 22, road, { color: col.muted, width: 2, sketch: false, alpha: 0.6 });
+      // windows: green stretches of road with a camera each
+      WINS.forEach(([a, b], i) => {
+        const x0 = A.X(a), x1 = A.X(Math.min(b, 140));
+        g.save(); g.fillStyle = col.green; g.globalAlpha = 0.22; g.fillRect(x0, road - 30, x1 - x0, 60); g.restore();
+        const cx = (x0 + x1) / 2; K.seg(cx, road - 32, cx, 250, { color: col.ink, width: 2.4, sketch: false });
+        K.box(cx - 20, 226, 40, 26, { color: col.ink, width: 2, sketch: false }); K.ring(cx, 239, 6, { color: col.ink, width: 2 });
+      });
+      K.text("windows: the ceiling is proven on the green stretches", 70, 150, { size: 20, bold: true, color: col.green });
+      K.text("nothing is checked in between", 70, 180, { size: 19, color: col.muted });
+      K.text("and more windows, forever →", 930, road + 70, { size: 18, align: "right", color: col.muted });
+      K.text("x, further and further out →", 70, road + 70, { size: 18, color: col.muted });
+      // the speeding car
+      const lap = 7.5, p = reduced ? 0.86 : ((t % lap) / lap), u = Math.pow(10, Math.log10(2) + (Math.log10(140) - Math.log10(2)) * p);
+      const cx = A.X(u), cy = road - 4;
+      K.box(cx - 34, cy - 24, 68, 24, { color: col.red, width: 2.5, sketch: false }); g.save(); g.fillStyle = col.red; g.globalAlpha = 0.85; g.fillRect(cx - 34, cy - 24, 68, 24); g.restore();
+      K.dot(cx - 20, cy + 2, 7, col.ink); K.dot(cx + 20, cy + 2, 7, col.ink);
+      for (let k = 1; k <= 3; k++) K.seg(cx - 44 - k * 12, cy - 18 + k * 5, cx - 40 - k * 4, cy - 18 + k * 5, { color: col.red, width: 2, sketch: false, alpha: 0.6 });
+      const w = WINS.find(([a, b]) => u >= a && u <= b);
+      if (w) {
+        const wx = (A.X(w[0]) + A.X(Math.min(w[1], 140))) / 2;
+        g.save(); g.fillStyle = col.gold; g.globalAlpha = 0.28; g.beginPath(); g.moveTo(wx, 252); g.lineTo(cx - 40, cy - 26); g.lineTo(cx + 40, cy - 26); g.closePath(); g.fill(); g.restore();
+        K.text("caught!", wx, 205, { size: 24, bold: true, align: "center", color: col.red });
+      }
+      K.serif("a rogue zero speeds the whole way", 500, 560, { size: 24, align: "center", color: col.red });
+      return true;
+    },
+  }));
+
+  S("windows", ({ reduced }) => ({
     draw(K, t) {
       const { col } = K, A = K.axes([80, 90, 840, 420], [2, 140], [0, 1.15], { xlog: true });
       A.frame({ xticks: [[2, "2"], [10, "10"], [50, "50"], [100, "100"]], xlabel: "u = ln x (log scale)", yaxis: false });
       const WINS = [5, 11, 24, 52, 110].map((U) => [U, U * 1.5]);
       WINS.forEach(([a, b]) => { K.g.save(); K.g.fillStyle = col.green; K.g.globalAlpha = 0.18; K.g.fillRect(A.X(a), A.Y(1.15), A.X(Math.min(b, 140)) - A.X(a), A.Y(0) - A.Y(1.15)); K.g.restore(); });
-      K.text("windows where the ceiling is known", A.X(5), 70, { size: 20, color: col.green, bold: true });
-      const k = Math.exp(Math.log(4) + (Math.log(100) - Math.log(4)) * (0.5 - 0.5 * Math.cos(t * 0.55)));
+      K.text("green: windows, where the ceiling is proven", A.X(5), 70, { size: 20, color: col.green, bold: true });
+      const k = reduced ? 64 : Math.exp(Math.log(4) + (Math.log(100) - Math.log(4)) * (0.5 - 0.5 * Math.cos(t * 0.55)));
       const f = (u) => Math.exp(k * Math.log(u / k) - (u - k));
       A.curve(f, 2, 140, 400, { color: col.gold, width: 3, fill: col.gold });
       const pts = []; for (let i = 0; i <= 200; i++) { const u = Math.pow(10, Math.log10(2) + (Math.log10(140) - Math.log10(2)) * i / 200); pts.push([A.X(u), A.Y(f(u))]); }

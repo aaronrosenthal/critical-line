@@ -214,11 +214,19 @@
   </div>
 </section>
 
-<section class="slide" data-scene="windows" data-tone="red" data-title="Only on windows">
+<section class="slide" data-scene="cameras" data-tone="red" data-title="Spot checks are enough">
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
-    <p>The proof gets away with even less. The ceiling only has to hold on scattered <b>windows</b> of x, from some Y up to Y<sup>1.5</sup>.</p>
-    <p>That's because each Taylor coefficient only looks at one stretch of x. As you go further out, its view fits inside a single window.</p>
+    <p>The proof can't check the ceiling everywhere. Its machinery is built for one stretch of x at a time, so it proves the ceiling only on scattered stretches called <b>windows</b>. Each runs from some number Y up to Y<sup>1.5</sup>, and there is always another one further out.</p>
+    <p>Is that enough? Think of a car that speeds the whole way. You don't need a camera on every mile: one camera far enough down the road will catch it. A rogue zero is like that car. Its trouble shows up at every scale far enough out, so one window far enough out catches it.</p>
+  </div>
+</section>
+
+<section class="slide" data-scene="windows" data-tone="red" data-title="Each reading looks through one window">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>So what plays the camera? Landau's trap never reads G all at once: it works through the Taylor coefficients, and each coefficient only looks at one stretch of x. The gold bump shows the stretch it sees.</p>
+    <p>Further out, a coefficient's view fits almost entirely inside one window, and the fit keeps improving. There the ceiling controls its reading, and that is where a rogue zero gets caught.</p>
   </div>
 </section>
 
