@@ -1955,6 +1955,22 @@
     },
   }));
 
+  // page 9: the high shelf of cold eggs, "assuming GRH", above the other colonies
+  { const f = DECK.get("w-colors"); if (f) S("w-colors", (ctx) => { const inner = f(ctx) || {};
+    return Object.assign({}, inner, { draw(K, t) {
+      const more = inner.draw ? inner.draw(K, t) : false, g = K.g, { col } = K, Y = 58, ap = ctx.reduced ? 1 : K.ease(K.ph(t, 2.6, 3.6));
+      if (ap > 0) { g.save(); g.globalAlpha = ap;
+        g.fillStyle = "#8b5e34"; g.beginPath(); g.roundRect(600, Y, 360, 9, 3); g.fill();
+        g.fillRect(620, Y + 9, 6, 14); g.fillRect(934, Y + 9, 6, 14);
+        for (let i = 0; i < 8; i++) { const x = 630 + i * 43, w = Math.sin(t * 0.8 + i * 1.9) * 0.04;
+          g.save(); g.translate(x, Y); g.rotate(w); g.beginPath(); g.ellipse(0, -17, 13, 17, 0, 0, Math.PI * 2);
+          g.fillStyle = "#efe3c4"; g.fill(); g.strokeStyle = "#8b6a3e"; g.lineWidth = 1.6; g.stroke();
+          g.fillStyle = "#8b6a3e"; [[-4, -22], [5, -14], [-2, -9]].forEach(([a, b]) => { g.beginPath(); g.arc(a, b, 1.3, 0, Math.PI * 2); g.fill(); }); g.restore(); }
+        K.text("the high shelf: eggs labelled “assuming GRH”,", 585, Y - 28, { size: 15, bold: true, align: "right", color: col.ink, halo: true });
+        K.text("laid by every colony, all still waiting", 585, Y - 8, { size: 14, align: "right", color: col.muted, halo: true });
+        g.restore(); }
+      return more || (!ctx.reduced && t < 3.8);
+    } }); }); }
   // ================================================================== 2026-11-22 redraws: pages 11–15 (map, hum, ceiling, shaft, trap)
   {
     const ROCK = "#8f7a52", DARK = "#2b2620", PALE = "#e8dcc0", ECHO = "#ff8a7a";
