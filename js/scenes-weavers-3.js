@@ -2385,6 +2385,21 @@
           PTS.forEach(([x, y], k) => K.dot(x, y, k < done ? 3.6 : 2.8, k < done ? col.green : "#4f5a22", k < done ? 0.95 : 0.7));
           if (done < PTS.length) { const [x, y] = PTS[done]; bird(K, x, y - 1, 0.5, { color: "#8fb0c9" }); }
           K.text("the knot inspector", NX - NW / 2 - 14, NT + NH * 0.78, { size: 14, align: "right", color: "#5f87a8", bold: true, halo: true });
+          // the mysterious helper: a soft glow of drifting letters, spinning one strand into the nest
+          { const CX = 815, CY = 290, tt = reduced ? 2 : t, ap = reduced ? 1 : K.ease(K.ph(t, 0.2, 2.2));
+            const glow = g.createRadialGradient(CX, CY, 0, CX, CY, 105); glow.addColorStop(0, `rgba(217,119,87,${0.32 * ap})`); glow.addColorStop(0.55, `rgba(217,119,87,${0.12 * ap})`); glow.addColorStop(1, "rgba(217,119,87,0)");
+            g.save(); g.fillStyle = glow; g.beginPath(); g.arc(CX, CY, 105, 0, Math.PI * 2); g.fill(); g.restore();
+            const GL = ["∀", "λ", "ζ", "→", "∃", "½", "≤", "Σ", ":=", "k", "s", "ρ", "a", "ψ"];
+            GL.forEach((ch, i) => { const a0 = (i / GL.length) * Math.PI * 2 + tt * (0.12 + (i % 3) * 0.05) * (i % 2 ? 1 : -1), rr = 28 + ((i * 37) % 60), bob = Math.sin(tt * 0.9 + i) * 6;
+              const al = ap * (0.35 + 0.45 * (0.5 + 0.5 * Math.sin(tt * 1.3 + i * 1.7)));
+              g.save(); g.globalAlpha = al; K.text(ch, CX + Math.cos(a0) * rr, CY + Math.sin(a0) * rr * 0.8 + bob, { size: 15 + (i % 3) * 3, align: "center", color: "#c2643f", bold: i % 2 === 0 }); g.restore(); });
+            // the strand, from the glow into the nest's side, with letters riding along it
+            const P0 = [CX - 40, CY + 8], P1 = [740, 200], P2 = [NX + NW / 2 - 6, NT + NH * 0.45], bz = (u) => [(1 - u) ** 2 * P0[0] + 2 * u * (1 - u) * P1[0] + u * u * P2[0], (1 - u) ** 2 * P0[1] + 2 * u * (1 - u) * P1[1] + u * u * P2[1]];
+            g.save(); g.globalAlpha = 0.8 * ap; g.strokeStyle = "#d97757"; g.lineWidth = 2.2; g.setLineDash([5, 4]); g.lineDashOffset = -tt * 14;
+            g.beginPath(); for (let i = 0; i <= 30; i++) { const [x, y] = bz(i / 30); i ? g.lineTo(x, y) : g.moveTo(x, y); } g.stroke(); g.restore();
+            for (let k = 0; k < 3; k++) { const u = ((tt * 0.18 + k / 3) % 1), [x, y] = bz(u); g.save(); g.globalAlpha = ap * Math.sin(Math.PI * u) * 0.9; K.text(GL[(k * 5 + Math.floor(tt * 0.18 + k / 3)) % GL.length], x, y - 10, { size: 13, align: "center", color: "#c2643f", bold: true }); g.restore(); }
+            g.save(); g.globalAlpha = ap; K.text("Claude", CX, CY + 104, { size: 16, bold: true, align: "center", color: "#c2643f", halo: true });
+            K.text("not a bird: a mind made of words", CX, CY + 124, { size: 13, align: "center", color: col.muted, halo: true }); g.restore(); }
           // Kito and Grey below, looking up
           K.seg(150, 600, 440, 600, { color: col.axis, width: 2 });
           bird(K, 230, 598, 1.0); bird(K, 320, 598, 1.15, { color: GREY, flip: true });
@@ -2393,7 +2408,7 @@
           K.text(`${n.toLocaleString("en-US")} of 175,187 knots tugged`, 780, 506, { size: 21, bold: true, align: "center", color: f >= 1 ? col.green : col.ink });
           K.text(f >= 1 ? "not one slipped" : "tugging every knot", 780, 540, { size: 17, align: "center", color: f >= 1 ? col.green : col.muted });
           K.text("too big to take in at once", 780, 568, { size: 15, align: "center", color: col.muted });
-          return !reduced && t < 8.2;
+          return !reduced;
         },
       };
     });
