@@ -2220,11 +2220,14 @@
         draw(K, t) {
           const { col } = K, g = K.g, T = st.touched || reduced ? 99 : t, beta = st.beta;
           shaft(K, beta, t, reduced);
+          K.text("the echo shaft", 270, 40, { size: 20, bold: true, align: "center" });
           // the volume limit, as a rock ceiling over the echoes, a little above the middle wire's pace
           const lim = (k) => 2 * pace(k), LY = (k) => FLOOR - Math.min(lim(k), CAP + 30);
           g.save(); g.fillStyle = ROCK; g.globalAlpha = 0.55; g.beginPath(); g.moveTo(EX(0.4), 110);
           for (let i = 0; i <= 60; i++) { const k = 0.4 + (i / 60) * 11.2; g.lineTo(EX(k), LY(k)); } g.lineTo(EX(11.6), 110); g.closePath(); g.fill(); g.restore();
           A_line(K, (k) => [EX(k), LY(k)], col.green);
+          K.line(Array.from({ length: 11 }, (_, i) => [EX(i + 1), FLOOR - pace(i + 1)]), { color: col.gold, width: 2.5, dash: [6, 5], sketch: false });
+          K.text("gold: the middle wire's pace", EX(0) + 10, FLOOR + 22, { size: 13, bold: true, color: col.gold });
           K.text("the volume limit", EX(1), 128, { size: 16, bold: true, color: col.green, halo: true });
           K.seg(EX(0) + 10, FLOOR, EX(11.6), FLOOR, { color: col.axis, width: 2, sketch: false });
           const kmax = Math.floor(clamp(T / 0.45, 1, 11)), ev = echoes(beta, kmax); let broke = false, nCr = 0;
