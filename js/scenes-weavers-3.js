@@ -8,6 +8,7 @@
   const GAMMA = 0.5772156649015329, LN2PI = Math.log(2 * Math.PI);
   const GRASS = ["#9aa64e", "#b9c26c", "#7d8a3a", "#6a7630", "#a9a35a"], BROWN = ["#8b5e34", "#a0703f", "#6e4a2a", "#b8864f"];
   const GREY = "#c9b27a";
+  function darkMode(K) { const m = /^#?([0-9a-f]{6})$/i.exec(K.surface || ""); if (!m) return false; const v = parseInt(m[1], 16); return ((v >> 16) + ((v >> 8) & 255) + (v & 255)) / 3 < 110; }
   const isPrime = (n) => { if (n < 2) return false; for (let q = 2; q * q <= n; q++) if (n % q === 0) return false; return true; };
     const DATA_LEMN = {"3":[1,3,4,6,7,10,10,12,13,15,16,19,19,21,22,24,25,29,28,30,31,33,34,37,37,39,40,42,43,46,46,48,49,51,52,56,55,57,58,60,61,64,64,66,67,69,70,73,73,75],"7":[0,1,1,2,3,3,4,4,5,5,6,7,7,8,8,9,10,10,11,11,12,12,13,14,14,15,15,16,18,17,18,18,19,19,20,21,21,22,22,23,24,24,25,25,26,26,27,28,28,29],"11":[0,0,2,1,1,2,2,3,3,3,4,4,4,5,5,5,6,6,7,7,7,8,8,9,9,9,9,10,10,11,11,11,13,12,12,13,13,14,14,14,15,15,15,16,16,16,17,17,18,18]};
   const rhs = (x, p) => (((x * x % p) * x - x + 1) % p + p) % p;
@@ -1219,7 +1220,7 @@
           const { col } = K, g = K.g;
           B_ground(K, G, 40, 960);
           // beyond the wall, the loom, faint
-          g.save(); g.globalAlpha = 0.28; loomFrame(K, 890, 975, 260, G); g.restore();
+          g.save(); g.globalAlpha = darkMode(K) ? 0.6 : 0.28; loomFrame(K, 890, 975, 260, G); g.restore();
           K.text("the loom", 932, 228, { size: 15, align: "center", color: col.muted });
           B_wall(K, 800, 200, G);
           K.text("the first wall", 790, 130, { size: 17, bold: true, align: "center", color: col.muted });
@@ -1584,7 +1585,7 @@
     draw(K, t) {
       const { col } = K, g = K.g, ground = 560, tilt = (reduced ? 1 : K.ease(K.ph(t, 0.5, 2.0))) * 0.3;
       // the loom behind, with one pass of cloth on it
-      g.save(); g.globalAlpha = 0.45; loomFrame(K, 50, 300, 140, ground); g.restore();
+      g.save(); g.globalAlpha = darkMode(K) ? 0.8 : 0.45; loomFrame(K, 50, 300, 140, ground); g.restore();
       cL_band(K, 75, 400, 200, 40, { seed: 7, alpha: 0.6 });
       K.text("one pass", 175, 470, { size: 14, align: "center", color: col.muted });
       const [L, R] = cL_balance(K, 640, 210, ground, 210, tilt);
@@ -1749,10 +1750,11 @@
       bird(K, 668, lineY + 46, 1.0, { flip: true });
       D_pen(K, 648, lineY + 16, 616 + wr, lineY + 4);
       // the loom behind, and the allowance: two twig piles on either side of a line
-      g.save(); g.globalAlpha = 0.35; loomFrame(K, 705, 975, 70, 560); g.restore();
+      const dk = (() => { const m = /^#?([0-9a-f]{6})$/i.exec(K.surface || ""); if (!m) return false; const v = parseInt(m[1], 16); return ((v >> 16) + ((v >> 8) & 255) + (v & 255)) / 3 < 110; })();
+      g.save(); g.globalAlpha = dk ? 0.85 : 0.35; loomFrame(K, 705, 975, 70, 560); g.restore();
       const base = 530, u = 14, hb = (X / mm) * u, hm = mm * u, allow = Math.sqrt(X) * u;
       K.seg(715, base, 965, base, { color: col.axis, width: 2, sketch: false });
-      const bar = (x, h, cc, lab, over) => { K.box(x, base - h, 56, h, { color: cc, width: 2, fill: cc, fillAlpha: 0.5, r: 5, sketch: false }); if (over > 0) K.box(x, base - h, 56, over, { color: null, fill: col.red, fillAlpha: 0.6, r: 5 }); K.text(lab, x + 28, base + 22, { size: 17, bold: true, align: "center", color: cc }); };
+      const bar = (x, h, cc, lab, over) => { K.box(x, base - h, 56, h, { color: cc, width: 2, fill: cc, fillAlpha: dk ? 0.75 : 0.5, r: 5, sketch: false }); if (over > 0) K.box(x, base - h, 56, over, { color: null, fill: col.red, fillAlpha: 0.6, r: 5 }); K.text(lab, x + 28, base + 22, { size: 17, bold: true, align: "center", color: cc }); };
       bar(752, hb, col.gold, "x/m", Math.max(0, hb - allow)); bar(842, hm, col.green, "m", Math.max(0, hm - allow));
       K.seg(722, base - allow, 958, base - allow, { color: col.gold, width: 2.2, dash: [8, 6], sketch: false });
       K.text("allowance ≈ √x", 724, base - allow - 16, { size: 15, align: "left", color: col.gold, bold: true, halo: true });
