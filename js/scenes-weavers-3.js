@@ -1538,7 +1538,7 @@
       K.text("a knot of p on every strand", X0 + W / 2, Y0 + H + 22, { size: 15, bold: true, align: "center", color: col.red });
       K.text(f > 0.5 ? "16 crossings in the gold patch" : "4 crossings in the gold patch", 830, 470, { size: 16, bold: true, align: "center", color: col.gold });
       K.text("to a Far One, measuring at infinity,", 830, 500, { size: 15, align: "center", color: col.muted });
-      K.text("the finer mesh counts as bigger", 830, 522, { size: 15, bold: true, align: "center", color: col.green });
+      K.text("more knots: it must be bigger", 830, 522, { size: 15, bold: true, align: "center", color: col.green });
       K.text("(divided by p = 2, in 2 directions: 4×)", 830, 548, { size: 13, align: "center", color: col.muted });
       return !reduced && t < 3.8;
     },
@@ -2284,7 +2284,7 @@
           g.save(); g.strokeStyle = "#8b5e34"; g.lineWidth = 9; g.lineCap = "round"; g.beginPath(); g.moveTo(40, 58); g.quadraticCurveTo(500, 46, 960, 60); g.stroke(); g.restore();
           thread(K, 125, 58, 125, 268, PURPLE, t); thread(K, 875, 58, 875, 268, BLUE, t + 2);
           card(K, 30, 268, 190, PURPLE, "the round aviary", ["does the loom, run there,", "become Stepanov's knot?", "still loose"]);
-          card(K, 780, 268, 190, BLUE, "the positivity", ["why do knots tied over", "and over amplify it so?", "still loose"]);
+          card(K, 780, 268, 190, BLUE, "the positivity", ["why do knots tied over", "and over amplify it so?", "starting to give"]);
           // the pulled thread: a valley of exponents. passes m = x^θ; chorus held to x^max(1−θ, θ)
           const walk = reduced || touched ? 1 : K.ease(K.ph(t, 0.8, 4.2)), stop = Math.min(fence, 0.5), th = stop * walk;
           const pts = []; for (let i = 0; i <= 100; i++) { const v = i / 100; pts.push([X(v), Y(ex(v))]); }
@@ -2328,6 +2328,24 @@
       };
     });
   }
+  // ================================================================== "w-toll": the Far Ones' toll for new directions, refunded by their census
+  S("w-toll", ({ reduced }) => ({
+    draw(K, t) {
+      const { col } = K;
+      farOne(K, 130, 520, 190, { t });
+      K.text("a Far One", 130, 548, { size: 14, align: "center", color: col.purple, bold: true });
+      bird(K, 255, 518, 0.9, { flip: true });
+      K.text("Kito", 255, 548, { size: 13, align: "center", color: col.muted });
+      const anim = window.TOLL ? window.TOLL(K, t, reduced, {
+        x0: 320, x1: 970, base: 520, H: 320, legendX: 40, legendY: 70, passWord: "pass",
+        tollLabel: "the toll: new directions the Far Ones carry",
+        refundLabel: "the refund: their census of every weave of that shape",
+        leftLabel: "left over: small, and it's what the budget counts",
+        sameLabel: "same height: both come from the same number",
+      }) : false;
+      return anim || !reduced;
+    },
+  }));
   // ================================================================== the nest thread: the strange finished nest, and Kito's practice nest built stage by stage
   {
     const { nest } = window.WEAVE;

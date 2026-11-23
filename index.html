@@ -361,8 +361,8 @@
 <section class="slide" data-scene="denser" data-tone="blue" data-title="Forced factors make the lattice bigger">
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
-    <p>Forced factors are good news. The polynomials form a <b>lattice</b>, a grid of points. If every one of them is divisible by p, you may divide the whole lattice by p.</p>
-    <p>The grid gets denser, and in this kind of geometry a denser lattice counts as <b>bigger</b>. The proof builds the lattice it measures in exactly this way.</p>
+    <p>Forced factors are good news, because they make things provably big. A nonzero whole number that 3 divides five times is at least 3⁵ = 243. More forced factors, more size, and the size side caps how big it can get.</p>
+    <p>The proof does this with a <b>lattice</b> of polynomials. If every point is divisible by p, divide the whole grid by p: it gets denser, and in this geometry a denser lattice counts as <b>bigger</b>.</p>
   </div>
 </section>
 
@@ -371,6 +371,7 @@
   <div class="words">
     <p>The size side is measured "at infinity", with the areas of very special lattices in the complex plane.</p>
     <p>A formula of Chowla and Selberg computes those areas exactly, and Euler's constant γ falls out: the same γ that G(x) subtracts.</p>
+    <p>Why so exact? The gap being hunted is about √x. A constant that's off by even δ adds δ · x to it, enough to hide a zero off the line.</p>
   </div>
 </section>
 
@@ -379,7 +380,7 @@
   <div class="words">
     <p>Geometry then says the books can't be too unbalanced: the prime side is at most the size side, plus errors. For one lift that reads</p>
     <div class="eq">b · G(x) ≤ errors</div>
-    <p>But the errors are about b · x, far too big to say anything. One lift isn't enough.</p>
+    <p>But the errors are about b · x, far too big to say anything. Most of that is the cost of setting the machine up, paid once however many lifts follow. One lift isn't enough.</p>
   </div>
 </section>
 
@@ -398,6 +399,16 @@
     <p>The price: every lift adds a block of new coordinates, so lift number j has more to carry than the ones before. It costs about j.</p>
     <p>The whole chain costs about 1 + 2 + ⋯ + m ≈ <b>m²/2</b>.</p>
     <div class="tags"><span class="tag real">matches Rubinstein's independent account</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="toll" data-tone="green" data-title="A toll, and a refund">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p>Why isn't each lift's cost enormous? Every lift opens new directions, and measuring them at infinity charges a toll far bigger than G(x) itself.</p>
+    <p>But the same step also counts every lattice of that shape, and that count pays the toll back, lift by lift, almost exactly. It has to: both are set by the same number. What's left over is the small cost you just added up.</p>
+    <p style="font-size:0.88em">Toll: the period shift set by the field's root discriminant. Refund: the Siegel mass formula, set by the same number.</p>
+    <div class="tags"><span class="tag reading">toll and refund: our reading</span><span class="tag real">the count bound: traced in the Lean source</span></div>
   </div>
 </section>
 
@@ -470,8 +481,8 @@
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
     <p>A small trusted core of Lean, the <b>kernel</b>, checked every step. Only Lean's standard axioms are used, and the statement is the community library's own.</p>
-    <p>By 22 November, independent rebuilds matched byte for byte, five independently written checkers had accepted the proof, and the Lean and Mathlib maintainers had certified both statement and proof. One official end-to-end run was still finishing. Checked is not the same as understood: no one has yet written out the core argument by hand.</p>
-    <div class="tags"><span class="tag real">status as of 22 Nov 2026</span></div>
+    <p>By 23 November, independent rebuilds matched byte for byte, five independently written checkers had accepted the proof, the Lean and Mathlib maintainers had certified both statement and proof, and the official end-to-end comparison had passed. Two further runs were still going. Checked is not the same as understood: no one has yet written out the core argument by hand.</p>
+    <div class="tags"><span class="tag real">status as of 23 Nov 2026</span></div>
   </div>
 </section>
 
@@ -536,7 +547,8 @@
   <div class="words">
     <p>What is the better number? The draft starts with the <b>lemniscate sine</b>, the inverse of <span class="m">∫ dt/√(1 − t⁴)</span>. Its derivatives at 0 are whole numbers: 1, −12, 3024, −4390848, …</p>
     <p>A prime like 3, 7 or 11 (remainder 3 after dividing by 4) divides the n-th one about <span class="m">n·p/(p² − 1)</span> times: a smooth formula, with none of the rounding in Legendre's. Primes like 5 and 13 are not forced to divide at all. That is the blind spot behind Step B's bins.</p>
-    <div class="tags"><span class="tag real">computed exactly, n up to 201</span></div>
+    <p>The catch: these numbers grow like n!, far too big. Theta functions have the right size but too few forced factors. A theta lift gets both at once.</p>
+    <div class="tags"><span class="tag real">computed exactly, n up to 201</span><span class="tag reading">the size contrast: our reading</span></div>
   </div>
 </section>
 
@@ -628,7 +640,7 @@
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
     <p>The author calls each lift "one more order of multiplicity". Three experiments could turn that phrase into an explanation.</p>
-    <p>Run the argument on clock arithmetic and see whether it becomes Stepanov's proof. Turn the dial down and see whether a short chain still works; the author's own first steps suggest it might. The positivity has turned up in plain sight, so what remains is to explain why multiplicity amplifies it so well. Until then, we have a checked proof and a promising slogan.</p>
+    <p>Run the argument on clock arithmetic and see whether it becomes Stepanov's proof. Turn the dial down and see whether a short chain still works; the author's own first steps suggest it might. And explain why multiplicity amplifies the positivity so well. That one has begun to give: each lift's toll is refunded by the count of lattices, so the gains add while the costs don't. Why the refund is so exact is still unwritten.</p>
     <div class="tags"><span class="tag reading">our reading</span></div>
   </div>
 </section>

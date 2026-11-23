@@ -399,4 +399,43 @@
       return t < 2.6;
     },
   }));
+
+  // ================================================================== "toll": each lift's toll (new directions) is refunded by the census (count of forms)
+  // Shared with the weaver edition through window.TOLL.
+  function tollChart(K, t, reduced, o = {}) {
+    const { col } = K, x0 = o.x0 ?? 150, x1 = o.x1 ?? 880, base = o.base ?? 470, H = o.H ?? 230, n = 6;
+    const RED = col.red, GREEN = col.green, GOLD = col.gold, step = (x1 - x0) / n, bw = Math.min(38, step * 0.36);
+    const rem = (j) => 8 + 6 * j;                      // the small leftover, growing a little with each lift
+    K.seg(x0 - 10, base, x1, base, { color: col.axis, width: 2, sketch: false });
+    let anim = false;
+    for (let j = 1; j <= n; j++) {
+      const cx = x0 + (j - 0.5) * step, t0 = 0.4 + (j - 1) * 0.55;
+      const up = reduced ? 1 : K.ease(K.ph(t, t0, t0 + 0.35)), down = reduced ? 1 : K.ease(K.ph(t, t0 + 0.45, t0 + 0.95));
+      if (!reduced && down < 1) anim = true;
+      const hr = H * up, top = base - hr;
+      // the toll, in red
+      K.box(cx - bw - 3, top, bw, hr, { fill: RED, fillAlpha: 0.75, color: RED, sketch: false, r: 3, width: 1.2 });
+      // the refund, in green, coming down beside it to the same height, minus the leftover
+      const hg = (H - rem(j)) * down;
+      if (hg > 0) K.box(cx + 3, base - H, bw, hg, { fill: GREEN, fillAlpha: 0.75, color: GREEN, sketch: false, r: 3, width: 1.2 });
+      if (down > 0.98) {
+        K.box(cx + 3, base - rem(j), bw, rem(j), { fill: GOLD, fillAlpha: 0.95, color: GOLD, sketch: false, r: 2, width: 1.2 });
+        K.seg(cx - bw - 8, base - H, cx + bw + 8, base - H, { color: col.ink, width: 1.5, dash: [5, 4], sketch: false });
+      }
+      K.text((o.passWord || "lift") + " " + j, cx, base + 26, { size: 17, align: "center", color: col.muted });
+    }
+    const ly = o.legendY ?? 60, lx = o.legendX ?? x0;
+    [[RED, o.tollLabel || "the toll: each lift's new directions, measured at infinity"],
+     [GREEN, o.refundLabel || "the refund: a census of every lattice of that shape"],
+     [GOLD, o.leftLabel || "what's left: small, and it is the cost on the next pages"]].forEach(([c, s], i) => {
+      K.box(lx, ly + i * 32 - 10, 20, 20, { fill: c, fillAlpha: 0.8, color: c, sketch: false, r: 3 });
+      K.text(s, lx + 28, ly + i * 32, { size: 19, color: c === GOLD ? col.ink : c, bold: true });
+    });
+    K.text(o.sameLabel || "same height: both are set by the same number", (x0 + x1) / 2, base - H - 24, { size: 17, align: "center", color: col.muted, halo: true });
+    return anim;
+  }
+  window.TOLL = tollChart;
+  S("toll", ({ reduced }) => ({
+    draw(K, t) { return tollChart(K, t, reduced, { legendY: 70, leftLabel: "what's left: small, the cost you just added up" }) || !reduced; },
+  }));
 })();
