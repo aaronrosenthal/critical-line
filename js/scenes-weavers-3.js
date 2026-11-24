@@ -1973,6 +1973,18 @@
         g.restore(); }
       return more || (!ctx.reduced && t < 3.8);
     } }); }); }
+  // ================================================================== "w-order": Grey's order for a weave with exactly the overflow knots (reuses the deck's "order" slip)
+  { const f = DECK.get("order"); if (f) S("w-order", (ctx) => { const inner = f({ ...ctx, orderText: {
+      what: "the weave we need", why: "no weaver can tie it by hand",
+      slip: "one weave with exactly this many knots of each twig", row: "knots of ",
+      foot: "weighed by length, they add up to the twig pan" } }) || {};
+    return { ...inner, draw(K, t) {
+      const r = inner.draw ? inner.draw(K, t) : false;
+      bird(K, 300, 168, 0.9, { flip: true, color: GREY });
+      K.text("Grey", 300, 196, { size: 13, align: "center", color: K.col.muted });
+      return r;
+    } };
+  }); }
   // ================================================================== 2026-11-22 redraws: pages 11–15 (map, hum, ceiling, shaft, trap)
   {
     const ROCK = "#8f7a52", DARK = "#2b2620", PALE = "#e8dcc0", ECHO = "#ff8a7a";
@@ -2340,7 +2352,7 @@
         x0: 320, x1: 970, base: 520, H: 320, legendX: 40, legendY: 70, passWord: "pass",
         tollLabel: "the toll: new directions the Far Ones carry",
         refundLabel: "the refund: their census of every weave of that shape",
-        leftLabel: "left over: small, and it's what the budget counts",
+        leftLabel: "left over: small, but growing each pass",
         sameLabel: "same height: both come from the same number",
       }) : false;
       return anim || !reduced;
