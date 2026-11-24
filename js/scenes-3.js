@@ -436,6 +436,37 @@
   }
   window.TOLL = tollChart;
   S("toll", ({ reduced }) => ({
-    draw(K, t) { return tollChart(K, t, reduced, { legendY: 70, leftLabel: "what's left: small, the cost you just added up" }) || !reduced; },
+    draw(K, t) { return tollChart(K, t, reduced, { legendY: 70, leftLabel: "what's left: small, but growing with each lift" }) || !reduced; },
+  }));
+
+  // ================================================================== "order": the bridge into Part VII: a wanted number, with exactly the overflow factors
+  S("order", ({ reduced }) => ({
+    draw(K, t) {
+      const { col } = K, x = 100, PS = [2, 3, 5, 7];
+      const tot = (p) => { let s = 0; for (let e = 1, q = p; q < x; e += 2, q *= p * p) s += x / q - 1; return s; };
+      const vals = PS.map(tot), vmax = Math.max(...vals);
+      // the mystery number
+      K.box(50, 170, 290, 290, { fill: col.purple, fillAlpha: 0.06, color: col.purple, sketch: true, r: 14, width: 2, dash: [10, 8] });
+      K.text("?", 195, 330, { size: 150, align: "center", color: col.purple, bold: true });
+      K.text("the number we need", 195, 495, { size: 19, align: "center", color: col.purple, bold: true });
+      K.text("nobody can just write it down", 195, 522, { size: 17, align: "center", color: col.muted });
+      // the order slip
+      K.box(400, 80, 560, 500, { fill: K.surface, fillAlpha: 1, color: col.axis, sketch: true, r: 6, width: 2 });
+      K.text("WANTED", 680, 122, { size: 28, align: "center", bold: true, color: col.gold });
+      K.text("one whole number with exactly this many factors of each prime", 680, 156, { size: 16, align: "center", color: col.ink });
+      K.text("(x = a/b = 100; amounts in units of b)", 680, 180, { size: 14, align: "center", color: col.muted });
+      let anim = false;
+      PS.forEach((p, i) => {
+        const y = 240 + i * 70, f = reduced ? 1 : K.ease(K.ph(t, 0.4 + i * 0.45, 1.0 + i * 0.45));
+        if (!reduced && f < 1) anim = true;
+        K.text(`factors of ${p}`, 430, y + 4, { size: 19, color: col.ink, bold: true });
+        const L = 300 * (vals[i] / vmax) * f;
+        K.box(570, y - 14, Math.max(L, 1), 28, { fill: col.red, fillAlpha: 0.7, color: col.red, sketch: false, r: 4, width: 1 });
+        if (f > 0.98) K.text(vals[i].toFixed(1) + " b", 580 + L, y + 4, { size: 17, color: col.red, bold: true });
+      });
+      K.text("each amount = the overflows of a/pᵉ over b, odd e", 680, 530, { size: 15, align: "center", color: col.muted });
+      K.text("weighted by ln p, they add up to the prime side", 680, 555, { size: 15, align: "center", color: col.muted });
+      return anim;
+    },
   }));
 })();

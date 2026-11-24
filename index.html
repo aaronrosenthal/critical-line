@@ -310,12 +310,34 @@
   </div>
 </section>
 
-<!-- ======================================================= VII. one lift -->
-<section class="slide" data-scene="machine" data-tone="blue" data-part="VII. What one lift does" data-title="A theta lift">
+<section class="slide" data-scene="order" data-tone="gold" data-part="VII. Building the number" data-title="Wanted: one number">
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
-    <p>Where does the proof make its two-way count? Inside a classical machine called a <b>theta lift</b>. Think of it as a gearbox that carries a perfectly symmetric object from one world into a partner world.</p>
-    <p>For us, one feature matters. It meshes two polynomials, one of <b>huge</b> degree a and one of <b>small</b> degree b, with a = x · b, like a big gear driving a small one. (A polynomial's degree is its highest power: x³ + 1 has degree 3.)</p>
+    <p class="chip">The plan · step 1 of 5 · place the order</p>
+    <p>Here's the catch. With a! the two sides always agree, so the gap is zero and teaches nothing. The overflow version is only useful if some real number has <b>exactly</b> that many factors of each prime.</p>
+    <p>Find one, and its size, measured at infinity, caps the prime side, which caps the gap. Nobody can write such a number down. The next pages build one.</p>
+    <p style="font-size:0.85em">Only odd powers appear: in the one bin the machine sees, an even power of a −1 prime counts as +1.</p>
+    <div class="tags"><span class="tag reading">the framing: our reading</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="denser" data-tone="blue" data-title="Why forced factors help">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p class="chip">The plan · step 2 of 5 · why it helps</p>
+    <p>Why want forced factors? Because they make a number provably big. A nonzero whole number that 3 divides five times is at least 3⁵ = 243.</p>
+    <p>So the order's factors push the number's size up by the prime side, and the size side caps it. Squeezed between them: the gap, b · G(x).</p>
+    <p style="font-size:0.85em">In the proof the number is a <b>lattice</b> of polynomials: divide it by p and it gets denser, which counts as <b>bigger</b>.</p>
+  </div>
+</section>
+
+<!-- ======================================================= VII. one lift -->
+<section class="slide" data-scene="machine" data-tone="blue" data-title="A theta lift">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p class="chip">The plan · step 3 of 5 · build it</p>
+    <p>How do you build a number to order? With a classical machine called a <b>theta lift</b>: a gearbox that carries a perfectly symmetric object from one world into a partner world.</p>
+    <p>What comes out are polynomials, whose coefficients are numbers you can test for factors of p. The lift meshes two of them, one of <b>huge</b> degree a and one of <b>small</b> degree b, with a = x · b, like a big gear driving a small one. (A polynomial's degree is its highest power: x³ + 1 has degree 3.)</p>
     <div class="tags"><span class="tag schem">schematic</span></div>
   </div>
 </section>
@@ -323,8 +345,9 @@
 <section class="slide" data-scene="ring" data-tone="blue" data-title="Seats at a round table">
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
+    <p class="chip">The plan · step 3 of 5 · build it</p>
     <p>Picture the polynomials being passed around a round table. Each one has an <b>ordinary</b> part and a <b>mirror-image</b> part (think of z and its mirror image z̄). Each seat has a big pocket, with room for degree a, and a small pocket, with room for degree b.</p>
-    <p>At the home seat, the ordinary part goes in the big pocket. At every other seat around the table, the two pockets are swapped.</p>
+    <p>At the home seat, the ordinary part goes in the big pocket. At every other seat around the table, the two pockets are swapped. Those swapped seats are where the factors will come from.</p>
     <div class="tags"><span class="tag schem">schematic</span></div>
   </div>
 </section>
@@ -332,7 +355,8 @@
 <section class="slide" data-scene="pascal" data-tone="blue" data-title="A magic move at p">
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
-    <p>At a prime p there's a magic move. In arithmetic mod p, <span class="m">(u + v)<sup>p</sup> = u<sup>p</sup> + v<sup>p</sup></span>, because every middle coefficient is divisible by p.</p>
+    <p class="chip">The plan · step 3 of 5 · build it</p>
+    <p>To get from seat to seat, the machine uses one move. At a prime p there's a magic move. In arithmetic mod p, <span class="m">(u + v)<sup>p</sup> = u<sup>p</sup> + v<sup>p</sup></span>, because every middle coefficient is divisible by p.</p>
     <p>So the substitution x → x<sup>p</sup>, called <b>Frobenius</b>, plays nicely with everything. It divides a polynomial's degree by p, and it passes the polynomial to the next seat.</p>
   </div>
 </section>
@@ -343,81 +367,84 @@
     <label>p <span class="seg ps"><button data-p="2">2</button><button data-p="3" class="on">3</button><button data-p="5">5</button><button data-p="7">7</button></span></label></div>
   </div>
   <div class="words">
+    <p class="chip">The plan · step 4 of 5 · the factors appear</p>
     <p>Follow the big degree around the table. After e hops it's a/pᵉ.</p>
     <p>Even hops land on a seat where it goes in the big pocket: it fits. Odd hops land on a swapped seat, where it must squeeze into the small pocket of size b. Whatever sticks out, shown in red, turns into <b>forced factors of p</b>.</p>
     <p class="try">Try other values of x and p.</p>
   </div>
 </section>
 
-<section class="slide" data-scene="three" data-tone="blue" data-title="Three mysteries, one picture">
+<section class="slide" data-scene="three" data-tone="blue" data-title="The order, filled">
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
-    <p>That one picture explains the shape of the overflow formula from Step D.</p>
-    <p>Dividing by pᵉ is Frobenius. Subtracting b is the small pocket. Counting only odd e is the hops that land on swapped seats. And once pᵉ is past x, everything fits.</p>
+    <p class="chip">The plan · step 5 of 5 · order filled</p>
+    <p>Hold the red up against the order slip: they match, line for line.</p>
+    <p>Dividing by pᵉ is Frobenius. Subtracting b is the small pocket. Only odd e: the swapped seats. Past pᵉ = x, everything fits. The lift forces exactly the factors the order asked for.</p>
     <div class="tags"><span class="tag reading">our reading of the source's formulas</span></div>
   </div>
 </section>
 
-<section class="slide" data-scene="denser" data-tone="blue" data-title="Forced factors make the lattice bigger">
+<section class="slide" data-scene="period" data-tone="blue" data-part="VIII. Weighing it, again and again" data-title="The size side, at infinity">
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
-    <p>Forced factors are good news, because they make things provably big. A nonzero whole number that 3 divides five times is at least 3⁵ = 243. More forced factors, more size, and the size side caps how big it can get.</p>
-    <p>The proof does this with a <b>lattice</b> of polynomials. If every point is divisible by p, divide the whole grid by p: it gets denser, and in this geometry a denser lattice counts as <b>bigger</b>.</p>
-  </div>
-</section>
-
-<section class="slide" data-scene="period" data-tone="blue" data-title="The size side, at infinity">
-  <div class="art"><canvas aria-hidden="true"></canvas></div>
-  <div class="words">
-    <p>The size side is measured "at infinity", with the areas of very special lattices in the complex plane.</p>
+    <p class="chip">The plan · step 1 of 5 · weigh it</p>
+    <p>Now weigh what we built. Its size side is measured "at infinity", with the areas of very special lattices in the complex plane.</p>
     <p>A formula of Chowla and Selberg computes those areas exactly, and Euler's constant γ falls out: the same γ that G(x) subtracts.</p>
     <p>Why so exact? The gap being hunted is about √x. A constant that's off by even δ adds δ · x to it, enough to hide a zero off the line.</p>
+    <p class="ledger"><span>the ledger</span>gap = prime side − size side</p>
   </div>
 </section>
 
 <section class="slide" data-scene="scale" data-tone="red" data-title="True, but useless">
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
-    <p>Geometry then says the books can't be too unbalanced: the prime side is at most the size side, plus errors. For one lift that reads</p>
-    <div class="eq">b · G(x) ≤ errors</div>
-    <p>But the errors are about b · x, far too big to say anything. Most of that is the cost of setting the machine up, paid once however many lifts follow. One lift isn't enough.</p>
+    <p class="chip">The plan · step 2 of 5 · one lift is too loose</p>
+    <p>The squeeze holds: the prime side is at most the size side, plus errors. But the errors are about b · x, far bigger than the √x we need.</p>
+    <p>Most of that is the cost of setting the machine up, paid once however many lifts follow. One lift isn't enough.</p>
+    <p class="ledger"><span>the ledger</span>G(x) ≤ x &nbsp;&nbsp;(useless)</p>
   </div>
 </section>
 
 <!-- ======================================================= VIII. chain -->
-<section class="slide" data-scene="chain" data-tone="green" data-part="VIII. A chain of √x lifts" data-title="Do it again, m times">
+<section class="slide" data-scene="chain" data-tone="green" data-title="Do it again, m times">
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
-    <p>So do it again. Feed the output of one lift into another, m times. Each lift turns one minus sign of its group into a plus.</p>
-    <p>Every round forces its own factors of p, and the gains <b>add up</b>.</p>
-  </div>
-</section>
-
-<section class="slide" data-scene="cost" data-tone="green" data-title="What the chain costs">
-  <div class="art"><canvas aria-hidden="true"></canvas></div>
-  <div class="words">
-    <p>The price: every lift adds a block of new coordinates, so lift number j has more to carry than the ones before. It costs about j.</p>
-    <p>The whole chain costs about 1 + 2 + ⋯ + m ≈ <b>m²/2</b>.</p>
-    <div class="tags"><span class="tag real">matches Rubinstein's independent account</span></div>
+    <p class="chip">The plan · step 3 of 5 · repeat it</p>
+    <p>So do it again. Feed the output of one lift into another, m times. (In the picture, each lift turns one minus sign of its group into a plus.)</p>
+    <p>Every round forces its own factors of p, so the gap is counted <b>m times</b>, while the setup is still paid only once.</p>
+    <p class="ledger"><span>the ledger</span>m · G(x) ≤ x + ?</p>
   </div>
 </section>
 
 <section class="slide" data-scene="toll" data-tone="green" data-title="A toll, and a refund">
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
-    <p>Why isn't each lift's cost enormous? Every lift opens new directions, and measuring them at infinity charges a toll far bigger than G(x) itself.</p>
-    <p>But the same step also counts every lattice of that shape, and that count pays the toll back, lift by lift, almost exactly. It has to: both are set by the same number. What's left over is the small cost you just added up.</p>
+    <p class="chip">The plan · step 4 of 5 · pay for it</p>
+    <p>The ? is the price of repeating. Every lift opens new directions, and measuring them at infinity charges a toll far bigger than G(x) itself. Unpaid, it would ruin everything.</p>
+    <p>But the same step also counts every lattice of that shape, and that count pays the toll back, lift by lift, almost exactly. It has to: both are set by the same number.</p>
     <p style="font-size:0.88em">Toll: the period shift set by the field's root discriminant. Refund: the Siegel mass formula, set by the same number.</p>
     <div class="tags"><span class="tag reading">toll and refund: our reading</span><span class="tag real">the count bound: traced in the Lean source</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="cost" data-tone="green" data-title="What the refund misses">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p class="chip">The plan · step 4 of 5 · pay for it</p>
+    <p>What the refund misses is small, but it grows: lift number j has a little more to carry than the ones before, about j.</p>
+    <p>The whole chain costs about 1 + 2 + ⋯ + m ≈ <b>m²/2</b>.</p>
+    <p class="ledger"><span>the ledger</span>m · G(x) ≤ x + m²</p>
+    <div class="tags"><span class="tag real">matches Rubinstein's independent account</span></div>
   </div>
 </section>
 
 <section class="slide" data-scene="ineq" data-tone="green" data-title="The inequality">
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
-    <p>Put it together. In units of b:</p>
+    <p class="chip">The plan · step 5 of 5 · balance the books</p>
+    <p>Put it together, in units of b. The gap, counted once per lift, is at most the setup x, paid once, plus the chain's cost:</p>
     <div class="eq">m · G(x) ≤ x + m²</div>
-    <p>The gap G, collected once per lift, is at most an overhead x paid once, plus the chain's cost. Divide by m:</p>
+    <p>Divide by m:</p>
     <div class="eq">G(x) ≤ x/m + m</div>
   </div>
 </section>
@@ -425,15 +452,18 @@
 <section class="slide" data-scene="minimum" data-tone="green" data-title="The best chain length">
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
-    <p>A longer chain spreads the overhead over more rounds, but costs more. Where's the sweet spot?</p>
+    <p class="chip">The plan · step 5 of 5 · balance the books</p>
+    <p>A longer chain spreads the setup over more rounds, but costs more. Where's the sweet spot?</p>
     <p>Set the derivative to zero: <b>m = √x</b>, and then G(x) ≤ 2√x. That's exactly the size the Riemann Hypothesis needs.</p>
     <p class="try">Drag the red point.</p>
+    <p class="ledger"><span>the ledger</span>G(x) ≤ 2√x &nbsp;✓</p>
   </div>
 </section>
 
 <section class="slide" data-scene="barrier" data-tone="red" data-title="The 2/3 barrier">
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
+    <p class="chip">An aside</p>
     <p>It could easily have gone wrong. If each lift had to redo the bookkeeping of every lift before it, the chain would cost m³, and the best bound would be x<sup>2/3</sup>: useless.</p>
     <p>The proof charges every piece of bookkeeping to exactly one lift.</p>
   </div>
@@ -442,6 +472,7 @@
 <section class="slide" data-scene="stepanov" data-tone="purple" data-title="Multiplicity without derivatives">
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
+    <p class="chip">An aside</p>
     <p>Why does the author call each lift "one more order of multiplicity"? The phrase comes from a cousin of RH for clock arithmetic (like mod 7), proved by André Weil in the 1940s.</p>
     <p>In 1969 Sergei Stepanov found a short proof: build a polynomial with a double, triple, … root (multiplicity m) at every point you want to count. Degree D allows at most D roots counted this way, so <span class="m">(points) × m ≤ D</span>.</p>
     <p>This proof has the same shape: <span class="m">G × m ≤ x + m²</span>. Multiplicity normally needs derivatives, which whole numbers lack. The chain of lifts stands in for them.</p>
