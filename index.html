@@ -11,8 +11,8 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="stylesheet" href="css/style.css">
-<link rel="stylesheet" href="css/deck.css">
+<link rel="stylesheet" href="css/style.css?v=1123c">
+<link rel="stylesheet" href="css/deck.css?v=1123c">
 </head>
 <body class="deck">
 
@@ -332,13 +332,33 @@
 </section>
 
 <!-- ======================================================= VII. one lift -->
+<section class="slide" data-scene="gridnums" data-tone="blue" data-title="A number from a grid">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p class="chip">The plan · step 3 of 5 · build it</p>
+    <p>How do you build a number to order? Start with something perfectly symmetric: the grid of points a + bi. Give it a quarter turn and you get the same grid back.</p>
+    <p>Gauss found that this grid has its own sine function, the <b>lemniscate sine</b>. Its Taylor coefficients are whole numbers. Factor them and a pattern jumps out: 3, 7, 11 and 19 divide them more and more, while 5, 13 and 17 never do. Nobody put those factors in. The grid's symmetry forces them.</p>
+    <div class="tags"><span class="tag real">computed exactly</span></div>
+  </div>
+</section>
+
+<section class="slide" data-scene="mirror" data-tone="blue" data-title="Why 3 but not 5">
+  <div class="art"><canvas aria-hidden="true"></canvas></div>
+  <div class="words">
+    <p class="chip">The plan · step 3 of 5 · build it</p>
+    <p>Here's where the factors come from. Take a grid point, raise it to the p-th power, and reduce mod p. For p = 3, 7, 11, 19, … you land on the point's <b>mirror image</b>: <span class="m">(1 + 2i)<sup>3</sup> = −11 − 2i</span>, which is 1 − 2i mod 3.</p>
+    <p>For p = 5, 13, 17, … you land back on the point itself. So at the <b>mirror primes</b> (one less than a multiple of 4), "raise to the p-th power" and "flip" are the same move. That coincidence is what forces their factors. (Other grids have other mirror primes; 5 is one for the hexagonal grid. So every prime gets a turn.)</p>
+    <div class="tags"><span class="tag real">exact arithmetic</span></div>
+  </div>
+</section>
+
 <section class="slide" data-scene="machine" data-tone="blue" data-title="A theta lift">
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
     <p class="chip">The plan · step 3 of 5 · build it</p>
-    <p>How do you build a number to order? With a classical machine called a <b>theta lift</b>: a gearbox that carries a perfectly symmetric object from one world into a partner world.</p>
-    <p>What comes out are polynomials, whose coefficients are numbers you can test for factors of p. The lift meshes two of them, one of <b>huge</b> degree a and one of <b>small</b> degree b, with a = x · b, like a big gear driving a small one. (A polynomial's degree is its highest power: x³ + 1 has degree 3.)</p>
-    <div class="tags"><span class="tag schem">schematic</span></div>
+    <p>Those numbers have the factors, but they grow like a factorial: far too big. The proof needs a tamer number, and builds it with a classical recipe, a <b>theta function</b>. Visit every point of a grid, weight it by a bell curve so far-off points barely count, multiply by the point raised to a power a, and add it all up.</p>
+    <p>A <b>theta lift</b> does the same with two grids, adding over every way to fit one inside the other. The bell curve keeps the total small. And if the grid is symmetric enough, built from a 16th root of unity ζ instead of i, the mirror primes still force their factors.</p>
+    <div class="tags"><span class="tag schem">simplified</span></div>
   </div>
 </section>
 
@@ -346,18 +366,18 @@
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
     <p class="chip">The plan · step 3 of 5 · build it</p>
-    <p>Picture the polynomials being passed around a round table. Each one has an <b>ordinary</b> part and a <b>mirror-image</b> part (think of z and its mirror image z̄). Each seat has a big pocket, with room for degree a, and a small pocket, with room for degree b.</p>
-    <p>At the home seat, the ordinary part goes in the big pocket. At every other seat around the table, the two pockets are swapped. Those swapped seats are where the factors will come from.</p>
-    <div class="tags"><span class="tag schem">schematic</span></div>
+    <p>That bigger grid can be drawn in the plane in four ways: send ζ to ζ, ζ³, ζ⁵ or ζ⁷ (the other choices just mirror these). Call each drawing a <b>seat</b>. The mirror move hops from seat to seat. At p = 3, raise to the 3rd power and flip: seat ζ goes to ζ³, then ζ⁷, then ζ⁵, then home.</p>
+    <p>The recipe gives the home seat the big power a, and the seats an odd number of hops away only a small power b, with a = x · b. So even seats are <b>wide</b> and odd seats are <b>narrow</b>. The narrow seats are where the factors will come from.</p>
+    <div class="tags"><span class="tag schem">example: p = 3, ζ a 16th root of unity</span></div>
   </div>
 </section>
 
-<section class="slide" data-scene="pascal" data-tone="blue" data-title="A magic move at p">
+<section class="slide" data-scene="pascal" data-tone="blue" data-title="One hop: divide by p">
   <div class="art"><canvas aria-hidden="true"></canvas></div>
   <div class="words">
     <p class="chip">The plan · step 3 of 5 · build it</p>
-    <p>To get from seat to seat, the machine uses one move. At a prime p there's a magic move. In arithmetic mod p, <span class="m">(u + v)<sup>p</sup> = u<sup>p</sup> + v<sup>p</sup></span>, because every middle coefficient is divisible by p.</p>
-    <p>So the substitution x → x<sup>p</sup>, called <b>Frobenius</b>, plays nicely with everything. It divides a polynomial's degree by p, and it passes the polynomial to the next seat.</p>
+    <p>Why does a hop shrink the degree by p? Look at row 7 of Pascal's triangle: every middle number is a multiple of 7. So in arithmetic mod 7 they all vanish, and <span class="m">(u + v)<sup>7</sup> = u<sup>7</sup> + v<sup>7</sup></span>.</p>
+    <p>Read backwards, that lets you take a 7th root. A big polynomial built only from powers of x<sup>7</sup> is secretly a small one raised to the 7th power: <span class="m">x<sup>63</sup> + x<sup>7</sup> + 1 = (x<sup>9</sup> + x + 1)<sup>7</sup></span> mod 7. Taking that root, called <b>Frobenius</b>, is the hop: the degree drops from 63 to 9, divided by p.</p>
   </div>
 </section>
 
@@ -369,7 +389,7 @@
   <div class="words">
     <p class="chip">The plan · step 4 of 5 · the factors appear</p>
     <p>Follow the big degree around the table. After e hops it's a/pᵉ.</p>
-    <p>Even hops land on a seat where it goes in the big pocket: it fits. Odd hops land on a swapped seat, where it must squeeze into the small pocket of size b. Whatever sticks out, shown in red, turns into <b>forced factors of p</b>.</p>
+    <p>Even hops land on a wide seat: it fits. Odd hops land on a narrow seat, where it must squeeze into degree b. Whatever sticks out, shown in red, turns into <b>forced factors of p</b>.</p>
     <p class="try">Try other values of x and p.</p>
   </div>
 </section>
@@ -379,7 +399,7 @@
   <div class="words">
     <p class="chip">The plan · step 5 of 5 · order filled</p>
     <p>Hold the red up against the order slip: they match, line for line.</p>
-    <p>Dividing by pᵉ is Frobenius. Subtracting b is the small pocket. Only odd e: the swapped seats. Past pᵉ = x, everything fits. The lift forces exactly the factors the order asked for.</p>
+    <p>Dividing by pᵉ is Frobenius. Subtracting b is the narrow seat's room. Only odd e: the narrow seats. Past pᵉ = x, everything fits. The lift forces exactly the factors the order asked for.</p>
     <div class="tags"><span class="tag reading">our reading of the source's formulas</span></div>
   </div>
 </section>
@@ -695,11 +715,11 @@
 
 <div id="contents" role="dialog" aria-label="Contents"><button class="pill close" type="button" id="close-contents">Close ✕</button><div class="in" id="contents-in"></div></div>
 
-<script src="js/core.js"></script>
-<script src="js/data.js"></script>
-<script src="js/deck.js"></script>
-<script src="js/scenes-1.js"></script>
-<script src="js/scenes-2.js"></script>
-<script src="js/scenes-3.js"></script>
+<script src="js/core.js?v=1123c"></script>
+<script src="js/data.js?v=1123c"></script>
+<script src="js/deck.js?v=1123c"></script>
+<script src="js/scenes-1.js?v=1123c"></script>
+<script src="js/scenes-2.js?v=1123c"></script>
+<script src="js/scenes-3.js?v=1123c"></script>
 </body>
 </html>

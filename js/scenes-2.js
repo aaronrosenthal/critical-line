@@ -153,47 +153,130 @@
     K.line(pts, { color, width: 2.5, fill: color, fillAlpha: 0.12, sketch: false });
     K.ring(cx, cy, r * 0.28, { color, width: 2.5 });
   }
+  // ------------------------------------------------------------------ a number from a grid: lemniscate numbers
+  S("gridnums", () => ({
+    draw(K, t) {
+      const { col } = K, gx = 190, gy = 300, sp = 34;
+      K.wash(gx, gy, 160, 160, col.blue, 0.1, 5);
+      for (let i = -4; i <= 4; i++) for (let j = -4; j <= 4; j++) K.dot(gx + i * sp, gy - j * sp, i === 0 && j === 0 ? 5 : 3.2, i === 0 && j === 0 ? col.ink : col.blue, 0.75);
+      K.text("1", gx + sp, gy + 20, { size: 18, align: "center", color: col.muted });
+      K.text("i", gx - 14, gy - sp, { size: 18, align: "center", color: col.muted });
+      const r = K.ease(K.ph(t, 0, 1.2)), th = r * Math.PI / 2;
+      K.arrow(gx, gy, gx + 3 * sp * Math.cos(th), gy - 3 * sp * Math.sin(th), { color: col.gold, width: 3, seed: 2 });
+      K.serif("turn it a quarter: same grid", gx, gy + 190, { size: 21, align: "center", color: col.muted });
+      K.text("the grid of points a + bi", gx, 90, { size: 21, align: "center", bold: true });
+      // table
+      const rows = [[5, "−12", [1, 0, 0, 0]], [9, "3024", [3, 1, 0, 0]], [13, "−4390848", [4, 1, 2, 0]], [17, "2.1 × 10¹⁰", [6, 2, 1, 0]], [21, "−2.6 × 10¹⁴", [7, 3, 1, 1]], [25, "6.6 × 10¹⁸", [10, 3, 2, 1]]];
+      const cols = [[3, true], [7, true], [11, true], [19, true], [5, false], [13, false], [17, false]];
+      const x0 = 390, xv = 520, xc = 640, cw = 50, y0 = 130, rh = 52;
+      K.text("number", xv, y0 - 46, { size: 17, align: "center", color: col.muted });
+      K.text("times each prime divides it", xc + 3 * cw, y0 - 46, { size: 17, align: "center", color: col.muted });
+      K.text("n", x0, y0, { size: 20, align: "center", bold: true, color: col.muted });
+      cols.forEach(([p, g], k) => K.text(String(p), xc + k * cw, y0, { size: 22, align: "center", bold: true, color: g ? col.gold : col.muted }));
+      rows.forEach(([n, v, e], i) => {
+        const a = K.ease(K.ph(t, 0.6 + i * 0.35, 1.0 + i * 0.35)); if (a <= 0) return;
+        const y = y0 + (i + 1) * rh; K.g.globalAlpha = a;
+        K.text(String(n), x0, y, { size: 20, align: "center", color: col.muted });
+        K.text(v, xv, y, { size: 20, align: "center" });
+        cols.forEach(([p, g], k) => { const c = g ? e[k] : 0; K.text(String(c), xc + k * cw, y, { size: 22, align: "center", bold: c > 0, color: g ? (c > 0 ? col.gold : col.muted) : col.muted }); });
+        K.g.globalAlpha = 1;
+      });
+      const b = K.ease(K.ph(t, 3.0, 3.8));
+      if (b > 0) {
+        K.g.globalAlpha = b;
+        K.text("3, 7, 11, 19, 23, … : more and more", 545, 520, { size: 21, align: "center", bold: true, color: col.gold });
+        K.text("5, 13, 17, 29, … : never", 545, 556, { size: 21, align: "center", bold: true, color: col.muted });
+        K.g.globalAlpha = 1;
+      }
+      return t < 4;
+    },
+  }));
+
+  // ------------------------------------------------------------------ the mirror primes
+  S("mirror", () => ({
+    draw(K, t) {
+      const { col } = K, gx = 200, gy = 320, sp = 70;
+      for (let i = -2; i <= 3; i++) for (let j = -3; j <= 3; j++) K.dot(gx + i * sp, gy - j * sp, 3, col.axis, 0.9);
+      K.line([[gx - 2.4 * sp, gy], [gx + 3.4 * sp, gy]], { color: col.axis, width: 1.5, seed: 1 });
+      K.line([[gx, gy - 3.4 * sp], [gx, gy + 3.4 * sp]], { color: col.axis, width: 1.5, seed: 2 });
+      const P = [gx + sp, gy - 2 * sp], Q = [gx + sp, gy + 2 * sp];
+      K.ring(P[0], P[1], 14, { color: col.gold, width: 3, fill: col.gold, fillAlpha: 0.3 });
+      K.text("1 + 2i", P[0] + 24, P[1], { size: 21, bold: true, color: col.gold, halo: true });
+      const m = K.ease(K.ph(t, 0.8, 1.8));
+      if (m > 0) {
+        K.g.globalAlpha = m;
+        K.ring(Q[0], Q[1], 14, { color: col.blue, width: 3, fill: col.blue, fillAlpha: 0.3 });
+        K.text("1 − 2i  (mirror)", Q[0] + 24, Q[1], { size: 21, bold: true, color: col.blue, halo: true });
+        K.line([[gx - 2.4 * sp, gy], [gx + 3.4 * sp, gy]], { color: col.blue, width: 2, dash: [6, 6], seed: 3 });
+        K.g.globalAlpha = 1;
+      }
+      const rowsP = [
+        [1.6, "mod 3:", "(1 + 2i)³ = −11 − 2i", "≡ 1 − 2i", "the mirror", col.blue],
+        [2.6, "mod 7:", "(1 + 2i)⁷ = 29 + 278i", "≡ 1 − 2i", "the mirror", col.blue],
+        [3.6, "mod 5:", "(1 + 2i)⁵ = 41 − 38i", "≡ 1 + 2i", "itself", col.muted],
+      ];
+      rowsP.forEach(([t0, a, b, c, d, cc], i) => {
+        const e = K.ease(K.ph(t, t0, t0 + 0.6)); if (e <= 0) return;
+        const y = 150 + i * 120; K.g.globalAlpha = e;
+        K.text(a, 470, y, { size: 22, bold: true, color: cc });
+        K.math(b, 700, y, { size: 28 });
+        K.math(c, 700, y + 40, { size: 28, color: cc });
+        K.text("→ " + d, 830, y + 40, { size: 20, bold: true, color: cc });
+        K.g.globalAlpha = 1;
+      });
+      const f = K.ease(K.ph(t, 4.4, 5.0));
+      if (f > 0) { K.g.globalAlpha = f; K.text("raise to the p-th power, reduce mod p", 690, 540, { size: 20, align: "center", color: col.muted }); K.g.globalAlpha = 1; }
+      return t < 5.2;
+    },
+  }));
+
+  // ------------------------------------------------------------------ the theta lift: weigh every fit
   S("machine", () => ({
     draw(K, t) {
-      const { col } = K;
-      K.wash(500, 320, 210, 190, col.blue, 0.13, 3);
-      K.box(340, 160, 320, 320, { color: col.ink, width: 3, r: 26, fill: K.surface, fillAlpha: 0.6, seed: 12 });
-      gear(K, 450, 250, 62, 10, t * 0.8, col.blue); gear(K, 553, 318, 48, 8, -t * 0.8 * 62 / 48 + 0.2, col.gold); gear(K, 462, 380, 40, 7, -t * 0.8 * 62 / 40, col.purple);
-      K.math("Θ", 500, 520, { size: 46, italic: true });
-      const s = (t * 60) % 60;
-      for (let k = 0; k < 7; k++) { const x = 40 + ((k * 60 + s) % 300); K.dot(x, 272, 2.5, col.blue, 0.7); }
-      K.box(30, 205, 300, 50, { color: col.blue, width: 2.5, fill: col.blue, fillAlpha: 0.2, r: 8, seed: 3 });
-      K.text("degree a = x · b", 180, 230, { size: 24, align: "center", bold: true, color: col.blue });
-      K.box(250, 390, 80, 50, { color: col.red, width: 2.5, fill: col.red, fillAlpha: 0.2, r: 8, seed: 4 });
-      K.text("b", 290, 415, { size: 24, align: "center", bold: true, color: col.red });
-      K.text("degree", 236, 415, { size: 20, align: "right", color: col.red });
-      K.arrow(680, 320, 870, 320, { color: col.green, width: 3, seed: 6 });
-      K.serif("paired,", 775, 280, { size: 26, align: "center", color: col.green });
-      K.serif("measured two ways", 775, 370, { size: 24, align: "center", color: col.green });
+      const { col } = K, gx = 270, gy = 320, sp = 40;
+      K.text("every point of the grid", gx, 70, { size: 21, align: "center", bold: true });
+      for (let i = -5; i <= 5; i++) for (let j = -5; j <= 5; j++) {
+        const r2 = (i * i + j * j) / 6, w = Math.exp(-r2 * 0.9);
+        K.dot(gx + i * sp, gy - j * sp, 2 + 13 * w, col.blue, 0.25 + 0.6 * w);
+      }
+      K.serif("bigger dot = more weight (a bell curve)", gx, 560, { size: 20, align: "center", color: col.muted });
+      const pulse = (t * 0.7) % 1;
+      K.arrow(500, 320, 590, 320, { color: col.ink, width: 3, seed: 4 });
+      K.box(600, 220, 330, 200, { color: col.ink, width: 2.5, r: 18, fill: K.surface, fillAlpha: 0.7, seed: 9 });
+      K.math("Σ   weight × (point)ᵃ", 765, 290, { size: 30 });
+      K.text("add them all up", 765, 345, { size: 20, align: "center", color: col.muted });
+      K.text("a = the power, and the degree", 765, 385, { size: 17, align: "center", color: col.muted });
+      K.text("forced factors of the mirror primes", 765, 470, { size: 20, align: "center", bold: true, color: col.gold });
+      K.text("and still a small total", 765, 505, { size: 20, align: "center", bold: true, color: col.green });
+      K.dot(500 + pulse * 90, 320, 6, col.gold, 1 - pulse);
       return true;
     },
   }));
 
-  // ------------------------------------------------------------------ seats around a table
+  // ------------------------------------------------------------------ seats: the views of a bigger grid
   S("ring", () => ({
     draw(K, t) {
-      const { col } = K, cx = 500, cy = 320, R = 225, N = 8, at = (i) => [cx + R * Math.sin((i / N) * Math.PI * 2), cy - R * Math.cos((i / N) * Math.PI * 2)];
-      for (let i = 0; i < N; i++) {
-        const [x1, y1] = at(i), [x2, y2] = at(i + 1), pts = [];
-        for (let k = 0; k <= 10; k++) { const th = ((i + 0.22 + (k / 10) * 0.56) / N) * Math.PI * 2; pts.push([cx + (R + 0) * Math.sin(th), cy - (R + 0) * Math.cos(th)]); }
-        K.line(pts, { color: col.axis, width: 2, seed: i });
+      const { col } = K, cx = 500, cy = 330, R = 205;
+      const seats = [[1, "home", "a", col.blue], [3, "1 hop", "b", col.red], [7, "2 hops", "a", col.blue], [5, "3 hops", "b", col.red]];
+      const at = (i) => { const th = (i / 4) * Math.PI * 2; return [cx + R * Math.sin(th), cy - R * Math.cos(th)]; };
+      for (let i = 0; i < 4; i++) {
+        const [x1, y1] = at(i), [x2, y2] = at(i + 1);
+        const mx = (x1 + x2) / 2, my = (y1 + y2) / 2, ux = (mx - cx) * 0.18, uy = (my - cy) * 0.18;
+        K.arrow(x1 + (x2 - x1) * 0.3 + ux, y1 + (y2 - y1) * 0.3 + uy, x1 + (x2 - x1) * 0.7 + ux, y1 + (y2 - y1) * 0.7 + uy, { color: col.axis, width: 2.5, seed: i });
       }
-      for (let i = 0; i < N; i++) {
-        const [x, y] = at(i), even = i % 2 === 0, c = even ? col.blue : col.red;
-        K.ring(x, y, 54, { color: c, width: 2.6, fill: c, fillAlpha: 0.12 });
-        K.text(even ? "a │ b" : "b │ a", x, y - 4, { size: 23, align: "center", bold: true, color: c });
-        K.text(i === 0 ? "home seat" : even ? "like home" : "swapped", x, y + 72, { size: 18, align: "center", color: c, halo: true });
-      }
-      const pos = (t * 0.8) % N, i0 = Math.floor(pos), f = K.ease(pos - i0), th = ((i0 + f) / N) * Math.PI * 2;
-      K.dot(cx + (R - 92) * Math.sin(th), cy - (R - 92) * Math.cos(th), 10, col.gold);
-      K.serif("pocket sizes:", cx, cy - 48, { size: 22, align: "center", color: col.muted });
-      K.serif("ordinary │ mirror", cx, cy - 14, { size: 24, align: "center", color: col.muted });
-      K.serif("part     part", cx, cy + 20, { size: 22, align: "center", color: col.muted });
+      const pos = (t * 0.6) % 4, cur = Math.floor(pos);
+      seats.forEach(([k, lab, room, c], i) => {
+        const [x, y] = at(i);
+        K.ring(x, y, 62, { color: c, width: i === cur ? 4 : 2.4, fill: c, fillAlpha: i === cur ? 0.22 : 0.1 });
+        for (let j = 0; j < 16; j++) { const th = (2 * Math.PI * j) / 16; K.line([[x, y], [x + 34 * Math.cos(th), y - 34 * Math.sin(th)]], { color: col.muted, width: 1.2, seed: 30 + j }); }
+        const th = (2 * Math.PI * k) / 16; K.arrow(x, y, x + 50 * Math.cos(th), y - 50 * Math.sin(th), { color: col.gold, width: 3.5, seed: 20 + i });
+        const below = y > cy + 10, side = Math.abs(x - cx) > 10;
+        const ty = below ? y + 86 : side ? y + 86 : y - 104;
+        K.text(`ζ ↦ ζ${["", "", "", "³", "", "⁵", "", "⁷"][k]}`, x, ty, { size: 20, align: "center", bold: true, color: c, halo: true });
+        K.text(`${lab} · room for degree ${room}`, x, ty + 24, { size: 17, align: "center", color: c, halo: true });
+      });
+      K.serif("p = 3: power by 3,", cx, cy - 18, { size: 22, align: "center", color: col.muted });
+      K.serif("then flip", cx, cy + 14, { size: 22, align: "center", color: col.muted });
       return true;
     },
   }));
@@ -218,7 +301,8 @@
       if (b > 0) {
         K.g.globalAlpha = b;
         K.math("(u + v)⁷  =  u⁷ + v⁷   in arithmetic mod 7", 500, 480, { size: 32 });
-        K.math("degree 63 in x   =   degree 9 in x⁷", 500, 560, { size: 30, color: col.blue });
+        K.math("x⁶³ + x⁷ + 1  =  (x⁹ + x + 1)⁷   mod 7", 500, 545, { size: 30, color: col.blue });
+        K.text("one hop: degree 63  →  degree 9  (÷ 7)", 500, 600, { size: 22, align: "center", bold: true, color: col.blue });
         K.g.globalAlpha = 1;
       }
       return t < 4.6;
@@ -244,7 +328,7 @@
           const xa = 10 + e * cw + 6, xb = 10 + (e + 1) * cw - 6, xm = (xa + xb) / 2, odd = e % 2 === 1, c = odd ? col.red : col.blue;
           K.box(xa, yt - 10, xb - xa, yb - yt + 10, { color: c, width: 1.6, fill: c, fillAlpha: 0.06, sketch: false });
           K.text(e === 0 ? "home" : `hop ${e}`, xm, yb + 28, { size: 21, align: "center", bold: true, color: e === shown ? col.gold : col.muted });
-          K.text(odd ? "swapped seat" : "like home", xm, yb + 56, { size: 17, align: "center", color: c });
+          K.text(odd ? "narrow seat" : "wide seat", xm, yb + 56, { size: 17, align: "center", color: c });
           if (e > 0) K.seg(xa + 4, ym(odd ? 1 : x), xb - 4, ym(odd ? 1 : x), { color: c, width: 2.2, dash: [7, 5], sketch: false });
           if (e > shown) continue;
           const v = x / Math.pow(p, e), g = e === shown ? K.ease(Math.min(1, (pos - shown) * 1.6)) : 1, top = yb + (ym(v) - yb) * g;
@@ -260,7 +344,7 @@
           }
         }
         let tot = 0; for (let e = 1, pk = p; pk < x; e += 2, pk *= p * p) tot += x / pk - 1;
-        K.text(`dashed: pocket size (b on a swapped seat, about a otherwise)   ·   total overflow at p = ${p}: ${num(tot)} b`, 500, 610, { size: 18, align: "center", color: col.muted, maxW: 980 });
+        K.text(`dashed: room at each seat (b on a narrow seat, about a on a wide one)   ·   total overflow at p = ${p}: ${num(tot)} b`, 500, 610, { size: 18, align: "center", color: col.muted, maxW: 980 });
         K.text(`p = ${p}: each hop divides the degree by ${p}`, 14, 30, { size: 22, bold: true });
         return pos < NS + 0.3;
       },
